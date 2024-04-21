@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Estate extends Model
 {
     use HasFactory;
+
+    public function getAdviser(){
+        return $this->belongsTo(User::class,'adviser_id');
+    }
 }

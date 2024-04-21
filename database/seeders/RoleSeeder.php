@@ -14,7 +14,7 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         Role::insert(
-            [
+            [[
                 'rol' => 'admin',
                 'description' => 'Administrador',
             ],
@@ -33,7 +33,7 @@ class RoleSeeder extends Seeder
             [
                 'rol' => 'subdirector',
                 'description' => 'subdirector de centro',
-            ]
+            ]]
         );
     }
 }
