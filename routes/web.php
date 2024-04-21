@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\App;
 use App\Http\Controllers\ValidityController;
 
 Route::get('/', function () {
-    return Inertia::render('Auth.login');
+    return redirect('/login');
 });
-/*Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        //'canRegister' => Route::has('register'),
-    ]);
-});*/
+
 
 Route::post('logoutUser', function(){
     Auth::logout();

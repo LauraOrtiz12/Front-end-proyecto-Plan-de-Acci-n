@@ -4,11 +4,15 @@ import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
 import Register from "@/Pages/Auth/Register.vue";
 
+
+
 defineProps({
     role : Array
 });
 
 const newUserModal = ref(false);
+
+
 </script>
 <template>
     <AppLayout>
@@ -23,6 +27,7 @@ const newUserModal = ref(false);
                            Nuevo Usuario
                        </button>
                    </div>
+
     {{$page.props.users}}
                 </div>
             </div>
