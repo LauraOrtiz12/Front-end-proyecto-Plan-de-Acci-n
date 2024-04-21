@@ -4,7 +4,9 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 defineProps({
     viability: Object,
     estates: Object
-})
+});
+
+
 </script>
 <template>
     <AppLayout>
@@ -19,7 +21,8 @@ defineProps({
                 </button>
             </div>
         </template>
-        <div class="mt-4">
+
+        <div class="mt-4" v-if="$page.props.auth.user.role_id != 1">
             <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6">

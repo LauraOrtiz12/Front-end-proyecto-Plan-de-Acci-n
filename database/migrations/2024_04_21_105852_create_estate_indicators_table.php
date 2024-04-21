@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('estate_indicators', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('validity_id')->constrained();
             $table->foreignId('estate_id')->constrained();
             $table->foreignId('indicator_id')->constrained();
             $table->string('month', 15);
             $table->string('goal', 15);
             $table->string('execution_goals', 15);
+            $table->string('cicly_indicator', 5)->comment('1: En el dependencia, 2: Control 1, 3: Control 2 (Asesor), 4: Digeneral Admin');
+            $table->enum('status', ['Active', 'Inactive'])->default('Active');
             $table->timestamps();
         });
     }
