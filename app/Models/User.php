@@ -63,4 +63,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getEstateIndicatorResponsability(){
+        return $this->hasOne( Estate::class, 'responsible_id', 'id');
+    }
+
 }

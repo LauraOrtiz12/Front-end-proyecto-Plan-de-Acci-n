@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\ValidityController;
+use App\Http\Controllers\EstateIndicatorController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -34,5 +35,9 @@ Route::middleware([
 
     Route::controller(ValidityController::class)->group(function() {
         Route::get('listValidities', 'index')->name('listValidities');
+    });
+
+    Route::controller(EstateIndicatorController::class)->group(function(){
+        Route::get('estateIndicators', 'show')->name('estateIndicators');
     });
 });
