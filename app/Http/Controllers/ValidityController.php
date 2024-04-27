@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estate;
+use App\Models\EstateIndicator;
 use App\Models\Validity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

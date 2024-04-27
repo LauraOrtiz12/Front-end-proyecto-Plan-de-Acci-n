@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class EstateIndicator extends Model
 {
     use HasFactory;
+
+    public function getIndicator()
+    {
+        return $this->belongsTo(Indicator::class, 'indicator_id');
+    }
 }

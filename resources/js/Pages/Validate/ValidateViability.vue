@@ -62,43 +62,63 @@ const loadViability = () => {
             <span>No Tiene Asociado una dependencia</span>
         </div>
 
-        <div class="mt-4" v-if="$page.props.auth.user.role_id != 1 && Object.keys($page.props.estates).length > 0">
-            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-                <div class="bg-white shadow overflow-hidden sm:rounded-lg px-8">
-
-
-                    <div class="container mx-auto">
+        <div class="w-full mt-4" v-if="$page.props.auth.user.role_id != 1 && Object.keys($page.props.estates).length > 0">
+            <div class="grid grid-cols-1 gap-2">
+                <div class="bg-white mx-8 shadow overflow-x-auto sm:rounded-lg px-3">
+                    <div class="container mx-1 ">
                         <div class="bg-white shadow-md rounded my-6">
-                            <table class="w-full table-auto">
+                            <table class="table-auto">
                                 <thead>
                                 <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <th class="py-3 px-6 text-left">Nombre de Indicador</th>
+                                    <th class="py-3 px-6 text-left">Perspectiva</th>
+                                    <th class="py-3 px-6 text-left">Nombre de Perspectiva</th>
+                                    <th class="py-3 px-6 text-left">Objetivo Estrategico</th>
+                                    <th class="py-3 px-6 text-left">Nombre de Objetivo Estrategico</th>
+                                    <th class="py-3 px-6 text-left">Indicador Estrategico</th>
+                                    <th class="py-3 px-6 text-left">Nombre de Indicador Estrategico</th>
                                     <th class="py-3 px-6 text-left">Mes</th>
                                     <th class="py-3 px-6 text-left">Meta</th>
                                     <th class="py-3 px-6 text-left">Objetivos de ejecución</th>
-                                    <th class="py-3 px-6 text-left">Ciclo de indicadores</th>
+                                    <th class="py-3 px-6 text-left">Porcentaje ejecución</th>
                                     <th class="py-3 px-6 text-left">Estado</th>
                                     <th class="py-3 px-6 text-left">Acción</th>
                                 </tr>
                                 </thead>
                                 <tbody class="text-gray-600 text-sm font-light">
-                                <tr v-for="item in estateIndicators" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Active' }">
+                                <tr v-for="item in estateIndicators" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_indicator }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.perspective }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_perspective }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.objective_strategy }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_strategy }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.indicator_strategy }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_indicator_strategy }}</td>
                                     <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.month }}</td>
                                     <td class="py-3 px-6 text-left">{{ item.goal }}</td>
                                     <td class="py-3 px-6 text-left">{{ item.execution_goals }}</td>
-                                    <td class="py-3 px-6 text-left">{{ item.cicly_indicator }}</td>
+                                    <td class="py-3 px-6 text-left">{{ Math.floor((item.execution_goals/item.goal)*100) }}%</td>
                                     <td class="py-3 px-6 text-left">{{ item.status }}</td>
-                                    <td class="py-3 px-6 text-left">
-                                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                            Llamar a la acción
-                                        </button>
+                                    <td class="py-3 px-1 center">
+                                       <div class="grid grid-cols-1 gap-1">
+                                           <div class="col-auto">
+                                               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 1 && $page.props.auth.user.role_id ==5">
+                                                   Justifcación
+                                               </button>
+                                           </div>
+
+                                            <div class="col-auto">
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 1 && $page.props.auth.user.role_id ==5">
+                                                    Justifcación Control
+                                                </button>
+                                            </div>
+                                       </div>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

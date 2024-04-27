@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('goal', 15);
             $table->string('execution_goals', 15);
             $table->string('cicly_indicator', 5)->comment('1: En el dependencia, 2: Control 1, 3: Control 2 (Asesor), 4: Digeneral Admin');
-            $table->enum('status', ['Active', 'Inactive'])->default('Active');
+            $table->enum('status', ['Activo', 'Inactivo'])->default('Activo');
             $table->timestamps();
         });
     }
