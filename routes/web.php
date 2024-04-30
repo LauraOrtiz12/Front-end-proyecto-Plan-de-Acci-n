@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EstateIndicatorJustifyController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -39,5 +40,9 @@ Route::middleware([
 
     Route::controller(EstateIndicatorController::class)->group(function(){
         Route::get('estateIndicators', 'show')->name('estateIndicators');
+    });
+
+    Route::controller(EstateIndicatorJustifyController::class)->group(function(){
+        Route::get('justify/indicator', 'show')->name('justifyIndicator');
     });
 });
