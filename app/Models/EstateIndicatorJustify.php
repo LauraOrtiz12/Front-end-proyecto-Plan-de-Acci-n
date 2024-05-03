@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class EstateIndicatorJustify extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 }

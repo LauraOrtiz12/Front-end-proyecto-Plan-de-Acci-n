@@ -1,6 +1,10 @@
 <script setup>
+import { useForm } from '@inertiajs/vue3'
 import AppLayout from "@/Layouts/AppLayout.vue";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { ref, defineProps } from 'vue';
+
+
 const traducirClave = (key) => {
     const traducciones = {
         cicly_indicator: 'Indicador de Ciclo',
@@ -27,7 +31,31 @@ const traducirClave = (key) => {
     return traducciones[key] || key;
 }
 
+// Define props using defineProps
+const props = defineProps({
+    params: {
+        type: Object,
+        required: true
+    },
+    dataIndicator:{
+        type: Object
+    }
+});
+
+
+const form = useForm({
+    estate_indicator_id: props.params.id,
+    observation_goal: null,
+    justification_goals_budget : null,
+    initial_date: null,
+    final_date: null,
+    physical_resource: null,
+    technical_resource: null,
+    human_resource: null
+})
+
 const save = () => {
+
     Swal.fire({
         title: "Aviso Importante?",
         text: "Está usted Seguro!",
@@ -39,11 +67,17 @@ const save = () => {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
+            form.post('/justify/indicator', {
+                onSuccess: (res) => {
+                    form.reset()
+                    console.log(res)
+            }
             });
+            // Swal.fire({
+            //     title: "Deleted!",
+            //     text: "Your file has been deleted.",
+            //     icon: "success"
+            // });
         }
     });
 }
@@ -55,7 +89,6 @@ const save = () => {
                 <span class="mr-2">Justificación de Indicador</span>
             </div>
         </template>
-
 
         <div class=" mx-4 py-8">
 
@@ -103,42 +136,80 @@ const save = () => {
                     </tbody>
                 </table>
             </div>
+
         </div>
+        <div class="bg-white rounded-lg shadow-lg p-6 mx-4 my-1 w-full" v-if="Object.keys(dataIndicator).length > 0">
+            <div v-for="dt in dataIndicator" :key="dt.id" class="mb-4">
+                <div class="grid grid-cols-1 md:grid-cols-4">
+                    <div class="mb-2 col-auto">
+                        <span class="font-bold">Justificación de Meta:</span> {{ dt.observation_goal }}
+                    </div>
+                    <div class="mb-2 col-auto">
+                        <span class="font-bold">Justificación de Meta Propuesta:</span>
+                        {{ dt.justification_goals_budget }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold">Fecha Inicial:</span> {{ dt.initial_date }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold">Fecha Final:</span> {{ dt.final_date }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold">Recurso Físico:</span> {{ dt.physical_resource }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold">Recurso Técnico:</span> {{ dt.technical_resource }}
+                    </div>
+                    <div class="mb-2">
+                        <span class="font-bold">Recurso Humano:</span> {{ dt.human_resource }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="mx-4" v-if="$page.props.params.cicly_indicator == 1">
             <div class=" bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Justificación</h2>
                 <form action="" method="post">
-                    <input type="hidden" name="id" id="id" :value="$page.props.params.id">
+
+                    <input type="hidden" name="id" id="id"  v-model="form.estate_indicator_id" >
                     <div class="mb-4">
                         <label for="observation_goal" class="block mb-2">Justificación de Meta</label>
-                        <input type="text" name="observation_goal" id="observation_goal" class="w-full px-3 py-2 border rounded-md">
+                        <input type="text" name="observation_goal" id="observation_goal" class="w-full px-3 py-2 border rounded-md" v-model="form.observation_goal">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.observation_goal">{{ form.errors.observation_goal }}</div>
                     </div>
                     <div class="mb-4">
                         <label for="justification_goals_budget" class="block mb-2">Justificación de Meta Propuesta</label>
-                        <input type="text" name="justification_goals_budget" id="justification_goals_budget" class="w-full px-3 py-2 border rounded-md">
+                        <input type="text" name="justification_goals_budget" id="justification_goals_budget" class="w-full px-3 py-2 border rounded-md" required v-model="form.justification_goals_budget">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.justification_goals_budget">{{ form.errors.justification_goals_budget }}</div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="mb-4">
                             <label for="initial_date" class="block mb-2">Fecha Inicial</label>
-                            <input type="date" name="initial_date" id="initial_date" class="w-full px-3 py-2 border rounded-md">
+                            <input type="date" name="initial_date" id="initial_date" class="w-full px-3 py-2 border rounded-md" v-model="form.initial_date">
+                            <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.initial_date">{{ form.errors.initial_date }}</div>
                         </div>
                         <div class="mb-4">
                             <label for="final_date" class="block mb-2">Fecha Fin</label>
-                            <input type="date" name="final_date" id="final_date" class="w-full px-3 py-2 border rounded-md">
+                            <input type="date" name="final_date" id="final_date" class="w-full px-3 py-2 border rounded-md" v-model="form.final_date">
+                            <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.final_date">{{ form.errors.final_date }}</div>
                         </div>
                     </div>
                     <div class="mb-4">
                         <label for="physical_resource" class="block mb-2">Recurso Físico</label>
-                        <input type="text" name="physical_resource" id="physical_resource" class="w-full px-3 py-2 border rounded-md">
+                        <input type="text" name="physical_resource" id="physical_resource" class="w-full px-3 py-2 border rounded-md" v-model="form.physical_resource">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.physical_resource">{{ form.errors.physical_resource }}</div>
                     </div>
                     <div class="mb-4">
                         <label for="technical_resource" class="block mb-2">Recurso Técnico</label>
-                        <input type="text" name="technical_resource" id="technical_resource" class="w-full px-3 py-2 border rounded-md">
+                        <input type="text" name="technical_resource" id="technical_resource" class="w-full px-3 py-2 border rounded-md" v-model="form.technical_resource">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.technical_resource">{{ form.errors.technical_resource }}</div>
                     </div>
                     <div class="mb-6">
                         <label for="human_resource" class="block mb-2">Recurso Humano</label>
-                        <input type="text" name="human_resource" id="human_resource" class="w-full px-3 py-2 border rounded-md">
+                        <input type="text" name="human_resource" id="human_resource" class="w-full px-3 py-2 border rounded-md" v-model="form.human_resource">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.human_resource">{{ form.errors.human_resource }}</div>
                     </div>
                     <div class="flex justify-end">
                         <button type="button" class="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md" @click="save">
