@@ -68,4 +68,9 @@ class User extends Authenticatable
         return $this->hasOne( Estate::class, 'responsible_id', 'id');
     }
 
+    public function getRole()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
 }

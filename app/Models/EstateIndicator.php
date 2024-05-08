@@ -13,4 +13,9 @@ class EstateIndicator extends Model
     {
         return $this->belongsTo(Indicator::class, 'indicator_id');
     }
+
+    public function getEstate()
+    {
+        return $this->hasOne(Estate::class, 'id','estate_id');
+    }
 }

@@ -9,4 +9,9 @@ class EstateIndicatorJustify extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function whoUserCiclyOne()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

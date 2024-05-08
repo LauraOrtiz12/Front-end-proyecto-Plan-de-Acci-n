@@ -39,6 +39,9 @@ const props = defineProps({
     },
     dataIndicator:{
         type: Object
+    },
+    user:{
+        type: Object
     }
 });
 
@@ -53,6 +56,7 @@ const form = useForm({
     technical_resource: null,
     human_resource: null
 })
+
 
 const save = () => {
 
@@ -73,11 +77,7 @@ const save = () => {
                     console.log(res)
             }
             });
-            // Swal.fire({
-            //     title: "Deleted!",
-            //     text: "Your file has been deleted.",
-            //     icon: "success"
-            // });
+
         }
     });
 }
@@ -91,6 +91,8 @@ const save = () => {
         </template>
 
         <div class=" mx-4 py-8">
+
+
 
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -141,6 +143,9 @@ const save = () => {
         <div class="bg-white rounded-lg shadow-lg p-6 mx-4 my-1 w-full" v-if="Object.keys(dataIndicator).length > 0">
             <div v-for="dt in dataIndicator" :key="dt.id" class="mb-4">
                 <div class="grid grid-cols-1 md:grid-cols-4">
+                    <div class="font-bold">
+                        {{dt.who_user_cicly_one.name}} / {{dt.who_user_cicly_one.get_role.rol}}
+                    </div>
                     <div class="mb-2 col-auto">
                         <span class="font-bold">Justificación de Meta:</span> {{ dt.observation_goal }}
                     </div>
@@ -168,14 +173,13 @@ const save = () => {
         </div>
 
 
-        <div class="mx-4" v-if="$page.props.params.cicly_indicator == 1">
+        <div class="mx-4" v-if="$page.props.params.cicly_indicator == 1 && $page.props.params.get_estate.responsible_id == $page.props.user.id">
             <div class=" bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Justificación</h2>
                 <form action="" method="post">
-
                     <input type="hidden" name="id" id="id"  v-model="form.estate_indicator_id" >
                     <div class="mb-4">
-                        <label for="observation_goal" class="block mb-2">Justificación de Meta</label>
+                        <label for="observation_goal" class="block mb-2 font-bold">Justificación de Meta</label>
                         <input type="text" name="observation_goal" id="observation_goal" class="w-full px-3 py-2 border rounded-md" v-model="form.observation_goal">
                         <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.observation_goal">{{ form.errors.observation_goal }}</div>
                     </div>
@@ -224,8 +228,39 @@ const save = () => {
         </div>
 
 
-        <div class=" mx-4 py-8" v-else>
-            Justificación 2
+        <div class=" mx-4 py-8" v-if="$page.props.params.cicly_indicator == 2 && $page.props.params.get_estate.adviser_id == $page.props.user.id">
+            <div class=" bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Seguimiento</h2>
+                <form action="" method="post">
+
+                    <input type="hidden" name="id" id="id"  v-model="form.estate_indicator_id" >
+                    <div class="mb-4">
+                        <label for="follow_up_observation" class="block mb-2">Seguimiento y Observación</label>
+                        <input type="text" name="follow_up_observation" id="follow_up_observation" class="w-full px-3 py-2 border rounded-md" v-model="form.observation_goal">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.observation_goal">{{ form.errors.observation_goal }}</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="follow_up_justify_indicator" class="block mb-2">Seguimiento de Justificación de Meta Propuesta</label>
+                        <input type="text" name="follow_up_justify_indicator" id="follow_up_justify_indicator" class="w-full px-3 py-2 border rounded-md" required v-model="form.justification_goals_budget">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.justification_goals_budget">{{ form.errors.justification_goals_budget }}</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="justification_monitoring_budget" class="block mb-2">Justificación de Monitoreo Propuesto</label>
+                        <input type="text" name="justification_monitoring_budget" id="justification_monitoring_budget" class="w-full px-3 py-2 border rounded-md" v-model="form.physical_resource">
+                        <div class="error-message bg-red-500 text-white rounded p-1 text-sm" v-if="form.errors.physical_resource">{{ form.errors.physical_resource }}</div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="button" class="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md" @click="save">
+                            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
 
 

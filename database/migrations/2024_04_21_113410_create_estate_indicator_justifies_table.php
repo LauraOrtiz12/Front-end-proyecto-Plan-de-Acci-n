@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('estate_indicator_justifies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('estate_indicator_id')->constrained('estate_indicators');
+            $table->foreignId('user_id')->constrained('users');
             $table->text('observation_goal')->nullable();
             $table->text('justification_goals_budget')->nullable();
             $table->text('follow_up_observation')->nullable();
