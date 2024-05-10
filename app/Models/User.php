@@ -68,6 +68,10 @@ class User extends Authenticatable
         return $this->hasOne( Estate::class, 'responsible_id', 'id');
     }
 
+    public function getEstateIndicatorAdviser(){
+        return $this->hasMany(Estate::class, 'adviser_id', 'id');
+    }
+
     public function getRole()
     {
         return $this->hasOne(Role::class, 'id', 'role_id');

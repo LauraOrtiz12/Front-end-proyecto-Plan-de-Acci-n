@@ -5,15 +5,28 @@ import {router} from "@inertiajs/vue3";
 
 defineProps({
     viability: Object,
-    estates: Object
+    estates: Object,
+    estatesControl: Object
 });
 
 const validity = ref('');
 const estateIndicators = ref([]);
+const estateIndicatorsAdviser = ref([]);
 const loadViability = () => {
     axios.get('estateIndicators', { params: { validity: validity.value } })
-        .then((response) =>  estateIndicators.value = response.data)
+        .then((response) =>  estateIndicators.value = response.data);
+    axios.get('estateIndicatorsAdviser', { params: { validity: validity.value } })
+        .then((response) =>  estateIndicatorsAdviser.value = response.data);
 }
+
+const loadViabilityControl = () => {
+    axios.get('estateIndicatorsAdviser', { params: { validity: validity.value } })
+      .then((response) =>  estateIndicatorsAdviser.value = response.data)
+
+    axios.get('estateIndicators', { params: { validity: validity.value } })
+        .then((response) =>  estateIndicators.value = response.data);
+}
+
 
 const goJustify = (item) => {
     router.get('justify/indicator', item)
@@ -27,7 +40,9 @@ const goJustify = (item) => {
                 <select class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="viability" id="viability" v-model="validity">
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{via.validity}}</option>
                 </select>
-                <button @click="loadViability" class="ml-3 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" v-if="Object.keys($page.props.estates).length >0">
+
+
+                <button @click="loadViabilityControl" class="ml-3 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" v-if="Object.keys($page.props.estatesControl).length >0 || Object.keys($page.props.estates).length >0">
                     Validar
                 </button>
             </div>
@@ -67,7 +82,7 @@ const goJustify = (item) => {
             <span>No Tiene Asociado una dependencia</span>
         </div>
 
-        <div class="w-full mt-4" v-if="$page.props.auth.user.role_id != 1 && Object.keys($page.props.estates).length > 0">
+        <div class="w-full mt-4" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
             <div class="grid grid-cols-1 gap-2">
                 <div class="bg-white mx-8 shadow overflow-x-auto sm:rounded-lg px-3">
                     <div class="container mx-1 ">
@@ -107,17 +122,75 @@ const goJustify = (item) => {
                                     <td class="py-3 px-1 center">
                                        <div class="grid grid-cols-1 gap-1">
                                            <div class="col-auto">
-                                               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 1 && $page.props.auth.user.role_id ==5" @click="goJustify(item)">
+                                               <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 1 " @click="goJustify(item)">
                                                    Justifcación
                                                </button>
                                            </div>
+                                       </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="w-full mt-4" v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+            <div class="grid grid-cols-1 gap-2">
+                <div class="bg-white mx-8 shadow overflow-x-auto sm:rounded-lg px-3">
+                    <div class="container mx-1 ">
+                        <div class="bg-white shadow-md rounded my-6">
+                            <table class="table-auto">
+                                <thead>
+                                <tr>
+                                    <th colspan="13">Control de Indicadores</th>
+                                </tr>
+                                <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <th class="py-3 px-6 text-left">Cod Regional</th>
+                                    <th class="py-3 px-6 text-left">Cod Dependencia</th>
+                                    <th class="py-3 px-6 text-left">Dependencia</th>
+                                    <th class="py-3 px-6 text-left">Nombre de Indicador</th>
+
+                                    <th class="py-3 px-6 text-left">Nombre de Perspectiva</th>
+
+                                    <th class="py-3 px-6 text-left">Nombre de Objetivo Estrategico</th>
+
+                                    <th class="py-3 px-6 text-left">Nombre de Indicador Estrategico</th>
+                                    <th class="py-3 px-6 text-left">Mes</th>
+                                    <th class="py-3 px-6 text-left">Meta</th>
+                                    <th class="py-3 px-6 text-left">Objetivos de ejecución</th>
+                                    <th class="py-3 px-6 text-left">Porcentaje ejecución</th>
+                                    <th class="py-3 px-6 text-left">Estado</th>
+                                    <th class="py-3 px-6 text-left">Acción</th>
+                                </tr>
+                                </thead>
+                                <tbody class="text-gray-600 text-sm font-light">
+                                <tr v-for="item in estateIndicatorsAdviser" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_estate.cod_reg }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_estate.cod_dep }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_estate.dependence }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_indicator }}</td>
+
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_perspective }}</td>
+
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_strategy }}</td>
+
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.get_indicator.name_indicator_strategy }}</td>
+                                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.month }}</td>
+                                    <td class="py-3 px-6 text-left">{{ item.goal }}</td>
+                                    <td class="py-3 px-6 text-left">{{ item.execution_goals }}</td>
+                                    <td class="py-3 px-6 text-left">{{ parseFloat((item.execution_goals/item.goal)*100).toFixed(2) }}%</td>
+                                    <td class="py-3 px-6 text-left">{{ item.status }}</td>
+                                    <td class="py-3 px-1 center">
+                                        <div class="grid grid-cols-1 gap-1">
                                             <div class="col-auto">
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 1 && $page.props.auth.user.role_id ==5">
-                                                    Justifcación Control
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 2 && $page.props.auth.user.role_id ==5" @click="goJustify(item)">
+                                                    Justifcación de Control
                                                 </button>
                                             </div>
-                                       </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>

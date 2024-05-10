@@ -40,6 +40,7 @@ Route::middleware([
 
     Route::controller(EstateIndicatorController::class)->group(function(){
         Route::get('estateIndicators', 'show')->name('estateIndicators');
+        Route::get('estateIndicatorsAdviser', 'showControl')->name('estateIndicatorsAdviser');
     });
 
     Route::controller(EstateIndicatorJustifyController::class)->group(function(){
