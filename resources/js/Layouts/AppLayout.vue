@@ -139,6 +139,12 @@ const logout = () => {
                                             Listar Usuarios
                                         </DropdownLink>
                                         <div class="border-t border-gray-200" />
+                                        <DropdownLink :href="route('listEstates')">
+                                            Listar Dependencias
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('listIndicators')">
+                                            Listar Indicadores
+                                        </DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>

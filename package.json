@@ -19,8 +19,12 @@
         "vue": "^3.3.13"
     },
     "dependencies": {
+        "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+        "ag-grid-vue3": "^31.3.1",
         "data-grid-vue": "^3.3.1",
-        "sweetalert2": "^11.10.8",
+        "primevue": "^3.52.0",
+        "styled-components": "^6.1.11",
+        "sweetalert2": "^11.6.13",
         "vuetify": "^3.6.0-alpha.2"
     }
 }

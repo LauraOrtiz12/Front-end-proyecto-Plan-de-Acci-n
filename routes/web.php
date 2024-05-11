@@ -15,7 +15,7 @@ Route::get('/', function () {
 });
 
 
-Route::post('logoutUser', function(){
+Route::post('logoutUser', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logoutUser');
@@ -34,17 +34,26 @@ Route::middleware([
         Route::post('newUser', 'store')->name('newUser');
     });
 
-    Route::controller(ValidityController::class)->group(function() {
+    Route::controller(ValidityController::class)->group(function () {
         Route::get('listValidities', 'index')->name('listValidities');
     });
 
-    Route::controller(EstateIndicatorController::class)->group(function(){
+    Route::controller(EstateIndicatorController::class)->group(function () {
         Route::get('estateIndicators', 'show')->name('estateIndicators');
         Route::get('estateIndicatorsAdviser', 'showControl')->name('estateIndicatorsAdviser');
     });
 
-    Route::controller(EstateIndicatorJustifyController::class)->group(function(){
+    Route::controller(EstateIndicatorJustifyController::class)->group(function () {
         Route::get('justify/indicator', 'show')->name('justifyIndicator');
         Route::post('justify/indicator', 'store')->name('savejustifyIndicator');
+    });
+
+    Route::controller(\App\Http\Controllers\EstateController::class)->group(function () {
+        Route::get('listEstates/{edit?}', 'index')->name('listEstates');
+        Route::post('newEstates', 'create')->name('newEstates');
+    });
+
+    Route::controller(\App\Http\Controllers\IndicatorController::class)->group(function(){
+       Route::get('listIndicators', 'index')->name('listIndicators');
     });
 });

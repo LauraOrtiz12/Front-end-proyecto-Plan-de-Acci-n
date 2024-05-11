@@ -19,20 +19,20 @@ class RoleSeeder extends Seeder
                 'description' => 'Administrador',
             ],
             [
-                'rol' => 'direccion',
+                'rol' => 'Direccion',
                 'description' => 'Director(a) del área de planeación',
             ],
             [
-                'rol' => 'asesor',
+                'rol' => 'Asesor',
                 'description' => 'Asesor de planeacion',
             ],
             [
-                'rol' => 'director',
-                'description' => 'Director regional',
+                'rol' => 'Director(a)',
+                'description' => 'Director(a) regional',
             ],
             [
-                'rol' => 'subdirector',
-                'description' => 'subdirector de centro',
+                'rol' => 'Subdirector(a)',
+                'description' => 'Subdirector(a) de centro',
             ]]
         );
     }
