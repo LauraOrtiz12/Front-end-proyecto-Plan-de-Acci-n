@@ -87,6 +87,9 @@ const submit = () => {
                             </div>
                         </form>
                     </div>
+                    <div class="">
+                        <img src="assets/images/logosena.webp" alt="">
+                    </div>
            
         </section>
         
