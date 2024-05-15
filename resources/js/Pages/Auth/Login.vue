@@ -32,12 +32,13 @@ const submit = () => {
 <template>
     <Head title="Ingreso" />
 
-    <main class="h-screen bg-no-repeat bg-cover bg-center">
-        <section class="grid grid-cols-2 gap-3s border-4 border-red-500 h-screen">
-            <div class="border-4 border-red-200">sd</div>
-            <div class="border-4 border-red-200">sad</div>
+    <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2">
+        <section class=""></section>
+        <section class="">
+            <img src="assets/images/login-background.webp" alt="" class="h-screen w-screen object-cover"></img>
+            <img src="assets/images/login-background-1.webp" alt="" class="h-screen w-screen object-cover relative"></img>
+            <!-- <img src="assets/images/login-background-2.webp" alt="" class="h-screen w-screen object-cover relative"></img> -->
         </section>
-        
     </main>
 
     <!-- <AuthenticationCard>
@@ -96,9 +97,3 @@ const submit = () => {
         </form>
     </AuthenticationCard> -->
 </template>
-
-<style>
-main {
-    background-image: url("assets/images/background.webp");
-}
-</style>
