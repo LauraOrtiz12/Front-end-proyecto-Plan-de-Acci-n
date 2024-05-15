@@ -37,7 +37,7 @@ const submit = () => {
     <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
         <section class="bg-[#04324d] h-full p-6 flex flex-col gap-4 justify-center items-center">
             <!-- <h1 class="bg-[#FFA900]  p-2 rounded-lg">Bienvenido a <span>Lorem ipsum dolor</span></h1> -->
-                    <div class="bg-[#e6e6e6] p-4 w-96 rounded-lg ">
+                    <div class="bg-[#e6e6e6] p-4 w-[31.25rem] rounded-lg ">
                         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                             {{ status }}
                         </div>
