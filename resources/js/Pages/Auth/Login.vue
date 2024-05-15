@@ -29,8 +29,8 @@ const submit = () => {
 };
 
 const images = [
+  'assets/images/login-background.webp',
   'assets/images/login-background-1.webp',
-  'assets/images/login-background-2.webp',
 ];
 
 </script>
@@ -40,7 +40,7 @@ const images = [
 
     <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
         <section class=""></section>
-        <section class="bg-[url('assets/images/login-background.webp')] bg-cover bg-center h-full">
+        <section class="bg-[url('assets/images/login-background-overlay.webp')] bg-cover bg-center h-full">
             <img :src="images[Math.floor(Math.random() * images.length)]" alt="" class="absolute -z-10 w-1/2 h-full object-cover">
         </section>
     </main>
