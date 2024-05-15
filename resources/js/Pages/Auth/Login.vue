@@ -1,12 +1,12 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import Checkbox from '@/Components/Checkbox.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import { Head, Link, useForm } from "@inertiajs/vue3";
+import AuthenticationCard from "@/Components/AuthenticationCard.vue";
+import AuthenticationCardLogo from "@/Components/AuthenticationCardLogo.vue";
+import Checkbox from "@/Components/Checkbox.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
 
 defineProps({
     canResetPassword: Boolean,
@@ -14,25 +14,33 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
     remember: false,
 });
 
 const submit = () => {
-    form.transform(data => ({
+    form.transform((data) => ({
         ...data,
-        remember: form.remember ? 'on' : '',
-    })).post(route('login'), {
-        onFinish: () => form.reset('password'),
+        remember: form.remember ? "on" : "",
+    })).post(route("login"), {
+        onFinish: () => form.reset("password"),
     });
 };
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Ingreso" />
 
-    <AuthenticationCard>
+    <main class="h-screen bg-no-repeat bg-cover bg-center">
+        <section class="grid grid-cols-2 gap-3s border-4 border-red-500 h-screen">
+            <div class="border-4 border-red-200">sd</div>
+            <div class="border-4 border-red-200">sad</div>
+        </section>
+        
+    </main>
+
+    <!-- <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
         </template>
@@ -86,5 +94,11 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard>
+    </AuthenticationCard> -->
 </template>
+
+<style>
+main {
+    background-image: url("assets/images/background.webp");
+}
+</style>
