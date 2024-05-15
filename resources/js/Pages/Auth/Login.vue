@@ -36,8 +36,6 @@ const submit = () => {
         <section class=""></section>
         <section class="">
             <img src="assets/images/login-background.webp" alt="" class="h-screen w-screen object-cover"></img>
-            <img src="assets/images/login-background-1.webp" alt="" class="h-screen w-screen object-cover relative"></img>
-            <!-- <img src="assets/images/login-background-2.webp" alt="" class="h-screen w-screen object-cover relative"></img> -->
         </section>
     </main>
 
