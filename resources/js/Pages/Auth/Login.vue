@@ -32,10 +32,11 @@ const submit = () => {
 <template>
     <Head title="Ingreso" />
 
-    <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2">
+    <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
         <section class=""></section>
-        <section class="">
-            <img src="assets/images/login-background.webp" alt="" class="h-screen w-screen object-cover"></img>
+        <section class="bg-[url('assets/images/login-background.webp')] bg-cover bg-center h-full">
+                <img src="assets/images/login-background-1.webp" alt="" class="absolute -z-[1] w-1/2 h-full object-cover">
+                <img src="assets/images/login-background-2.webp" alt="" class="absolute -z-[2] w-1/2 h-full object-cover">
         </section>
     </main>
 
