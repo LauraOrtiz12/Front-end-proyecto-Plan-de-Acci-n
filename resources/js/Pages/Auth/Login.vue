@@ -92,7 +92,7 @@ const submit = () => {
         
         <section
             id="login-images"
-            class="bg-[url('assets/images/login-background-overlay.webp')] bg-cover bg-center h-full overflow-hidden relative hover:bg-[length:110%_110%] transition-all"
+            class="bg-[url('assets/images/login-background-overlay.webp')] bg-cover bg-center h-full overflow-hidden relative"
         >
             <img
                 :src="IMAGES[Math.floor(Math.random() * IMAGES.length)]"
