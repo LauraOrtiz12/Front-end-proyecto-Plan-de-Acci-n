@@ -27,6 +27,12 @@ const submit = () => {
         onFinish: () => form.reset("password"),
     });
 };
+
+const images = [
+  'assets/images/login-background.webp',
+  'assets/images/login-background-1.webp',
+];
+
 </script>
 
 <template>
