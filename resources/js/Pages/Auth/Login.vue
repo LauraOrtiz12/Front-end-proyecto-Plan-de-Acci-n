@@ -97,7 +97,7 @@ const submit = () => {
             <img
                 :src="IMAGES[Math.floor(Math.random() * IMAGES.length)]"
                 alt=""
-                class="absolute -z-10 w-full h-full object-cover transition-all"
+                class="absolute -z-10 w-full h-full object-cover transition-all duration-1000"
             />
         </section>
     </main>
