@@ -1,5 +1,5 @@
 <script setup>
-const logo = '/storage/assets/images/favicon.png';
+const logo = 'images copy/favicon.png';
 </script>
 <template>
     <img :src="logo" alt="SENA">
