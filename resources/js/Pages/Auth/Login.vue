@@ -7,6 +7,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { ref } from 'vue';
 
 const IMAGES = [
     "assets/images/login-background.webp",
@@ -30,6 +31,12 @@ const submit = () => {
     });
 };
 
+let showPassword = ref(false);
+
+function toggleShowPassword(){
+    showPassword.value =!showPassword.value;
+}
+
 const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 </script>
 
@@ -46,13 +53,14 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                        
                         <form @submit.prevent="submit">
                             <div>
-                                <InputLabel for="email" value="Correo Electrónico" />
+                                <i class="fa-solid fa-envelope absolute translate-x-[0.625rem] translate-y-[2.625rem] text-secondary"></i>
+                                <InputLabel for="email" value="Correo Electrónico" class="text-white"/>
                                 <TextInput
                                     id="email"
                                     v-model="form.email"
                                     type="email"
                                     required
-                                    class="mt-1 block w-full"
+                                    class="mt-1 block w-full pl-8 pr-10"
                                     autofocus
                                     autocomplete="username"
                                 />
@@ -60,15 +68,17 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                             </div>
 
                             <div class="mt-4 ">
-                                <InputLabel for="password" value="Clave" />
+                                <i class="fa-solid fa-key absolute translate-x-[0.625rem] translate-y-[2.625rem] text-secondary"></i>
+                                <InputLabel for="password" value="Contraseña" class="text-white"/>
                                 <TextInput
                                     id="password"
                                     v-model="form.password"
-                                    type="password"
-                                    class="mt-1 block w-full"
+                                    :type="showPassword? 'text' : 'password'"
+                                    class="mt-1 block w-full pl-8 pr-10"
                                     required
                                     autocomplete="current-password"
                                 />
+                                <i class="fa-solid absolute cursor-pointer hover:bg-gray-200 p-1 rounded-full text-secondary translate-x-[27.1rem] translate-y-[-1.97rem]" :class=" showPassword? 'fa-eye' : 'fa-eye-slash'" @click="toggleShowPassword"> </i>
                                 <InputError class="mt-2" :message="form.errors.password" />
                             </div>
 
