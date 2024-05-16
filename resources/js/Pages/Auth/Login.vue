@@ -80,7 +80,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                             </div>
 
                             <div class="flex justify-end flex-col gap-2">
-                                <Link v-if="canResetPassword" :href="route('password.request')" class=" underline text-[16px] text-white hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <Link v-if="canResetPassword" :href="route('password.request')" class=" underline text-[16px] text-white hover:text-primary rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Perdí mi contraseña?
                                 </Link>
 
