@@ -51,7 +51,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
         >
             <span
                 class="flex text-white w-full items-center gap-[12px] justify-center"
-                ><h1 class="bg-tertiary p-2 rounded-lg">Bienvenido al</h1>PLan Anual De Adquisición</span
+                ><h1 class="bg-tertiary p-2 rounded-lg">Bienvenido al</h1>Plan Anual De Adquisición</span
             >
             <div class="p-4 w-[31.25rem] rounded-lg">
                 <div
