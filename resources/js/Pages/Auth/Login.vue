@@ -45,7 +45,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 
     <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
         <section class="bg-secondary h-full p-6 flex flex-col gap-4 justify-center items-center">       
-                <span class="flex text-white w-full items-center gap-[12px] justify-center"><h1 class="bg-tertiary  p-2 rounded-lg ">Bienvenido a </h1> Lorem ipsum dolor sit.</span>
+                <span class="flex text-white w-full items-center gap-[12px] justify-center"><h1 class="bg-tertiary  p-2 rounded-lg ">Bienvenido al</h1>PLan Anual De Adquisición</span>
                     <div class=" p-4 w-[31.25rem] rounded-lg ">
                         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                             {{ status }}
