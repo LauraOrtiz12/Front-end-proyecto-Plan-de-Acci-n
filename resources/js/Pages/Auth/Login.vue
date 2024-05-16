@@ -54,13 +54,13 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                         <form @submit.prevent="submit">
                             <div>
                                 <i class="fa-solid fa-envelope absolute translate-x-[0.625rem] translate-y-[2.625rem] text-secondary"></i>
-                                <InputLabel for="email" value="Correo Electrónico" />
+                                <InputLabel for="email" value="Correo Electrónico" class="text-white"/>
                                 <TextInput
                                     id="email"
                                     v-model="form.email"
                                     type="email"
                                     required
-                                    class="mt-1 block w-full"
+                                    class="mt-1 block w-full pl-8 pr-10"
                                     autofocus
                                     autocomplete="username"
                                 />
@@ -69,12 +69,12 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 
                             <div class="mt-4 ">
                                 <i class="fa-solid fa-key absolute translate-x-[0.625rem] translate-y-[2.625rem] text-secondary"></i>
-                                <InputLabel for="password" value="Contraseña" />
+                                <InputLabel for="password" value="Contraseña" class="text-white"/>
                                 <TextInput
                                     id="password"
                                     v-model="form.password"
                                     :type="showPassword? 'text' : 'password'"
-                                    class="mt-1 block w-full"
+                                    class="mt-1 block w-full pl-8 pr-10"
                                     required
                                     autocomplete="current-password"
                                 />
