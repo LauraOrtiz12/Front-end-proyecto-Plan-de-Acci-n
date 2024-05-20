@@ -45,12 +45,13 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
     <Head title="Ingreso" />
 
     <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
-        <section class="bg-secondary h-full p-6 flex flex-col  gap-[20px] justify-center  items-center z-10">
+        <section class="bg-secondary p-6 flex flex-col  gap-[20px] justify-center  items-center z-10">
             <div class="flex flex-col items-center leading-[25px]">
-            <h1 style="font-size: 25px; "class="font-extrabold text-white p-2 rounded-lg">Bienvenido al</h1>
-            <span style="font-size: 25px ;" class="font-bold  text-primary flex text-white w-full items-center  justify-center">
-                Plan Anual De Adquisición
-            </span>
+                <h1 style="font-size: 25px; " class="font-extrabold text-white p-2 rounded-lg">Bienvenido al</h1>
+                <span style="font-size: 25px ;"
+                    class="font-bold  text-primary flex text-white w-full items-center  justify-center">
+                    Plan Anual De Adquisición
+                </span>
             </div>
             <div class="gap-[5px] p-4 w-[31.25rem] rounded-lg">
                 <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
