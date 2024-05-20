@@ -48,7 +48,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
         <section class="bg-secondary h-full p-6 flex flex-col  gap-[20px] justify-center  items-center z-10">
             <div class="flex flex-col items-center leading-[25px]">
             <h1 style="font-size: 25px; "class="font-extrabold text-white p-2 rounded-lg">Bienvenido al</h1>
-            <span style="font-size: 25px ;" class="font-bold  text-primary flex text-white w-full items-center  justify-center">
+            <span style="font-size: 25px ;" class="font-bold  text-primary flex  w-full items-center  justify-center">
                 Plan Anual De Adquisición
             </span>
             </div>
