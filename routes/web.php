@@ -54,6 +54,7 @@ Route::middleware([
     });
 
     Route::controller(\App\Http\Controllers\IndicatorController::class)->group(function(){
-       Route::get('listIndicators', 'index')->name('listIndicators');
+        Route::get('listIndicators', 'index')->name('listIndicators');
+        Route::get('listIndicatorsAssoc/{id?}', 'viewAll')->name('listIndicatorsAssoc');
     });
 });

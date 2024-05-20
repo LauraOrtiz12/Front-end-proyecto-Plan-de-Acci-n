@@ -27,8 +27,8 @@ const submit = () => {
     form.post(route('newUser'), {
         onFinish: () => {
             emit('close');
-            const page = usePage();
-            page.push(route('listUsers'));
+            //const page = usePage();
+            //page.push(route('listUsers'));
 
         },
     });
