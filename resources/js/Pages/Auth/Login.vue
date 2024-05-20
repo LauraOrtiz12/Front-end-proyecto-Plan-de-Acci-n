@@ -44,13 +44,14 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 
     <Head title="Ingreso" />
 
-    <main class="bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
-        <section class="bg-secondary p-6 flex flex-col  gap-[20px] justify-center  items-center z-10">
+    <main class="bg-secondary bg-no-repeat bg-cover bg-center grid grid-cols-2 w-screen h-screen">
+        <section class="p-6 flex flex-col  gap-[20px] justify-center  items-center z-10">
             <div class="flex flex-col items-center leading-[25px]">
-            <h1 style="font-size: 25px; "class="font-extrabold text-white p-2 rounded-lg">Bienvenido al</h1>
-            <span style="font-size: 25px ;" class="font-bold  text-primary flex  w-full items-center  justify-center">
-                Plan Anual De Adquisición
-            </span>
+                <h1 style="font-size: 25px; " class="font-extrabold text-white p-2 rounded-lg">Bienvenido al</h1>
+                <span style="font-size: 25px ;"
+                    class="font-bold  text-primary flex  w-full items-center  justify-center">
+                    Plan Anual De Adquisición
+                </span>
             </div>
             <div class="gap-[5px] p-4 w-[31.25rem] rounded-lg">
                 <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -103,10 +104,19 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
             <img src="assets/images/logosena.webp" alt="" />
         </section>
 
-        <section
-            class="bg-[url('assets/images/login-background-overlay.webp')] bg-cover bg-center h-full overflow-hidden relative *:hover:scale-125">
+        <section class="background-hover overflow-hidden rounded-bl-[50%]">
+            <img src="assets/images/login-background-overlay.webp" alt=""
+                class="object-cover transition-all duration-1000 relative z-10" />
             <img :src="selectedImage" alt=""
-                class="absolute -z-10 w-full h-full object-cover transition-all duration-1000" />
+                class="object-cover transition-all duration-1000 relative -translate-y-full" />
         </section>
     </main>
 </template>
+
+<style>
+.background-hover:hover > :nth-child(2) {
+    --tw-scale-x: 1.25;
+    --tw-scale-y: 1.25;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+</style>
