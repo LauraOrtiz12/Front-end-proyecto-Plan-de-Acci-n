@@ -47,7 +47,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
     <main class=" bg-secondary bg-no-repeat bg-cover bg-center grid xl:grid-cols-2 w-screen h-screen">
         <section class="p-6 flex flex-col gap-5 justify-center items-center">
             <div class="text-center leading-6">
-                <h1 class="font-extrabold text-2xl text-white p-2">Bienvenido al</h1>
+                <h1 class="font-extrabold text-2xl text-white">Bienvenido al</h1>
                 <span class="font-bold text-2xl text-primary">
                     Plan Anual De Adquisición
                 </span>
