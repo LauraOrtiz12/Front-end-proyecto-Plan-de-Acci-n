@@ -48,7 +48,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
         <section class="p-6 flex flex-col gap-5 justify-center items-center">
             <div class="text-center leading-6">
                 <h1 class="font-extrabold text-2xl text-white">Bienvenido al</h1>
-                <span class="font-bold text-2xl text-primary-default-default">
+                <span class="font-bold text-2xl text-primary-default">
                     Plan Anual De Adquisición
                 </span>
             </div>
@@ -58,18 +58,18 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 
             <form @submit.prevent="submit" class="flex flex-col gap-2 w-full max-w-md">
                 <div>
-                    <i class="fa-solid fa-envelope absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default-default"></i>
+                    <i class="fa-solid fa-envelope absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
                     <InputLabel for="email" value="Correo Electrónico" class="text-white" />
                     <TextInput id="email" v-model="form.email" type="email" required
                         class="mt-1 block w-full pl-8 pr-10" autofocus autocomplete="username" />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
                 <div class="flex flex-col">
-                    <i class="fa-solid fa-key absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default-default"></i>
+                    <i class="fa-solid fa-key absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
                     <InputLabel for="password" value="Contraseña" class="text-white" />
                     <TextInput id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'"
                         class="mt-1 block w-full pl-8 pr-10" required autocomplete="current-password" />
-                    <i class="fa-solid cursor-pointer relative self-end hover:bg-gray-200 p-1 rounded-full text-secondary-default-default bottom-8 right-2"
+                    <i class="fa-solid cursor-pointer relative self-end hover:bg-gray-200 p-1 rounded-full text-secondary-default bottom-8 right-2"
                         :class="showPassword ? 'fa-eye' : 'fa-eye-slash'" @click="toggleShowPassword">
                     </i>
                 </div>
