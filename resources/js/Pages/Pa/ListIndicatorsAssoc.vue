@@ -14,6 +14,7 @@ const props = defineProps({
 const selectorIndicator = ref([]);
 const gridApi = ref();
 const validity = ref(0);
+const estateIndicators = ref([]);
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
@@ -39,28 +40,43 @@ const onSelectionChanged = (data) => {
     });
 }
 
+const getIndicators = () => {
+    axios.get('/estateIndicators', { params: { validity: validity.value } })
+        .then((response) => {
+            estateIndicators.value = response.data;
+            for(let assigIndicator in estateIndicators.value) {
+                console.log(estateIndicators.value[assigIndicator].indicator_id);
+                selectorIndicator.value.push(estateIndicators.value[assigIndicator].indicator_id);
+            }
+            gridApi.value.forEachNode((node) => {
+                if (node.data && node.data.id !== 2012) {
+                    nodesToSelect.push(node);
+                }
+            });
+            //gridApi.value.setNodesSelected({ nodes: selectorIndicator.value, newValue: true });
+        });
+}
+
 </script>
 
 <template>
     <AppLayout>
         <template #header>
-            Lista de Usuarios
+            Indicadores Asignados
         </template>
         <div>
             <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <select name="" id="" v-model="validity">
-                        <option value="{{i.id}}" v-for="i in $page.props.viability">{{i.validity}}</option>
+                        <option :value="i.id" v-for="i in $page.props.viability">{{i.validity}}</option>
                     </select>
+                    <div>
+                        <button @click="getIndicators">Validar</button>
+                    </div>
                     <div>
                         <button v-if="validity != 0 && selectorIndicator.length > 0" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Asociar Nuevo</button>
                     </div>
-
                 </div>
-
-
-
-
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <div class="py-6 px-2">
                         <ag-grid-vue

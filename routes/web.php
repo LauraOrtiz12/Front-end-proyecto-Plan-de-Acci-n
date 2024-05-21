@@ -46,6 +46,7 @@ Route::middleware([
     Route::controller(EstateIndicatorJustifyController::class)->group(function () {
         Route::get('justify/indicator', 'show')->name('justifyIndicator');
         Route::post('justify/indicator', 'store')->name('savejustifyIndicator');
+        Route::post('justify/indicator/control', 'storeControl')->name('savejustifyIndicatorControl');
     });
 
     Route::controller(\App\Http\Controllers\EstateController::class)->group(function () {

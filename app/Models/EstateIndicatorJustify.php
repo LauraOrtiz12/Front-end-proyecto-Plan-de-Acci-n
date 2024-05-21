@@ -12,6 +12,6 @@ class EstateIndicatorJustify extends Model
 
     public function whoUserCiclyOne()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'responsible_indicator');
     }
 }
