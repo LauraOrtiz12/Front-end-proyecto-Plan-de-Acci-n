@@ -29,7 +29,7 @@ const close = () => {
             <div class="py-6">
                 <!-- Button to open the modal dialog -->
                 <button @click="newUserModal = !newUserModal"
-                    class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    class="inline-flex items-center px-4 py-2 bg-primary border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary-default focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Nuevo Usuario
                 </button>
@@ -37,7 +37,7 @@ const close = () => {
 
             <div class="overflow-x-auto rounded-xl shadow-md">
                 <table class="w-full min-w-[970px] overflow-hidden table-fixed">
-                    <thead class="bg-secondary text-white uppercase text-xs tracking-wider whitespace-nowrap">
+                    <thead class="bg-secondary-default text-white uppercase text-xs tracking-wider whitespace-nowrap">
                         <tr>
                             <th scope="col" class="px-6 py-4">
                                 <div class="flex items-center flex-nowrap gap-3">
