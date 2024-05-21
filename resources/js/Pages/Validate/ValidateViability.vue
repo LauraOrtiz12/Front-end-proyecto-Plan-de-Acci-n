@@ -186,7 +186,7 @@ const goJustify = (item) => {
                                     <td class="py-3 px-1 center">
                                         <div class="grid grid-cols-1 gap-1">
                                             <div class="col-auto">
-                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 2 && $page.props.auth.user.role_id ==5" @click="goJustify(item)">
+                                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" v-if="item.cicly_indicator == 2 && $page.props.auth.user.role_id != 5" @click="goJustify(item)">
                                                     Justifcación de Control
                                                 </button>
                                             </div>
