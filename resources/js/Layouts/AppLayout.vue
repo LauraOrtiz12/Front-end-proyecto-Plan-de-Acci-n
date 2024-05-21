@@ -341,7 +341,7 @@ const logout = () => {
 
             <!-- Page Heading -->
             <header v-if="$slots.header" class="">
-                <div class="flex flex-col gap-[10px] max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col gap-3 max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
