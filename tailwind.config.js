@@ -97,11 +97,6 @@ export default {
                     '950': '#391c16',
                 },
             },
-            colors:{
-                'primary': '#39a900',
-                'secondary': '#04324d',
-                'tertiary': '#ffa900',
-            }
         },
     },
 
