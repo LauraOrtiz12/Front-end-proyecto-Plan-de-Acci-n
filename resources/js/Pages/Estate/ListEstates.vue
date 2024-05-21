@@ -81,11 +81,11 @@ if (props.edit > 0) {
 <template>
     <AppLayout title="Profile">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dependencias
-            </h2>
+            </h2> -->
             <div class="flex justify-end">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <button class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
                         @click="viewForm = !viewForm">Nueva Dependencia
                 </button>
             </div>
@@ -94,9 +94,9 @@ if (props.edit > 0) {
                     <h2 class="text-2xl font-semibold mb-4">Crear Elemento</h2>
                     <form id="myForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-2">
                         <div class="flex flex-col">
-                            <label for="cod_reg" class="text-sm font-semibold mb-1">Cód. Regional</label>
+                            <label for="cod_reg" class="text-sm font-semibold mb-1">Cód.Regional</label>
                             <input type="text" id="cod_reg" name="cod_reg"
-                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+                                   class="rounded py-2 px-3 focus:outline-none focus:border-blue-500"
                                    v-model="form.cod_reg">
                         </div>
                         <div class="flex flex-col md:col-span-2">
@@ -130,7 +130,7 @@ if (props.edit > 0) {
                             </select>
                         </div>
                         <button type="button" @click="save"
-                                class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                class="col-span-full bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
                             Crear / Actualizar
                         </button>
                     </form>
