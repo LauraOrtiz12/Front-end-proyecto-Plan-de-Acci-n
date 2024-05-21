@@ -36,7 +36,7 @@ const goJustify = (item) => {
     <AppLayout>
         <template #header>
             <div class="flex items-center">
-                <span class="flex items-center mr-2 bg-primary-default p-2 rounded-lg text-white"><img src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
+                <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
                 <select class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="viability" id="viability" v-model="validity">
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{via.validity}}</option>
                 </select>
@@ -78,8 +78,9 @@ const goJustify = (item) => {
             <div v-else class="text-center bg-white mt-1">
                 <span>No Tiene Asociado una dependencia</span>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto">
-                <table class="table-auto">
+            <div class="mt-3 rounded-md shadow overflow-x-auto"
+                v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                <table class="w-full">
                     <thead>
                         <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                             <th class="py-3 px-6 text-left">Nombre de Indicador</th>
@@ -126,15 +127,12 @@ const goJustify = (item) => {
                             </td>
                             <td class="py-3 px-6 text-left">{{ item.status }}</td>
                             <td class="py-3 px-1 center">
-                                <div class="grid grid-cols-1 gap-1">
-                                    <div class="col-auto">
                                         <button
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                            class=" hover:bg-primary-default hover:text-white text-primary-default border border-primary-default font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                             v-if="item.cicly_indicator == 1" @click="goJustify(item)">
                                             Justifcación
                                         </button>
-                                    </div>
-                                </div>
+                                
                             </td>
                         </tr>
                     </tbody>
