@@ -85,7 +85,7 @@ if (props.edit > 0) {
                 Dependencias
             </h2> -->
             <div class="flex justify-end">
-                <button class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
+                <button class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
                         @click="viewForm = !viewForm">Nueva Dependencia
                 </button>
             </div>
@@ -130,7 +130,7 @@ if (props.edit > 0) {
                             </select>
                         </div>
                         <button type="button" @click="save"
-                                class="col-span-full bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
+                                class="col-span-full bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
                             Crear / Actualizar
                         </button>
                     </form>
