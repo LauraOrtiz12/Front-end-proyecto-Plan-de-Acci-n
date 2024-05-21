@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
 import Register from "@/Pages/Auth/Register.vue";
+import { router } from '@inertiajs/vue3'
 
 
 
@@ -11,6 +12,12 @@ defineProps({
 });
 
 const newUserModal = ref(false);
+
+const close = () => {
+    newUserModal.value = false;
+    router.reload({ only: ['users'] })
+
+}
 
 
 </script>
@@ -27,7 +34,6 @@ const newUserModal = ref(false);
                            Nuevo Usuario
                        </button>
                    </div>
-
                     <div>
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
@@ -45,21 +51,18 @@ const newUserModal = ref(false);
                                 <td class="px-6 py-4 whitespace-nowrap">{{ user.name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ user.email }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <!-- Agrega botones de acciones aquí, por ejemplo, un botón para editar o eliminar el usuario -->
                                     <button class="text-indigo-600 hover:text-indigo-900">Editar</button>
                                     <button class="text-red-600 hover:text-red-900">Eliminar</button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-
                     </div>
-
                 </div>
             </div>
         </div>
         <Modal :show="newUserModal" :closeable="true" @close="newUserModal = !newUserModal">
-            <Register :role="$page.props.role" @close="newUserModal = !newUserModal"></Register>
+            <Register :role="$page.props.role" @close="close"></Register>
         </Modal>
     </AppLayout>
 </template>

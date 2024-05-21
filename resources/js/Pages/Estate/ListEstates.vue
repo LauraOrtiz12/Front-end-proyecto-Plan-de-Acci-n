@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
 import {useForm} from "@inertiajs/vue3";
-import Swal from "sweetalert2"; // Vue Data Grid Component
+import Swal from "sweetalert2";
 
 const autoSizeStrategy = ref(null);
 
@@ -23,15 +23,13 @@ const columnsTable = [
     {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
     {field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},
     {field: 'get_adviser.name', headerName: 'Responsable Control', filter: true, floatingFilter: true},
-    {
-        field: 'id', headerName: 'Acciones', cellRenderer: ButtonAction
-    },
+    {field: 'id', headerName: 'Acciones', cellRenderer: ButtonAction},
 ];
 
 const viewForm = ref(false);
 
 const form = useForm({
-    id : 0,
+    id: 0,
     cod_reg: null,
     cod_dep: null,
     dependence: null,
@@ -63,10 +61,10 @@ const save = () => {
     });
 }
 
-if(props.edit > 0){
+if (props.edit > 0) {
     viewForm.value = true;
     props.estates.filter((est) => {
-        if(est.id == props.edit){
+        if (est.id == props.edit) {
             form.id = est.id;
             form.cod_reg = est.cod_reg;
             form.cod_dep = est.cod_dep;
@@ -84,16 +82,13 @@ if(props.edit > 0){
     <AppLayout title="Profile">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dependencias {{$page.props.edit}}
+                Dependencias
             </h2>
-
             <div class="flex justify-end">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         @click="viewForm = !viewForm">Nueva Dependencia
                 </button>
             </div>
-
-
             <div v-if="viewForm">
                 <div class="w-100 bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-2xl font-semibold mb-4">Crear Elemento</h2>
@@ -101,17 +96,20 @@ if(props.edit > 0){
                         <div class="flex flex-col">
                             <label for="cod_reg" class="text-sm font-semibold mb-1">Cód. Regional</label>
                             <input type="text" id="cod_reg" name="cod_reg"
-                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500" v-model="form.cod_reg">
+                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+                                   v-model="form.cod_reg">
                         </div>
                         <div class="flex flex-col md:col-span-2">
                             <label for="cod_dep" class="text-sm font-semibold mb-1">Cód. Dependencia</label>
                             <input type="text" id="cod_dep" name="cod_dep"
-                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500" v-model="form.cod_dep">
+                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+                                   v-model="form.cod_dep">
                         </div>
                         <div class="flex flex-col md:col-span-4">
                             <label for="dependence" class="text-sm font-semibold mb-1">Dependencia</label>
                             <input type="text" id="dependence" name="dependence"
-                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500" v-model="form.dependence">
+                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+                                   v-model="form.dependence">
                         </div>
                         <div class="flex flex-col md:col-span-3">
                             <label for="responsible_id" class="text-sm font-semibold mb-1">ID del Responsable</label>
@@ -133,13 +131,11 @@ if(props.edit > 0){
                         </div>
                         <button type="button" @click="save"
                                 class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Crear
+                            Crear / Actualizar
                         </button>
                     </form>
                 </div>
-
             </div>
-
             <div class="card">
                 <ag-grid-vue
                     :rowData="$page.props.estates"
@@ -151,11 +147,7 @@ if(props.edit > 0){
                 </ag-grid-vue>
             </div>
         </template>
-
     </AppLayout>
-
 </template>
-
 <style scoped>
-
 </style>

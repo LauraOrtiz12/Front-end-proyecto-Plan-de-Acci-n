@@ -19,9 +19,8 @@ class EstateIndicatorController extends Controller
         $ids = Estate::select('id')->where('adviser_id',Auth::user()->id)->get()->map(function ($item) {
             return $item->id;
         });
-
-
         $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->where('cicly_indicator', 2)->whereIn('estate_id', $ids)->with(['getIndicator', 'getEstate'])->get();
         return response()->json($estateIndicator);
     }
+
 }

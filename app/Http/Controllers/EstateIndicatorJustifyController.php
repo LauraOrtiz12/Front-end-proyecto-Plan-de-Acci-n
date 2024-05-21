@@ -50,4 +50,26 @@ class EstateIndicatorJustifyController extends Controller
         return to_route('justifyIndicator', ['id' => $request->estate_indicator_id]);
 
     }
+
+
+    public function storeControl(Request $request)
+    {
+        $request->validate([
+            'follow_up_observation' => 'required',
+            'follow_up_justify_indicator' => 'required',
+            'justification_monitoring_budget' => 'required',
+        ], [
+            'follow_up_observation.required' => 'Observación de Meta',
+            'follow_up_justify_indicator.required' => 'Observación de Meta Propuesta',
+            'justification_monitoring_budget.required' => 'Fecha Inicial',
+        ]);
+
+        $update= EstateIndicatorJustify::where('estate_indicator_id', $request->estate_indicator_id)->update($request->all());
+        if ($update)
+            EstateIndicator::whereId($request->estate_indicator_id)->update([
+                'cicly_indicator' => 3
+            ]);
+        return to_route('justifyIndicator', ['id' => $request->estate_indicator_id]);
+
+    }
 }
