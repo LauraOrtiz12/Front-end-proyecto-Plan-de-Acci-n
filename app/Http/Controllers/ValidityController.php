@@ -15,7 +15,7 @@ class ValidityController extends Controller
         $props = [
             'viability' => Validity::all(),
             'estates' => Estate::where('responsible_id', Auth::user()->id ?? 0)->with(['getAdviser'])->first() ?? [],
-            'estatesControl' => Estate::where('adviser_id', Auth::user()->id ?? 0)->get() ?? []
+            'estatesControl' => Estate::where('adviser_id', Auth::user()->id ?? 0)->get() ?? [],
         ];
         return Inertia::render('Validate/ValidateViability', $props);
     }
