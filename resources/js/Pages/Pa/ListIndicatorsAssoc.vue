@@ -85,7 +85,6 @@ const getIndicators = () => {
                             style=""
                             class="ag-theme-quartz h-screen"
                             rowSelection="multiple"
-                            :suppressRowClickSelection="true"
                             @selection-changed="onSelectionChanged"
                             @grid-ready="onGridReady"
                         >

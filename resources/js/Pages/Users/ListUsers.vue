@@ -8,29 +8,27 @@ import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
 
 defineProps({
-    role: Array
+    role: Array,
+    estates : Object
 });
 
 const newUserModal = ref(false);
 const assocAdviser = ref(false);
+const userSelect = ref(null);
 
 const close = () => {
     newUserModal.value = false;
     router.reload({only: ['users']})
 
 }
-
 const openAssocAdviser = (user) => {
+    userSelect.value = user;
     assocAdviser.value = !assocAdviser.value;
 }
-
-
 </script>
 <template>
     <AppLayout>
-        <!-- <template #header>
-            Lista de Usuarios
-        </template> -->
+
         <div class="max-w-7xl m-auto px-3">
             <div class="py-6">
                 <button @click="newUserModal = !newUserModal"
@@ -83,13 +81,13 @@ const openAssocAdviser = (user) => {
                         <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.id }}</td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap">{{ user.name }}</td>
                         <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.email }}</td>
-                        <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">
-                                <span
-                                    v-for="adviserUser in user.get_adviser_office"
-                                    :key="adviserUser.get_estate.cod_dep"
-                                    class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full border border-blue-400">
-      {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
-    </span>
+                        <td class="bg-gray-200 px-6 py-4 table-cell">
+                        <span
+                            v-for="adviserUser in user.get_adviser_office"
+                            :key="adviserUser.get_estate.cod_dep"
+                            class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full border border-blue-400 inline-block truncate">
+                            {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+                        </span>
                         </td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
 
@@ -102,7 +100,8 @@ const openAssocAdviser = (user) => {
                                 Editar
                             </button>
                             <button v-if="user.role_id == 3"
-                                    class="flex items-center text-indigo-600 hover:text-indigo-900" @click="openAssocAdviser(user)">
+                                    class="flex items-center text-indigo-600 hover:text-indigo-900"
+                                    @click="openAssocAdviser(user)">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                      fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -132,7 +131,7 @@ const openAssocAdviser = (user) => {
         </Modal>
 
         <Modal :show="assocAdviser" maxWidth="w-full" :closeable="true" @close="assocAdviser = !assocAdviser">
-            <ListEstatesAssoc></ListEstatesAssoc>
+            <ListEstatesAssoc :user="userSelect" :estates="estates"></ListEstatesAssoc>
         </Modal>
     </AppLayout>
 </template>

@@ -9,6 +9,8 @@ class AdvisorOffices extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function getEstate()
     {
         return $this->hasOne(Estate::class, 'id','estate_id');

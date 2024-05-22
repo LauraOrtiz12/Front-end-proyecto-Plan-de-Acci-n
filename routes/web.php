@@ -58,4 +58,8 @@ Route::middleware([
         Route::get('listIndicators', 'index')->name('listIndicators');
         Route::get('listIndicatorsAssoc/{id?}', 'viewAll')->name('listIndicatorsAssoc');
     });
+
+    Route::controller(\App\Http\Controllers\AdvisorOfficesController::class)->group(function(){
+        Route::post('advisorOffices', 'store')->name('advisorOffices');
+    });
 });

@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref} from 'vue';
+import {ref, onMounted, defineProps} from 'vue';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
@@ -8,11 +8,28 @@ import {useForm} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 
 const autoSizeStrategy = ref(null);
+const gridApi = ref();
+const selectorIndicator = ref([]);
+const dataEstates = ref({});
 
 const props = defineProps({
     estates: Object,
-    users: Object,
+    user: Object,
     edit: null
+});
+
+
+onMounted(() => {
+    dataEstates.value = props.estates;
+    let advisorIds = props.user.get_adviser_office.map(advisor => advisor.estate_id);
+    for (const key in props.estates) {
+        //if (props.estates.hasOwnProperty(key)) {
+           /* const estateData = props.estates[key];
+            if (!advisorIds.includes(estateData.id)) {
+                dataEstates.value[key] = estateData;
+            }*/
+        //}
+    }
 });
 
 const columnsTable = [
@@ -23,20 +40,28 @@ const columnsTable = [
     {field: 'get_adviser.name', headerName: 'Responsable Control', filter: true, floatingFilter: true},
 ];
 
-const viewForm = ref(false);
+const onGridReady = (params) => {
+    gridApi.value = params.api;
+};
+
+const onSelectionChanged = (data) => {
+    let selected = gridApi.value.getSelectedRows();
+    selectorIndicator.value = [];
+    selected.forEach(function (selectedRow, index) {
+        selectorIndicator.value.push(selectedRow.id);
+    });
+    form.estate_id = selectorIndicator.value
+}
 
 const form = useForm({
-    id: 0,
-    cod_reg: null,
-    cod_dep: null,
-    dependence: null,
-    responsible_id: null,
-    adviser_id: null,
+    advisor_id: props.user.id,
+    estate_id: null,
 });
 
 const save = () => {
 
     Swal.fire({
+        target: "#card-assoc",
         title: "Aviso Importante?",
         text: "Está usted Seguro!",
         icon: "warning",
@@ -47,7 +72,8 @@ const save = () => {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-            form.post('newEstates', {
+
+            form.post('advisorOffices', {
                 onSuccess: (res) => {
                     form.reset()
                     console.log(res)
@@ -62,17 +88,32 @@ const save = () => {
 </script>
 
 <template>
-    <div class="card">
-        <ag-grid-vue
-            :rowData="$page.props.estates"
-            :columnDefs="columnsTable"
-            style="height: 500px"
-            :autoSizeStrategy="autoSizeStrategy"
-            class="ag-theme-quartz"
-            rowSelection="multiple"
-            :suppressRowClickSelection="true"s
-        >
-        </ag-grid-vue>
+    <div class="card" id="card-assoc">
+
+        <div class="grid grid-cols-1" v-if="dataEstates.length > 0">
+            <div>
+                <ag-grid-vue
+                    :rowData="dataEstates"
+                    :columnDefs="columnsTable"
+                    style="height: 500px"
+                    :autoSizeStrategy="autoSizeStrategy"
+                    class="ag-theme-quartz"
+                    rowSelection="multiple"
+                    @selection-changed="onSelectionChanged"
+                    @grid-ready="onGridReady"
+                >
+                </ag-grid-vue>
+            </div>
+            <div class="p-3">
+                <button v-if="selectorIndicator.length > 0 " @click="save"
+                        class="inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <i class="fa-solid fa-save mr-1"></i>
+                    Guardar
+                </button>
+
+
+            </div>
+        </div>
     </div>
 
 </template>
