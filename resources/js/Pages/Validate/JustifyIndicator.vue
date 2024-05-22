@@ -184,7 +184,7 @@ const save = () => {
                         </tbody>
                     </table>
                 </div>
-    
+
             </div>
             <div class="bg-white rounded-md p-6 mx-4 my-1 w-full" v-if="Object.keys(dataIndicator).length > 0">
                 <div v-for="dt in dataIndicator" :key="dt.id" class="mb-4">
@@ -217,8 +217,8 @@ const save = () => {
                     </div>
                 </div>
             </div>
-    
-    
+
+
             <div class="mx-4"
                  v-if="$page.props.params.cicly_indicator == 1 && $page.props.params.get_estate.responsible_id == $page.props.user.id">
                 <div class=" bg-white rounded-lg shadow-lg p-6">
@@ -299,44 +299,24 @@ const save = () => {
                     </form>
                 </div>
             </div>
-    
-    
+
+
             <div class=" mx-4 py-8"
                  v-if="$page.props.params.cicly_indicator == 2 && $page.props.params.get_estate.adviser_id == $page.props.user.id">
                 <div class=" bg-white rounded-lg shadow-lg p-6">
                     <h2 class="text-xl font-semibold mb-4">Seguimiento</h2>
                     <form action="" method="post">
-    
+
                         <input type="hidden" name="id" id="id" v-model="form.estate_indicator_id">
                         <div class="mb-4">
-                            <label for="follow_up_observation" class="block mb-2">Seguimiento y Observación</label>
+                            <label for="follow_up_observation" class="block mb-2">Observación al plan por parte de la Dirección Regional y/o Dirección Planeación (Indicadores y Presupuesto)</label>
                             <input type="text" name="follow_up_observation" id="follow_up_observation"
                                    class="w-full px-3 py-2 border rounded-md" v-model="form.observation_goal">
                             <div class="error-message bg-red-500 text-white rounded p-1 text-sm"
                                  v-if="form.errors.observation_goal">{{ form.errors.observation_goal }}
                             </div>
                         </div>
-                        <div class="mb-4">
-                            <label for="follow_up_justify_indicator" class="block mb-2">Seguimiento de Justificación de Meta
-                                Propuesta</label>
-                            <input type="text" name="follow_up_justify_indicator" id="follow_up_justify_indicator"
-                                   class="w-full px-3 py-2 border rounded-md" required
-                                   v-model="form.justification_goals_budget">
-                            <div class="error-message bg-red-500 text-white rounded p-1 text-sm"
-                                 v-if="form.errors.justification_goals_budget">{{ form.errors.justification_goals_budget }}
-                            </div>
-                        </div>
-    
-                        <div class="mb-4">
-                            <label for="justification_monitoring_budget" class="block mb-2">Justificación de Monitoreo
-                                Propuesto</label>
-                            <input type="text" name="justification_monitoring_budget" id="justification_monitoring_budget"
-                                   class="w-full px-3 py-2 border rounded-md" v-model="form.physical_resource">
-                            <div class="error-message bg-red-500 text-white rounded p-1 text-sm"
-                                 v-if="form.errors.physical_resource">{{ form.errors.physical_resource }}
-                            </div>
-                        </div>
-    
+
                         <div class="flex justify-end">
                             <button type="button"
                                     class="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"

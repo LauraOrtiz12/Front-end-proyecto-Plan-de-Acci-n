@@ -37,7 +37,6 @@ const columnsTable = [
                             :rowData="$page.props.indicators"
                             :columnDefs="columnsTable"
                             style=""
-
                             class="ag-theme-quartz h-screen"
                         >
                         </ag-grid-vue>

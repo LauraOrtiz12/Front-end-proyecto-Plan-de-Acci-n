@@ -77,4 +77,8 @@ class User extends Authenticatable
         return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
+    public function getAdviserOffice(){
+        return $this->hasMany( AdvisorOffices::class, 'advisor_id');
+    }
+
 }
