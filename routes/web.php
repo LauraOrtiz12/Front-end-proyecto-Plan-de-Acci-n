@@ -62,4 +62,6 @@ Route::middleware([
     Route::controller(\App\Http\Controllers\AdvisorOfficesController::class)->group(function(){
         Route::post('advisorOffices', 'store')->name('advisorOffices');
     });
+
+    Route::get('getFollowUp/{validity?}',[\App\Http\Controllers\FollowUpController::class, 'show'])->name('getFollowUp');
 });

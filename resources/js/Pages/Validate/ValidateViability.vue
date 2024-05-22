@@ -12,6 +12,7 @@ defineProps({
 const validity = ref('');
 const estateIndicators = ref([]);
 const estateIndicatorsAdviser = ref([]);
+const followUp = ref({});
 const loadViability = () => {
     axios.get('estateIndicators', { params: { validity: validity.value } })
         .then((response) => estateIndicators.value = response.data);
@@ -25,6 +26,9 @@ const loadViabilityControl = () => {
 
     axios.get('estateIndicators', { params: { validity: validity.value } })
         .then((response) => estateIndicators.value = response.data);
+
+    axios.get('getFollowUp', { params: { validity: validity.value } })
+        .then((response) => followUp.value = response.data);
 }
 
 
@@ -133,7 +137,7 @@ const goJustify = (item) => {
                                             v-if="item.cicly_indicator == 1" @click="goJustify(item)">
                                             Justifcación
                                         </button>
-                                
+
                             </td>
                         </tr>
                     </tbody>
