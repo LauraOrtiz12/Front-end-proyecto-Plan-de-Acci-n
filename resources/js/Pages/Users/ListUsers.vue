@@ -28,6 +28,10 @@ const openAssocAdviser = (user) => {
 </script>
 <template>
     <AppLayout>
+        
+        <template #header>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Lista de Usuarios</h1>
+        </template>
 
         <div class="">
             <div class="py-6">
