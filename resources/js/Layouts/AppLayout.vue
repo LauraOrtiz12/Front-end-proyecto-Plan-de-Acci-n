@@ -60,7 +60,10 @@ const logout = () => {
 
             <main class="max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col">
                 <div class="flex gap-4 justify-between">
-                    <slot name="header" />
+                    <div class="flex gap-4 items-center text-xl">
+                        <i class="fa-solid fa-bars text-secondary-default"></i>
+                        <slot name="header" />
+                    </div>
                     <Dropdown align="right" width="48">
                         <template #trigger>
                             <button
