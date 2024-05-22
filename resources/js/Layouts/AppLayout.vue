@@ -56,12 +56,16 @@ const logout = () => {
                     <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')">Listar
                         Indicadores</NavLink>
                 </div>
+                <!-- <img src="assets/images/login-background-overlay.webp" alt=""
+                class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
             </nav>
 
             <main class="max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col">
                 <div class="flex gap-4 justify-between">
                     <div class="flex gap-4 items-center text-xl">
-                        <i class="fa-solid fa-bars text-secondary-default"></i>
+                        <button class="transition-all px-3 py-2 hover:bg-secondary-100 rounded-xl hover:shadow text-secondary-default">
+                            <i class="fa-solid fa-bars "></i>
+                        </button>
                         <slot name="header" />
                     </div>
                     <Dropdown align="right" width="48">
@@ -74,12 +78,6 @@ const logout = () => {
                                     alt="User Profile">
                                 <i class="fa-solid fa-angle-down"></i>
                             </button>
-                            <!-- <button v-if="$page.props.jetstream.managesProfilePhotos"
-                                class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                <img class="h-8 w-8 rounded-full object-cover"
-                                    :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">
-                            </button> -->
-
                         </template>
 
                         <template #content>
@@ -106,7 +104,6 @@ const logout = () => {
                             </form>
                         </template>
                     </Dropdown>
-
                 </div>
                 <slot />
             </main>
