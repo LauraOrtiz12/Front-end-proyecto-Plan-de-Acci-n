@@ -81,9 +81,11 @@ if (props.edit > 0) {
 <template>
     <AppLayout title="Profile">
         <template #header>
-            <!-- <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dependencias
-            </h2> -->
+            <h2 class="font-semibold text-xl text-secondary-default my-auto">
+                Listar Dependencias
+            </h2>
+        </template>
+        <div class="flex flex-col gap-4">
             <div class="flex justify-end">
                 <button class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
                         @click="viewForm = !viewForm">Nueva Dependencia
@@ -146,7 +148,7 @@ if (props.edit > 0) {
                 >
                 </ag-grid-vue>
             </div>
-        </template>
+        </div>
     </AppLayout>
 </template>
 <style scoped>

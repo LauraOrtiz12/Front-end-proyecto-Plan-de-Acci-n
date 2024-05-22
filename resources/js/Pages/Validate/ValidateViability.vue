@@ -35,6 +35,9 @@ const goJustify = (item) => {
 <template>
     <AppLayout>
         <template #header>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia</h1>
+        </template>
+        <div class="flex flex-col gap-4">
             <div class="flex items-center">
                 <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
                 <select class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="viability" id="viability" v-model="validity">
@@ -48,8 +51,6 @@ const goJustify = (item) => {
                     Validar
                 </button>
             </div>
-        </template>
-        <div class="max-w-7xl m-auto p-3">
             <div class="flex flex-wrap lg:flex-nowrap gap-3 shadow p-3 rounded-md bg-white" v-if="$page.props.auth.user.role_id != 1 && Object.keys($page.props.estates).length > 0">
                 <div>
                     <h3 class="text-lg font-medium text-gray-900">Información de la Propiedad</h3>
