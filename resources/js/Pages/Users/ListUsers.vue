@@ -28,7 +28,7 @@ const openAssocAdviser = (user) => {
 </script>
 <template>
     <AppLayout>
-        
+
         <template #header>
             <h1 class="font-semibold text-xl text-secondary-default my-auto">Lista de Usuarios</h1>
         </template>
@@ -89,9 +89,9 @@ const openAssocAdviser = (user) => {
                         <span
                             v-for="adviserUser in user.get_adviser_office"
                             :key="adviserUser.get_estate.cod_dep"
-                            class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full border border-blue-400 inline-block truncate">
-                            {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
-                        </span>
+                            class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full border border-blue-400 inline-block">
+          {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+        </span>
                         </td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
 

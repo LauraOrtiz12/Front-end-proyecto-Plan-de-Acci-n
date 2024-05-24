@@ -5,10 +5,10 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {ref} from 'vue';
 import {AgGridVue} from "ag-grid-vue3";
-import ButtonAction from "@/Components/ButtonAction.vue";
 
 const props = defineProps({
     indicators: Object,
+    estate: Object
 });
 
 const selectorIndicator = ref([]);
@@ -44,9 +44,9 @@ const getIndicators = () => {
     axios.get('/estateIndicators', { params: { validity: validity.value } })
         .then((response) => {
             estateIndicators.value = response.data;
-            for(let assigIndicator in estateIndicators.value) {
-                console.log(estateIndicators.value[assigIndicator].indicator_id);
-                selectorIndicator.value.push(estateIndicators.value[assigIndicator].indicator_id);
+            for(let assigngIndicator in estateIndicators.value) {
+                console.log(estateIndicators.value[assigngIndicator].indicator_id);
+                selectorIndicator.value.push(estateIndicators.value[assigngIndicator].indicator_id);
             }
             gridApi.value.forEachNode((node) => {
                 if (node.data && node.data.id !== 2012) {
@@ -57,14 +57,31 @@ const getIndicators = () => {
         });
 }
 
+const save = () => {
+
+}
+
 </script>
 
 <template>
     <AppLayout>
         <template #header>
-            Indicadores Asignados
+            Indicadores Asignados o por Asignar
         </template>
-        <div>
+        <div class="">
+            <div class=" mx-3 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="md:flex">
+                    <div class="p-3">
+                        <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">ID: {{ $page.props.estate.id }}</div>
+                        <p class="mt-2 text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
+                        <p class="mt-2 text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
+                        <p class="mt-2 text-gray-500">Dependencia Control: {{ $page.props.estate.dependence_control }}</p>
+                        <p class="mt-2 text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {{selectorIndicator}}
             <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <select name="" id="" v-model="validity">

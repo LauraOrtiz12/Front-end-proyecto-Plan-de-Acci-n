@@ -74,7 +74,6 @@ if (props.edit > 0) {
             form.adviser_id = est.adviser_id;
         }
     });
-    //form.cod_reg = 1000;
 }
 
 </script>
@@ -139,13 +138,13 @@ if (props.edit > 0) {
                     </form>
                 </div>
             </div>
-            <div class="card">
+            <div class="card h-screen">
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     style="height: 500px"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz"
+                    class="ag-theme-quartz h-screen"
                 >
                 </ag-grid-vue>
             </div>

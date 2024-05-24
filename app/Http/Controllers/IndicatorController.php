@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estate;
 use App\Models\Indicator;
 use App\Models\Validity;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class IndicatorController extends Controller
 
     public function viewAll(Request $request)
     {
-        return Inertia::render('Pa/ListIndicatorsAssoc', ['indicators' => Indicator::all(), 'viability' => Validity::all(),]);
+        $estate = Estate::where('id', $request->id)->first();
+        return Inertia::render('Pa/ListIndicatorsAssoc', ['indicators' => Indicator::all(), 'viability' => Validity::all(), 'estate' => $estate]);
     }
 }

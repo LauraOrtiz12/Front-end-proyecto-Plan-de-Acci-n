@@ -23,4 +23,14 @@ class EstateIndicatorController extends Controller
         return response()->json($estateIndicator);
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'validity_id' => 'required',
+            'estate_id' => 'required',
+            'indicator_id' => 'required',
+        ]);
+
+    }
+
 }
