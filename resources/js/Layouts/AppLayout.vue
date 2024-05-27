@@ -12,7 +12,7 @@ defineProps({
     title: String,
 });
 
-const showingNavigationDropdown = ref(false);
+// const showingNavigationDropdown = ref(false);
 
 
 const switchToTeam = (team) => {
