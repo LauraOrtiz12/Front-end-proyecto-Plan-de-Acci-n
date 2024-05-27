@@ -48,11 +48,11 @@ const getIndicators = () => {
                 console.log(estateIndicators.value[assigngIndicator].indicator_id);
                 selectorIndicator.value.push(estateIndicators.value[assigngIndicator].indicator_id);
             }
-            gridApi.value.forEachNode((node) => {
+            /*gridApi.value.forEachNode((node) => {
                 if (node.data && node.data.id !== 2012) {
                     nodesToSelect.push(node);
                 }
-            });
+            });*/
             //gridApi.value.setNodesSelected({ nodes: selectorIndicator.value, newValue: true });
         });
 }
@@ -88,7 +88,7 @@ const save = () => {
                         <option :value="i.id" v-for="i in $page.props.viability">{{i.validity}}</option>
                     </select>
                     <div>
-                        <button @click="getIndicators">Validar</button>
+                        <button @click="getIndicators" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Validar</button>
                     </div>
                     <div>
                         <button v-if="validity != 0 && selectorIndicator.length > 0" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Asociar Nuevo</button>

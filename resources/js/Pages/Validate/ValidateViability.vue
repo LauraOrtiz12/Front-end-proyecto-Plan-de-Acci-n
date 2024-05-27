@@ -2,8 +2,11 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from 'vue';
 import { router } from "@inertiajs/vue3";
+import Modal from "@/Components/Modal.vue";
+import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
 
 defineProps({
+    followUp: Object,
     viability: Object,
     estates: Object,
     estatesControl: Object
@@ -13,12 +16,8 @@ const validity = ref('');
 const estateIndicators = ref([]);
 const estateIndicatorsAdviser = ref([]);
 const followUp = ref({});
-const loadViability = () => {
-    axios.get('estateIndicators', { params: { validity: validity.value } })
-        .then((response) => estateIndicators.value = response.data);
-    axios.get('estateIndicatorsAdviser', { params: { validity: validity.value } })
-        .then((response) => estateIndicatorsAdviser.value = response.data);
-}
+const showModalJustifyOne = ref(false);
+const cicle = ref(1);
 
 const loadViabilityControl = () => {
     axios.get('estateIndicatorsAdviser', { params: { validity: validity.value } })
@@ -31,9 +30,16 @@ const loadViabilityControl = () => {
         .then((response) => followUp.value = response.data);
 }
 
-
 const goJustify = (item) => {
     router.get('justify/indicator', item)
+}
+
+const openJustifyOne = () => {
+    showModalJustifyOne.value = !showModalJustifyOne.value;
+}
+const closeJustifyOne = () => {
+    loadViabilityControl();
+    showModalJustifyOne.value = !showModalJustifyOne.value;
 }
 </script>
 <template>
@@ -41,7 +47,7 @@ const goJustify = (item) => {
         <template #header>
             <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia</h1>
         </template>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4" >
             <div class="flex items-center">
                 <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
                 <select class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" name="viability" id="viability" v-model="validity">
@@ -77,6 +83,26 @@ const goJustify = (item) => {
                         <dt class="text-sm font-medium text-gray-800">Responsable de Seguimiento:</dt>
                         <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">{{ estates.get_adviser.name }} - Correo: {{
                             estates.get_adviser.email }}</dd>
+                    </div>
+
+                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
+                        <dt class="text-sm font-medium text-gray-800">Estado de Proceso:</dt>
+                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">
+                            <div v-if="Object.keys(followUp).length == 0">
+                                En Dependencia
+                            </div>
+                            <div v-if="Object.keys(followUp).length != 0 && followUp[0].cicle == 2">
+                                En Seguimiento
+                            </div>
+                        </dd>
+                    </div>
+                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
+                        <dt class="text-sm font-medium text-gray-800"></dt>
+                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">
+                            <button @click="openJustifyOne" v-if="Object.keys(followUp).length == 0 && Object.keys(estateIndicators).length > 0" class="hover:bg-primary-default hover:text-white text-primary-default border border-primary-default font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">
+                                Justificar
+                            </button>
+                        </dd>
                     </div>
                 </dl>
             </div>
@@ -135,7 +161,7 @@ const goJustify = (item) => {
                                         <button
                                             class=" hover:bg-primary-default hover:text-white text-primary-default border border-primary-default font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                             v-if="item.cicly_indicator == 1" @click="goJustify(item)">
-                                            Justifcación
+                                            Justificar
                                         </button>
 
                             </td>
@@ -225,6 +251,9 @@ const goJustify = (item) => {
                     </div>
                 </div>
             </div>
+            <Modal :show="showModalJustifyOne" maxWidth="w-full" :closeable="true">
+                <JusitfyEstateValidity :viability="validity" :estates="estates" :followUp="followUp" :cicle="cicle" @close="closeJustifyOne"></JusitfyEstateValidity>
+            </Modal>
         </div>
 
     </AppLayout>

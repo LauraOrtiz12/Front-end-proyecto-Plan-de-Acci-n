@@ -9,7 +9,7 @@ import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
 defineProps({
     role: Array,
-    estates : Object
+    estates: Object
 });
 
 const newUserModal = ref(false);
@@ -73,6 +73,13 @@ const openAssocAdviser = (user) => {
                         </th>
                         <th scope="col" class="px-6 py-4">
                             <div class="flex items-center flex-nowrap gap-3">
+                                <img class="align-middle" src="assets/images/correo-electronico.webp" alt=""
+                                     width="35px">
+                                Rol
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-4">
+                            <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/acciones.webp" alt="" width="35px">
                                 Acciones
                             </div>
@@ -92,6 +99,9 @@ const openAssocAdviser = (user) => {
                             class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full border border-blue-400 inline-block">
           {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
         </span>
+                        </td>
+                        <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            {{user.get_role.rol}} ({{user.get_role.id}})
                         </td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
 

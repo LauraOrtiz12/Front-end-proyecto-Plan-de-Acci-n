@@ -36,6 +36,8 @@ Route::middleware([
 
     Route::controller(ValidityController::class)->group(function () {
         Route::get('listValidities', 'index')->name('listValidities');
+        Route::get('listValiditiesControl', 'indexControl')->name('listValiditiesControl');
+        Route::get('getDataAdviser', 'getDataAdviser')->name('getDataAdviser');
     });
 
     Route::controller(EstateIndicatorController::class)->group(function () {
@@ -63,5 +65,14 @@ Route::middleware([
         Route::post('advisorOffices', 'store')->name('advisorOffices');
     });
 
-    Route::get('getFollowUp/{validity?}',[\App\Http\Controllers\FollowUpController::class, 'show'])->name('getFollowUp');
+    Route::controller(\App\Http\Controllers\FollowUpController::class)->group(function (){
+        Route::get('getFollowUp/{validity?}', 'show')->name('getFollowUp');
+        Route::post('setFollowUp', 'store')->name('setFollowUp');
+        Route::post('updateFollowUp', 'storeUpdate')->name('updateFollowUp');
+    });
+
+    Route::controller(\App\Http\Controllers\ExportController::class)->group(function (){
+        Route::get('export/prepare', 'getExport')->name('exportPrepare');
+    });
+
 });

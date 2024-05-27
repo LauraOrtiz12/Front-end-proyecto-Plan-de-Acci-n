@@ -44,8 +44,13 @@ const logout = () => {
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4">
                     <h1 class="text-gray-500 border-b">Menú Principal</h1>
                     <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
-                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')">Validar
-                        Vigencia</NavLink>
+                    <NavLink :href="route('listValiditiesControl')" :active="route().current('listValiditiesControl')" v-if="$page.props.auth.user.role_id == 3 || $page.props.auth.user.role_id == 4">
+                        <!--Director-->
+                        Vigencia (Seguimiento)
+                    </NavLink>
+                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')" v-if="$page.props.auth.user.role_id == 5">
+                        Validar Vigencia
+                    </NavLink>
                 </div>
 
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4" v-if="$page.props.auth.user.role_id == 1">
@@ -55,6 +60,7 @@ const logout = () => {
                     </NavLink>
                     <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')">Listar
                         Indicadores</NavLink>
+                    <NavLink :href="route('exportPrepare')" :active="route().current('exportPrepare')">Descargar Reporte</NavLink>
                 </div>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->

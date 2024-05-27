@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('cod_reg');
             $table->integer('cod_dep');
-            $table->string('dependence_control', 500);
             $table->string('dependence', 500);
             $table->foreignId('responsible_id')->references('id')->on('users')->onDelete('RESTRICT');
-            $table->foreignId('adviser_id')->references('id')->on('users')->onDelete('RESTRICT');
+            $table->bigInteger('adviser_id')->default(0);
             $table->timestamps();
         });
     }
