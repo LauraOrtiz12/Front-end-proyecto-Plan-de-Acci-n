@@ -71,6 +71,7 @@ function toggleMenu() {
                             class="fa-solid fa-list"></i> Listar
                         Indicadores</NavLink>
                 </div>
+                <span class="md:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú para cerrarlo.</span>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
             </nav>
