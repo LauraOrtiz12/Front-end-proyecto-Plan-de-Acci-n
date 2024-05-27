@@ -49,7 +49,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
             <div class="text-center leading-6">
                 <h1 class="font-extrabold text-2xl text-white">Bienvenido al</h1>
                 <span class="font-bold text-2xl text-primary-default">
-                    Plan Anual De Adquisición
+                    Plan Anual De Acción
                 </span>
             </div>
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
