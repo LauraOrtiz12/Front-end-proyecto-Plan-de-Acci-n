@@ -43,9 +43,9 @@ function toggleMenu() {
         <Banner />
 
         <div class="min-h-screen bg-gray-100 flex " >
-            <div :class="[menu ? 'bg-black opacity-50 h-screen lg:h-auto':'transparent', 'transition-all fixed w-screen z-10']" @click="menu ? toggleMenu():''"></div>
+            <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto':'transparent', 'transition-all fixed w-screen z-10']" @click="menu ? toggleMenu():''"></div>
             <nav
-                :class="[menu ? 'fixed lg:sticky' : 'absolute -translate-x-full', 'flex z-20 transition-all bg-white shadow-md w-64 h-screen p-4 flex-col gap-4 top-0 overflow-y-auto']">
+                :class="[menu ? 'fixed lg:sticky' : 'fixed -translate-x-full', 'flex z-20 transition-all bg-white shadow-md w-64 h-screen p-4 flex-col gap-4 top-0 overflow-y-auto']">
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
@@ -127,3 +127,9 @@ function toggleMenu() {
         </div>
     </div>
 </template>
+
+<style>
+    .bg-menu{
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+</style>
