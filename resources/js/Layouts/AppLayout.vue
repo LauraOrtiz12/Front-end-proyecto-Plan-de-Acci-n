@@ -14,6 +14,7 @@ defineProps({
 
 const showingNavigationDropdown = ref(false);
 
+
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
@@ -25,6 +26,13 @@ const switchToTeam = (team) => {
 const logout = () => {
     router.post(route('logoutUser'));
 };
+
+let menu = window.innerWidth > 768 ? ref(true) : ref(false);
+
+function toggleMenu() {
+    menu.value = !menu.value;
+};
+
 </script>
 
 <template>
@@ -35,7 +43,8 @@ const logout = () => {
         <Banner />
 
         <div class="min-h-screen bg-gray-100 flex">
-            <nav class="bg-white shadow-md w-64 h-screen p-4 flex flex-col gap-4 sticky top-0">
+            <nav
+                :class="[menu ? 'fixed lg:sticky' : 'absolute -translate-x-full', 'flex z-10 transition-all bg-white shadow-md w-64 h-screen p-4 flex-col gap-4 top-0']">
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
@@ -43,17 +52,22 @@ const logout = () => {
                 <hr class>
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4">
                     <h1 class="text-gray-500 border-b">Menú Principal</h1>
-                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i class="fa-solid fa-house"></i> Dashboard</NavLink>
-                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')"><i class="fa-solid fa-list-check"></i> Validar
+                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i
+                            class="fa-solid fa-house"></i> Dashboard</NavLink>
+                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')"><i
+                            class="fa-solid fa-list-check"></i> Validar
                         Vigencia</NavLink>
                 </div>
 
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4" v-if="$page.props.auth.user.role_id == 1">
                     <h1 class="text-gray-500 border-b">Menú Administración</h1>
-                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i class="fa-solid fa-list"></i> Listar Usuarios</NavLink>
-                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')"><i class="fa-solid fa-list"></i> Listar Dependencias
+                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i
+                            class="fa-solid fa-list"></i> Listar Usuarios</NavLink>
+                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')"><i
+                            class="fa-solid fa-list"></i> Listar Dependencias
                     </NavLink>
-                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')"><i class="fa-solid fa-list"></i> Listar
+                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')"><i
+                            class="fa-solid fa-list"></i> Listar
                         Indicadores</NavLink>
                 </div>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
@@ -63,7 +77,8 @@ const logout = () => {
             <main class="max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col">
                 <div class="flex gap-4 justify-between">
                     <div class="flex gap-4 items-center text-xl">
-                        <button class="transition-all px-3 py-2 hover:bg-secondary-100 rounded-xl hover:shadow text-secondary-default">
+                        <button @click="toggleMenu"
+                            class="transition-all px-3 py-2 hover:bg-secondary-100 rounded-xl hover:shadow text-secondary-default">
                             <i class="fa-solid fa-bars "></i>
                         </button>
                         <slot name="header" />
@@ -72,7 +87,7 @@ const logout = () => {
                         <template #trigger>
                             <button
                                 class="transition-all hover:bg-secondary-100 rounded-xl hover:shadow px-2 py-1 text-secondary-default font-bold flex items-center gap-3">
-                                ¡Hola {{ $page.props.auth.user.name }}!
+                                <span class="hidden md:block">¡Hola {{ $page.props.auth.user.name }}!</span>
                                 <img class="w-auto h-10 shadow rounded-full"
                                     :src="$page.props.auth.user.profile_photo_url ? $page.props.auth.user.profile_photo_url : 'https://ui-avatars.com/api/?background=ffff&name={{$page.props.auth.user.name}}'"
                                     alt="User Profile">
