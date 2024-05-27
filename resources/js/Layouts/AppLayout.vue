@@ -39,21 +39,21 @@ const logout = () => {
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
-                <h1 class="text-center text-balance font-bold text-secondary-default">Plan Anual de Adquisición</h1>
+                <h1 class="text-center text-balance font-bold text-primary-default">Plan Anual de Adquisición</h1>
                 <hr class>
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4">
                     <h1 class="text-gray-500 border-b">Menú Principal</h1>
-                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</NavLink>
-                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')">Validar
+                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i class="fa-solid fa-house"></i> Dashboard</NavLink>
+                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')"><i class="fa-solid fa-list-check"></i> Validar
                         Vigencia</NavLink>
                 </div>
 
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4" v-if="$page.props.auth.user.role_id == 1">
                     <h1 class="text-gray-500 border-b">Menú Administración</h1>
-                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')">Listar Usuarios</NavLink>
-                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')">Listar Dependencias
+                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i class="fa-solid fa-list"></i> Listar Usuarios</NavLink>
+                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')"><i class="fa-solid fa-list"></i> Listar Dependencias
                     </NavLink>
-                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')">Listar
+                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')"><i class="fa-solid fa-list"></i> Listar
                         Indicadores</NavLink>
                 </div>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
