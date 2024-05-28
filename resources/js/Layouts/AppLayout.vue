@@ -43,13 +43,13 @@ function toggleMenu() {
         <Banner />
 
         <div class="min-h-screen bg-gray-100 flex " >
-            <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto':'transparent', 'transition-all fixed w-screen z-10']" @click="menu ? toggleMenu():''"></div>
+            <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto':'transparent', 'transition-all fixed w-screen z-10']" @click="toggleMenu"></div>
             <nav
                 :class="[menu ? 'fixed lg:sticky' : 'fixed -translate-x-full', 'flex z-20 transition-all bg-white shadow-md w-64 h-screen p-4 flex-col gap-4 top-0 overflow-y-auto']">
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
-                <h1 class="text-center text-balance font-bold text-primary-default">Plan Anual de Adquisición</h1>
+                <h1 class="text-center text-balance font-bold text-primary-default">Plan Anual de Acción</h1>
                 <hr class>
                 <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4">
                     <h1 class="text-gray-500 border-b">Menú Principal</h1>
