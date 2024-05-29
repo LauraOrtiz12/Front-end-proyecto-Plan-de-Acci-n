@@ -62,13 +62,13 @@ function toggleMenu() {
 
                 <div class="flex flex-col gap-4" v-if="$page.props.auth.user.role_id == 1">
                     <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Administración</h1>
-                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i
-                            class="fa-solid fa-list"></i> Listar Usuarios</NavLink>
-                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')"><i
-                            class="fa-solid fa-list"></i> Listar Dependencias
+                    <NavLink :href="route('listUsers')" :active="route().current('listUsers')">
+                        <img src="assets/images/icono tabla.svg" alt="" width="25px"> Listar Usuarios</NavLink>
+                    <NavLink :href="route('listEstates')" :active="route().current('listEstates')">
+                        <img src="assets/images/icono tabla.svg" alt="" width="25px"> Listar Dependencias
                     </NavLink>
-                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')"><i
-                            class="fa-solid fa-list"></i> Listar
+                    <NavLink :href="route('listIndicators')" :active="route().current('listIndicators')">
+                        <img src="assets/images/icono tabla.svg" alt="" width="25px"> Listar
                         Indicadores</NavLink>
                 </div>
                 <span class="lg:hidden text-balance text-xs text-center text-gray-300 animate-pulse">Toca fuera del menú
