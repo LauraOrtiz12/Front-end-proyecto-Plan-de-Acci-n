@@ -46,7 +46,7 @@ function toggleMenu() {
             <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto' : 'transparent', 'transition-all fixed w-screen z-10']"
                 @click="toggleMenu"></div>
             <nav
-                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed shadow-xl flex z-20 transition-all bg-secondary-default w-64 h-screen flex-col gap-4 top-0 overflow-y-auto py-4']">
+                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed shadow-md flex z-20 transition-all bg-secondary-default w-64 h-screen flex-col gap-4 top-0 overflow-y-auto py-4']">
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
@@ -71,7 +71,7 @@ function toggleMenu() {
                             class="fa-solid fa-list"></i> Listar
                         Indicadores</NavLink>
                 </div>
-                <span class="lg:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú
+                <span class="lg:hidden text-balance text-xs text-center text-gray-300 animate-pulse">Toca fuera del menú
                     para cerrarlo.</span>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
