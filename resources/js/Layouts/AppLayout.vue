@@ -53,10 +53,10 @@ function toggleMenu() {
                 <h1 class="font-bold text-primary-default text-center">Plan Anual de Acción</h1>
                 <div class="flex flex-col gap-4">
                     <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Principal</h1>
-                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i
-                            class="fa-solid fa-house"></i> Dashboard</NavLink>
-                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')"><i
-                            class="fa-solid fa-list-check"></i> Validar
+                    <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <img src="assets/images/ICONO DASH BOARD.svg" alt="" width="20px"> Dashboard</NavLink>
+                    <NavLink :href="route('listValidities')" :active="route().current('listValidities')">
+                        <img src="assets/images/Vigenica.svg" alt="" width="20px"> Validar
                         Vigencia</NavLink>
                 </div>
 
