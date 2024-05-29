@@ -10,7 +10,7 @@ const props = defineProps({
 const classes = computed(() => {
     return props.active
         ? 'transition-all flex items-center gap-2 text-sm py-2 ml-4 px-3 text-white rounded-l border-l-8 border-primary-default bg-primary-700 '
-        : 'transition-all flex items-center gap-2 text-sm py-2 ml-4 px-3 text-secondary-100 hover:rounded-l hover:border-l-8 border-secondary-900 hover:text-secondary-default hover:bg-secondary-200';
+        : 'transition-all flex items-center gap-2 text-sm py-2 ml-8 hover:ml-4 px-3 text-secondary-100 hover:rounded-l hover:border-l-8 border-secondary-900 hover:text-secondary-default hover:bg-secondary-200';
 });
 </script>
 
