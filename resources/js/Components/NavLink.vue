@@ -9,8 +9,8 @@ const props = defineProps({
 
 const classes = computed(() => {
     return props.active
-        ? 'text-sm py-2 px-3 text-secondary-default transition-all border-2 border-secondary-default rounded-xl bg-secondary-default text-white'
-        : 'text-sm py-2 px-3 text-secondary-default transition-all border-secondary-default hover:bg-secondary-100 rounded-xl';
+        ? 'transition-all text-sm py-2 ml-4 px-3 text-white rounded-l border-l-8 border-primary-default bg-primary-700 '
+        : 'transition-all text-sm py-2 ml-4 px-3 text-secondary-100 hover:rounded-l hover:border-l-8 border-secondary-900 hover:text-secondary-default hover:bg-secondary-200';
 });
 </script>
 

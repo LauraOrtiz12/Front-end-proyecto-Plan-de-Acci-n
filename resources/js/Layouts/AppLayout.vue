@@ -42,17 +42,17 @@ function toggleMenu() {
 
         <Banner />
 
-        <div class="min-h-screen bg-gray-100 flex " >
-            <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto':'transparent', 'transition-all fixed w-screen z-10']" @click="toggleMenu"></div>
+        <div class="min-h-screen bg-gray-100 flex ">
+            <div :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto' : 'transparent', 'transition-all fixed w-screen z-10']"
+                @click="toggleMenu"></div>
             <nav
-                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed flex z-20 transition-all bg-white shadow-md w-64 h-screen p-4 flex-col gap-4 top-0 overflow-y-auto']">
+                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed shadow-xl flex z-20 transition-all bg-secondary-default w-64 h-screen flex-col gap-4 top-0 overflow-y-auto py-4']">
                 <Link :href="route('dashboard')">
                 <ApplicationMark class="m-auto h-10 w-auto" />
                 </Link>
-                <h1 class="text-center text-balance font-bold text-primary-default">Plan Anual de Acción</h1>
-                <hr class>
-                <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4">
-                    <h1 class="text-gray-500 border-b">Menú Principal</h1>
+                <h1 class="font-bold text-primary-default text-center">Plan Anual de Acción</h1>
+                <div class="flex flex-col gap-4">
+                    <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Principal</h1>
                     <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i
                             class="fa-solid fa-house"></i> Dashboard</NavLink>
                     <NavLink :href="route('listValidities')" :active="route().current('listValidities')"><i
@@ -60,8 +60,8 @@ function toggleMenu() {
                         Vigencia</NavLink>
                 </div>
 
-                <div class="flex flex-col p-4 bg-gray-100 rounded-xl gap-4" v-if="$page.props.auth.user.role_id == 1">
-                    <h1 class="text-gray-500 border-b">Menú Administración</h1>
+                <div class="flex flex-col gap-4" v-if="$page.props.auth.user.role_id == 1">
+                    <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Administración</h1>
                     <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i
                             class="fa-solid fa-list"></i> Listar Usuarios</NavLink>
                     <NavLink :href="route('listEstates')" :active="route().current('listEstates')"><i
@@ -71,7 +71,8 @@ function toggleMenu() {
                             class="fa-solid fa-list"></i> Listar
                         Indicadores</NavLink>
                 </div>
-                <span class="lg:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú para cerrarlo.</span>
+                <span class="lg:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú
+                    para cerrarlo.</span>
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
             </nav>
@@ -129,7 +130,7 @@ function toggleMenu() {
 </template>
 
 <style>
-    .bg-menu{
-        background-color: rgba(0, 0, 0, 0.5);
-    }
+.bg-menu {
+    background-color: rgba(0, 0, 0, 0.5);
+}
 </style>
