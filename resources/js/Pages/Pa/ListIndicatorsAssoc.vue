@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {ref} from 'vue';
 import {AgGridVue} from "ag-grid-vue3";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
     indicators: Object,
@@ -15,6 +16,9 @@ const selectorIndicator = ref([]);
 const gridApi = ref();
 const validity = ref(0);
 const estateIndicators = ref([]);
+const estateValidator = ref(false);
+const openModalImport = ref(false);
+const fileImport = ref(null);
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
@@ -41,9 +45,13 @@ const onSelectionChanged = (data) => {
 }
 
 const getIndicators = () => {
+    estateIndicators.value = [];
     axios.get('/estateIndicators', { params: { validity: validity.value } })
         .then((response) => {
             estateIndicators.value = response.data;
+            if(estateIndicators.value.length == 0){
+                estateValidator.value = true;
+            }
             for(let assigngIndicator in estateIndicators.value) {
                 console.log(estateIndicators.value[assigngIndicator].indicator_id);
                 selectorIndicator.value.push(estateIndicators.value[assigngIndicator].indicator_id);
@@ -58,6 +66,13 @@ const getIndicators = () => {
 }
 
 const save = () => {
+
+}
+
+const loadFile = (event) => {
+    fileImport.value = event.target.files[0];
+}
+const importFile = () => {
 
 }
 
@@ -82,7 +97,7 @@ const save = () => {
             </div>
 
             {{selectorIndicator}}
-            <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8" >
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <select name="" id="" v-model="validity">
                         <option :value="i.id" v-for="i in $page.props.viability">{{i.validity}}</option>
@@ -90,11 +105,18 @@ const save = () => {
                     <div>
                         <button @click="getIndicators" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Validar</button>
                     </div>
+
+
                     <div>
                         <button v-if="validity != 0 && selectorIndicator.length > 0" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Asociar Nuevo</button>
                     </div>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" v-if="estateValidator">
+                    <div>
+                        <div>
+                            <button @click="openModalImport = !openModalImport" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Importar Excel</button>
+                        </div>
+                    </div>
                     <div class="py-6 px-2">
                         <ag-grid-vue
                             :rowData="$page.props.indicators"
@@ -110,5 +132,19 @@ const save = () => {
                 </div>
             </div>
         </div>
+        <Modal :show="openModalImport" class="py-8">
+            <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
+                </div>
+                <div class="mb-6">
+                    <input type="file" name="" id="" @change="loadFile" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="">
+                </div>
+                <div class="flex justify-end">
+
+                    <button v-if="fileImport"  @click="importFile" class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">Cargar</button>
+                </div>
+            </div>
+        </Modal>
     </AppLayout>
 </template>
