@@ -48,7 +48,7 @@ const closeJustifyOne = () => {
 <template>
     <AppLayout>
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia y Observación</h1>
         </template>
         <div class="flex flex-col gap-4">
             <div class="flex items-center">
@@ -125,30 +125,6 @@ const closeJustifyOne = () => {
             </div>
             <div class="mt-3 rounded-md shadow overflow-x-auto"
                  v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-
-
-                <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-                    <div class="w-full py-4 my-4" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3" class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
-                            <div class="md:col-span-3 mb-2">
-                                <span class="font-bold text-lg">Justificaciones En Proceso</span>
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Indicadores:</span>
-                                <span>{{ fupTwo.justify_estate_indicator }}</span>
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Presupuesto:</span>
-                                <span>{{ fupTwo.justify_estate_money }}</span>
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Observación:</span>
-                                <span>{{ fupTwo.observation_control }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <table class="w-full">
                     <thead>
                     <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">

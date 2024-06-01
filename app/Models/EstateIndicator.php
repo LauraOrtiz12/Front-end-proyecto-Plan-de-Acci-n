@@ -9,6 +9,8 @@ class EstateIndicator extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public function getIndicator()
     {
         return $this->belongsTo(Indicator::class, 'indicator_id');

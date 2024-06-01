@@ -1,30 +1,15 @@
 <script setup>
+
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {ref} from 'vue';
-import {router} from "@inertiajs/vue3";
-import Modal from "@/Components/Modal.vue";
-import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
-import Swal from "sweetalert2";
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import {ref} from "vue";
 import {AgGridVue} from "ag-grid-vue3";
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css";
+import Swal from "sweetalert2"; // Optional Theme applied to the grid
 
-const props = defineProps({
-    followUp: Object,
-    viability: Object,
-    estates: Object,
-    estatesControl: Object,
-    user: Object
-});
-
-const validity = ref('');
-const estateIndicators = ref([]);
+const validity = ref(null);
 const estateIndicatorsAdviser = ref([]);
-const followUp = ref({});
-const showModalJustifyOne = ref(false);
-const cicle = ref(1);
-const followUps = ref();
-const justifyControl = ref('');
+const followUps = ref({});
 const columnsTable = [
     {field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true},
     {field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
@@ -48,6 +33,11 @@ const columnsTable = [
     {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
 ];
 
+const props = defineProps({
+    validity: Object
+});
+
+
 const formatDate = (setDate) => {
     let fechaObjeto = new Date(setDate);
     let año = fechaObjeto.getFullYear();
@@ -61,26 +51,12 @@ const formatDate = (setDate) => {
     let formato = `${año}-${mes < 10 ? '0' + mes : mes}-${dia < 10 ? '0' + dia : dia} ${hora < 10 ? '0' + hora : hora}:${minutos < 10 ? '0' + minutos : minutos}:${segundos < 10 ? '0' + segundos : segundos}`;
     return formato;
 }
-
-const loadViabilityControl = () => {
-    const adviser = props.user.get_estate_indicator_adviser.map(res => res.id);
-    axios.get('getDataAdviser', {params: {validity: validity.value, adviser: adviser}})
+const consult = () => {
+    axios.get('getDataAdviserAssesor', {params: {validity: validity.value}})
         .then((response) => {
             estateIndicatorsAdviser.value = response.data.indicator;
             followUps.value = response.data.followups;
         });
-}
-
-const goJustify = (item) => {
-    router.get('justify/indicator', item)
-}
-
-const openJustifyOne = () => {
-    showModalJustifyOne.value = !showModalJustifyOne.value;
-}
-const closeJustifyOne = () => {
-    loadViabilityControl();
-    showModalJustifyOne.value = !showModalJustifyOne.value;
 }
 
 const update = (item) => {
@@ -108,9 +84,9 @@ const update = (item) => {
         target: "#justifyForModal"
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('updateFollowUp', {id: item.id, observation_control: text})
+            axios.post('updateAdvisorOfficesAssesor', {id: item.id, observation_control: text})
                 .then((response) => {
-                    loadViabilityControl();
+                    consult();
                     Swal.fire({
                         title: 'Éxito',
                         text: 'Se ha actualizado correctamente: ',
@@ -122,57 +98,32 @@ const update = (item) => {
                 });
         }
     });
-
-
-};
+}
 </script>
 <template>
     <AppLayout>
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Vigencia (Seguimiento)</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Gestión de Asesor</h1>
         </template>
-        <div class="flex flex-col gap-4">
-            <div class="flex items-center">
-                <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img
-                    src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
-                <select
-                    class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    name="viability" id="viability" v-model="validity">
-                    <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
-                </select>
-                <button @click="loadViabilityControl"
-                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                        v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
-                    Validar
-                </button>
-            </div>
-            <div class="flex flex-wrap lg:flex-nowrap gap-3 shadow p-3 rounded-md bg-white"
-                 v-if="$page.props.auth.user.role_id == 3 || $page.props.auth.user.role_id == 4">
-                <div>
-                    <h3 class="text-lg font-medium text-gray-900">Información de Usuario</h3>
+        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="flex flex-col gap-4">
+                <div class="flex items-center py-2">
+                    <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img
+                        src="/assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
+                    <select
+                        class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                        name="viability" id="viability" v-model="validity">
+                        <option :value="via.id" v-for="via in props.validity" :key="via.id">{{ via.validity }}</option>
+                    </select>
+                    <button @click="consult"
+                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >
+                        Validar
+                    </button>
                 </div>
-                <dl class="grid grid-cols-2 gap-3">
-                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
-                        <dt class="text-sm font-medium text-gray-800">Nombre:</dt>
-                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">{{ $page.props.auth.user.name }}</dd>
-                    </div>
-                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
-                        <dt class="text-sm font-medium text-gray-800">Correo Electrónico:</dt>
-                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">{{ $page.props.auth.user.email }}</dd>
-                    </div>
-                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
-                        <dt class="text-sm font-medium text-gray-800">Rol:</dt>
-                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">{{ $page.props.user.get_role.rol }}</dd>
-                    </div>
-                    <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
-                        <dt class="text-sm font-medium text-gray-800">Dependencia(s):</dt>
-                        <dd class="mt-1 text-sm text-gray-500 sm:col-span-2"
-                            v-for="dependence in $page.props.user.get_estate_indicator_adviser"> {{ dependence.id }}-
-                            {{ dependence.dependence }}
-                        </dd>
-                    </div>
-                </dl>
             </div>
+
+
             <div class="mt-3 rounded-md shadow overflow-x-auto">
                 <div>
                     <table class="table-auto">
@@ -183,6 +134,7 @@ const update = (item) => {
                             <th class="py-3 px-6 text-left">Justificación Presupuestal</th>
                             <th class="py-3 px-6 text-left">Fecha</th>
                             <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
+                            <th class="py-3 px-6 text-left">Asesor</th>
                         </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
@@ -192,25 +144,28 @@ const update = (item) => {
                             <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_indicator }}</td>
                             <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_money }}</td>
                             <td class="py-3 px-6 text-left whitespace-nowrap">{{ formatDate(item.created_at) }}</td>
-                            <td class="py-3 px-6 text-left" v-if="item.observation_control == null">
+                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.observation_control }}</td>
+                            <td class="py-3 px-6 text-left" v-if="item.assesor == null">
                                 <div class="grid grid-cols-1 gap-3">
-                    <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="30" rows="5"
-                              class="w-full px-3 py-2 border rounded-md"></textarea>
+                                    <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="60"
+                                              rows="8" class="w-full px-3 py-2 border rounded-md"></textarea>
                                     <button @click="update(item)"
                                             class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                            v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
+                                    >
                                         Guardar
                                     </button>
                                 </div>
                             </td>
                             <td class="py-3 px-6 text-left" v-else>
-                                {{ item.observation_control }}
+                                {{ item.assesor }}
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+
             <div class="w-full mt-4"
                  v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
                 Indicadores
@@ -227,10 +182,6 @@ const update = (item) => {
                     </ag-grid-vue>
                 </div>
             </div>
-            <Modal :show="showModalJustifyOne" maxWidth="w-full" :closeable="true">
-                <JusitfyEstateValidity :viability="validity" :estates="estates" :followUp="followUp" :cicle="cicle"
-                                       @close="closeJustifyOne"></JusitfyEstateValidity>
-            </Modal>
         </div>
     </AppLayout>
 </template>

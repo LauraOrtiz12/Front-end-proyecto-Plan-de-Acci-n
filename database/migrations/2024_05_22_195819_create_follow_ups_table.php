@@ -20,8 +20,10 @@ return new class extends Migration
             $table->text('justify_estate_indicator')->nullable();
             $table->text('justify_estate_money')->nullable();
             $table->text('observation_control')->nullable();
+            $table->text('assesor')->nullable();
             $table->foreignId('responsible_id')->references('id')->on('users')->onDelete('RESTRICT');
             $table->bigInteger('advisor_id')->default(0);
+            $table->string('month', 30);
             $table->timestamps();
         });
     }

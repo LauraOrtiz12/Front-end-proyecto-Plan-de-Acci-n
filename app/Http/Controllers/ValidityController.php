@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdvisorOffices;
 use App\Models\Estate;
 use App\Models\User;
 use App\Models\EstateIndicator;
@@ -16,7 +17,7 @@ class ValidityController extends Controller
     public function index(){
         $props = [
             'viability' => Validity::all(),
-            'followUp' => FollowUp::where('estate_id', Auth::user()->getEstateIndicatorResponsability->id)->get(),
+            'followUp' => [],
             'estates' => Estate::where('responsible_id', Auth::user()->id ?? 0)->with(['getAdviser'])->first() ?? [],
             'estatesControl' => Estate::where('adviser_id', Auth::user()->id ?? 0)->get() ?? [],
         ];
@@ -35,8 +36,18 @@ class ValidityController extends Controller
     }
 
     public function getDataAdviser(Request $request){
-        $followUps = FollowUp::where('cicle', 2)->where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->get();
+        $followUps = FollowUp::whereIn('cicle', [2,3])->where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->get();
         $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->with(['getIndicator', 'getEstate'])->get();
+        return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator]);
+    }
+
+    public function getDataAdviserAssesor(Request $request){
+
+        $dependences = AdvisorOffices::where('advisor_id', Auth::user()->id)->get()->map(function($advisor){
+            return $advisor->estate_id;
+        });
+        $followUps = FollowUp::whereIn('cicle', [3])->where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->get();
+        $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getIndicator', 'getEstate'])->get();
         return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator]);
     }
 }

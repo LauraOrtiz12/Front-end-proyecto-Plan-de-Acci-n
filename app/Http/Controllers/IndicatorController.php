@@ -10,6 +10,10 @@ use Inertia\Inertia;
 
 class IndicatorController extends Controller
 {
+    public function getAll()
+    {
+        return response()->json(Indicator::where('status', 'Activo')->get());
+    }
     public function index(Request $request)
     {
         return Inertia::render('Pa/ListIndicators', ['indicators' => Indicator::all()]);

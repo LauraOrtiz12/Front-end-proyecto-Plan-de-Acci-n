@@ -23,6 +23,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $with = ['getEstateIndicatorResponsability', 'getEstateIndicatorAdviser', 'getAdviserOffice'];
     protected $fillable = [
         'name',
         'email',

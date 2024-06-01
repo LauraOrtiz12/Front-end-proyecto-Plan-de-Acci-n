@@ -1,6 +1,6 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
-import {defineProps} from "vue";
+import {defineProps, ref} from "vue";
 import Swal from "sweetalert2";
 
 const props = defineProps({
@@ -15,10 +15,11 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
-const form = useForm({
-    estate_indicator_id: props.estates.id,
-    validity_id: props.viability,
-    cicle: Object.keys(props.followUp).length == 0 ? 2 : props.cicle,
+const form = ref({
+    id: props.followUp.id,
+    estate_indicator_id: props.followUp.estate_id,
+    validity_id: props.followUp.validity_id,
+    cicle: parseInt(props.followUp.cicle) + 1,
     justify_estate_indicator: null,
     justify_estate_money: null,
 });
@@ -26,7 +27,6 @@ const form = useForm({
 const closeEmit = () => {
     emit('close');
 }
-
 const save = () => {
     Swal.fire({
         title: "Aviso Importante?",
@@ -40,23 +40,21 @@ const save = () => {
         target: "#justifyForModal"
     }).then((result) => {
         if (result.isConfirmed) {
-            form.post('setFollowUp', {
-                onSuccess: (res) => {
-                    console.log(res.props.followUp[0].id)
+            axios.post('setFollowUp', form.value)
+                .then(response => {
                     Swal.fire({
                         title: 'Éxito',
-                        text: 'El formulario se ha enviado correctamente. Su Registro es: ' + res.props.followUp[0].id,
+                        text: 'El formulario se ha enviado correctamente. Su Registro es: ' + response.data.id,
                         icon: 'success',
                         confirmButtonColor: '#3085d6',
                         confirmButtonText: 'Cerrar',
                         target: "#justifyForModal"
                     }).then(() => {
                         // Restablecer el formulario después de cerrar la alerta
-                        form.reset();
                         emit('close');
                     });
-                }
-            });
+                });
+
         }
     });
 }
@@ -64,6 +62,7 @@ const save = () => {
 
 <template>
     <div>
+
         <div class=" bg-white rounded-lg shadow-lg p-6" id="justifyForModal">
             <h2 class="text-xl font-semibold mb-4">Justificación de la Dependencia</h2>
             <form action="" method="post">
@@ -75,9 +74,7 @@ const save = () => {
                               class="w-full px-3 py-2 border rounded-md"
                               v-model="form.justify_estate_indicator"></textarea>
                     Longitud: {{ form.justify_estate_indicator == null ? 0 : form.justify_estate_indicator.length }}
-                    <div class="error-message bg-red-500 text-white rounded p-1 text-sm"
-                         v-if="form.errors.justify_estate_indicator">{{ form.errors.justify_estate_indicator }}
-                    </div>
+
                 </div>
                 <div class="mb-4">
                     <label for="justify_estate_money" class="block mb-2">Justificación del plan por parte de la
@@ -86,9 +83,7 @@ const save = () => {
                               class="w-full px-3 py-2 border rounded-md" required
                               v-model="form.justify_estate_money"></textarea>
                     Longitud: {{ form.justify_estate_money == null ? 0 : form.justify_estate_money.length }}
-                    <div class="error-message bg-red-500 text-white rounded p-1 text-sm"
-                         v-if="form.errors.justify_estate_money">{{ form.errors.justify_estate_money }}
-                    </div>
+
                 </div>
 
                 <div class="flex justify-end">
