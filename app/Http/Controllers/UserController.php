@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estate;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -34,8 +35,9 @@ class UserController extends Controller
 
     public function show(Request $request){
         $role = Role::all();
-        $users = User::where('id', '>',  1)->get();
-        $props = ['role' => $role, 'users' => $users];
+        $users = User::where('id', '>',  1)->with(['getAdviserOffice.getEstate', 'getRole'])->get();
+        $estates = Estate::with(['getAdviser', 'getResponsible'])->get();
+        $props = ['role' => $role, 'users' => $users, 'estates' => $estates];
         return Inertia::render('Users/ListUsers', $props);
     }
 }

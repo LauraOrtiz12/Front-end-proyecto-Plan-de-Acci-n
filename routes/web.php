@@ -2,16 +2,20 @@
 
 use App\Http\Controllers\EstateIndicatorJustifyController;
 use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\ValidityController;
 use App\Http\Controllers\EstateIndicatorController;
 
 Route::get('/', function () {
     return redirect('/login');
+});
+
+Route::controller(App\Http\Controllers\LoginController::class)->group(function () {
+    Route::get('/login','create')->name('login');
+    Route::post('/login', 'store');
+    Route::post('/logout', 'destroy')->name('logout');
 });
 
 
@@ -36,10 +40,14 @@ Route::middleware([
 
     Route::controller(ValidityController::class)->group(function () {
         Route::get('listValidities', 'index')->name('listValidities');
+        Route::get('listValiditiesControl', 'indexControl')->name('listValiditiesControl');
+        Route::get('getDataAdviser', 'getDataAdviser')->name('getDataAdviser');
+        Route::get('getDataAdviserAssesor', 'getDataAdviserAssesor')->name('getDataAdviserAssesor');
     });
 
     Route::controller(EstateIndicatorController::class)->group(function () {
         Route::get('estateIndicators', 'show')->name('estateIndicators');
+        Route::get('estateIndicatorsAdmin', 'showAdmin')->name('estateIndicatorsAdmin');
         Route::get('estateIndicatorsAdviser', 'showControl')->name('estateIndicatorsAdviser');
     });
 
@@ -57,5 +65,30 @@ Route::middleware([
     Route::controller(\App\Http\Controllers\IndicatorController::class)->group(function(){
         Route::get('listIndicators', 'index')->name('listIndicators');
         Route::get('listIndicatorsAssoc/{id?}', 'viewAll')->name('listIndicatorsAssoc');
+        Route::get('getIndicators', 'getAll')->name('getIndicators');
     });
+
+    Route::controller(\App\Http\Controllers\AdvisorOfficesController::class)->group(function(){
+        Route::get('gestionAdvisorOffices', 'index')->name('gestionAdvisorOffices');
+        Route::post('advisorOffices', 'store')->name('advisorOffices');
+        Route::post('updateAdvisorOfficesAssesor', 'updateAdvisorOfficesAssesor')->name('updateAdvisorOfficesAssesor');
+    });
+
+    Route::controller(\App\Http\Controllers\FollowUpController::class)->group(function (){
+        Route::get('getFollowUp/{validity?}', 'show')->name('getFollowUp');
+        Route::post('setFollowUp', 'store')->name('setFollowUp');
+        Route::post('updateFollowUp', 'storeUpdate')->name('updateFollowUp');
+        Route::post('createFollowUp', 'createFollowUp')->name('createFollowUp');
+        Route::get('showCreateFollowUp', 'showCreateFollowUp')->name('showCreateFollowUp');
+        Route::get('consultFollowUp', 'consultFollowUp')->name('consultFollowUp');
+    });
+
+    Route::controller(\App\Http\Controllers\ExportController::class)->group(function (){
+        Route::get('export/prepare', 'getExport')->name('exportPrepare');
+    });
+
+    Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->group(function (){
+        Route::post('importExcelIndicator', 'index')->name('importExcelIndicator');
+    });
+
 });

@@ -19,6 +19,7 @@ const props = defineProps({
 
 const columnsTable = [
     {field: 'cod_reg', headerName: 'Código de Regional', filter: true, floatingFilter: true},
+    {field: 'dependence_control', headerName: 'Dependencia Control / Regional', filter: true, floatingFilter: true},
     {field: 'cod_dep', headerName: 'Código de Dependencia', filter: true, floatingFilter: true},
     {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
     {field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},
@@ -73,7 +74,6 @@ if (props.edit > 0) {
             form.adviser_id = est.adviser_id;
         }
     });
-    //form.cod_reg = 1000;
 }
 
 </script>
@@ -81,11 +81,13 @@ if (props.edit > 0) {
 <template>
     <AppLayout title="Profile">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Dependencias
+            <h2 class="font-semibold text-xl text-secondary-default my-auto">
+                Listar Dependencias
             </h2>
+        </template>
+        <div class="flex flex-col gap-4">
             <div class="flex justify-end">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <button class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
                         @click="viewForm = !viewForm">Nueva Dependencia
                 </button>
             </div>
@@ -94,9 +96,9 @@ if (props.edit > 0) {
                     <h2 class="text-2xl font-semibold mb-4">Crear Elemento</h2>
                     <form id="myForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-2">
                         <div class="flex flex-col">
-                            <label for="cod_reg" class="text-sm font-semibold mb-1">Cód. Regional</label>
+                            <label for="cod_reg" class="text-sm font-semibold mb-1">Cód.Regional</label>
                             <input type="text" id="cod_reg" name="cod_reg"
-                                   class="border rounded py-2 px-3 focus:outline-none focus:border-blue-500"
+                                   class="rounded py-2 px-3 focus:outline-none focus:border-blue-500"
                                    v-model="form.cod_reg">
                         </div>
                         <div class="flex flex-col md:col-span-2">
@@ -130,23 +132,23 @@ if (props.edit > 0) {
                             </select>
                         </div>
                         <button type="button" @click="save"
-                                class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                class="col-span-full bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
                             Crear / Actualizar
                         </button>
                     </form>
                 </div>
             </div>
-            <div class="card">
+            <div class="card h-screen">
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     style="height: 500px"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz"
+                    class="ag-theme-quartz h-screen"
                 >
                 </ag-grid-vue>
             </div>
-        </template>
+        </div>
     </AppLayout>
 </template>
 <style scoped>

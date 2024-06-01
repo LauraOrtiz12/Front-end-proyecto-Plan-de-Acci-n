@@ -23,4 +23,19 @@ class EstateIndicatorController extends Controller
         return response()->json($estateIndicator);
     }
 
+    public function showAdmin(Request $request){
+        $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->where('estate_id', $request->estate_id)->with(['getIndicator'])->get();
+        return response()->json($estateIndicator);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'validity_id' => 'required',
+            'estate_id' => 'required',
+            'indicator_id' => 'required',
+        ]);
+
+    }
+
 }

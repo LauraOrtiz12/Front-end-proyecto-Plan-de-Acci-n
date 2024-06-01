@@ -5,23 +5,31 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {ref} from 'vue';
 import {AgGridVue} from "ag-grid-vue3";
-import ButtonAction from "@/Components/ButtonAction.vue";
+import Modal from "@/Components/Modal.vue";
+import Swal from "sweetalert2";
 
 const props = defineProps({
     indicators: Object,
+    estate: Object
 });
 
 const selectorIndicator = ref([]);
 const gridApi = ref();
 const validity = ref(0);
 const estateIndicators = ref([]);
+const estateValidator = ref(false);
+const openModalImport = ref(false);
+const fileImport = ref(null);
+const indicators = ref([]);
+const selectIndicatorTable = ref([]);
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
 };
 
 const columnsTable = [
-    {field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
     {field: 'name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
     {field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
     {field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true},
@@ -35,26 +43,67 @@ const columnsTable = [
 const onSelectionChanged = (data) => {
     let selected = gridApi.value.getSelectedRows();
     selectorIndicator.value = [];
-    selected.forEach(function (selectedRow, index){
+    selected.forEach(function (selectedRow, index) {
         selectorIndicator.value.push(selectedRow.id);
     });
 }
 
 const getIndicators = () => {
-    axios.get('/estateIndicators', { params: { validity: validity.value } })
-        .then((response) => {
-            estateIndicators.value = response.data;
-            for(let assigIndicator in estateIndicators.value) {
-                console.log(estateIndicators.value[assigIndicator].indicator_id);
-                selectorIndicator.value.push(estateIndicators.value[assigIndicator].indicator_id);
-            }
-            gridApi.value.forEachNode((node) => {
-                if (node.data && node.data.id !== 2012) {
-                    nodesToSelect.push(node);
+    const exist = [];
+    const other = [];
+    axios.get('/getIndicators').then(response => {
+        const allIndicator = response.data;
+
+        axios.get('/estateIndicatorsAdmin', {params: {validity: validity.value, estate_id: props.estate.cod_dep}})
+            .then((response) => {
+                const select = [];
+                for (let assigngIndicator in response.data) {
+                    select.push(response.data[assigngIndicator].indicator_id);
                 }
+
+                for (let x in allIndicator) {
+                    if (select.includes(allIndicator[x].id)) {
+                        selectIndicatorTable.value.push(allIndicator[x]);
+                    } else {
+                        indicators.value.push(allIndicator[x]);
+                    }
+                }
+                estateValidator.value = true;
             });
-            //gridApi.value.setNodesSelected({ nodes: selectorIndicator.value, newValue: true });
-        });
+    })
+}
+
+const save = () => {
+
+}
+
+const loadFile = (event) => {
+    fileImport.value = event.target.files[0];
+}
+const importFile = () => {
+    const formData = new FormData();
+    formData.append('estate_id', props.estate.cod_dep);
+    formData.append('validity_id', validity.value);
+    formData.append('file', fileImport.value);
+    axios.post('importExcelIndicator', formData).then((response) => {
+        console.log(response);
+        openModalImport.value = !openModalImport.value;
+        if (response.status == 200) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error al Cargar el Archivo",
+            });
+        }
+        if (response.status == 201) {
+            Swal.fire({
+                icon: "success",
+                title: "Excelente",
+                text: "Archivo Cargado",
+            });
+        }
+    })
+
 }
 
 </script>
@@ -62,30 +111,70 @@ const getIndicators = () => {
 <template>
     <AppLayout>
         <template #header>
-            Indicadores Asignados
+            Indicadores Asignados o por Asignar
         </template>
-        <div>
+        <div class="">
+            <div class=" mx-3 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="md:flex">
+                    <div class="p-3">
+                        <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">ID:
+                            {{ $page.props.estate.id }}
+                        </div>
+                        <p class="mt-2 text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
+                        <p class="mt-2 text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
+                        <p class="mt-2 text-gray-500">Dependencia Control: {{
+                                $page.props.estate.dependence_control
+                            }}</p>
+                        <p class="mt-2 text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
+                    </div>
+                </div>
+            </div>
+            {{ selectorIndicator }}
             <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
                     <select name="" id="" v-model="validity">
-                        <option :value="i.id" v-for="i in $page.props.viability">{{i.validity}}</option>
+                        <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
                     </select>
                     <div>
-                        <button @click="getIndicators">Validar</button>
+                        <button @click="getIndicators"
+                                class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Validar
+                        </button>
                     </div>
-                    <div>
-                        <button v-if="validity != 0 && selectorIndicator.length > 0" class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Asociar Nuevo</button>
-                    </div>
+
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" v-if="estateValidator">
+                    <div>
+                        <div>
+                            <button @click="openModalImport = !openModalImport"
+                                    class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Importar Excel
+                            </button>
+                        </div>
+                    </div>
+                    <div class="py-6 px-2">Asignados</div>
+
+                    <div class=" px-2">
+                        <ag-grid-vue
+                            :rowData="selectIndicatorTable"
+                            :columnDefs="columnsTable"
+                            style=""
+                            class="ag-theme-quartz h-64"
+                            rowSelection="multiple"
+                            @selection-changed="onSelectionChanged"
+                            @grid-ready="onGridReady"
+                        >
+                        </ag-grid-vue>
+                    </div>
+                    <div class="py-6 px-2">Por Asignar</div>
+
                     <div class="py-6 px-2">
                         <ag-grid-vue
-                            :rowData="$page.props.indicators"
+                            :rowData="indicators"
                             :columnDefs="columnsTable"
                             style=""
                             class="ag-theme-quartz h-screen"
                             rowSelection="multiple"
-                            :suppressRowClickSelection="true"
                             @selection-changed="onSelectionChanged"
                             @grid-ready="onGridReady"
                         >
@@ -94,5 +183,24 @@ const getIndicators = () => {
                 </div>
             </div>
         </div>
+        <Modal :show="openModalImport" class="py-8" :closeable="true">
+            <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
+                </div>
+                <div class="mb-6">
+                    <input type="file" name="" id="" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                           accept="">
+                </div>
+                <div class="flex justify-end">
+
+                    <button v-if="fileImport" @click="importFile"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        Cargar
+                    </button>
+                </div>
+            </div>
+        </Modal>
     </AppLayout>
 </template>

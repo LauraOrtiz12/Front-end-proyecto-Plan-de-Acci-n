@@ -7,7 +7,7 @@ const onEdit = (id) => {
 };
 
 const gotoEstateIndicator = (id) => {
-    router.visit('listIndicatorsAssoc/id=' + id);
+    router.visit('listIndicatorsAssoc?id=' + id);
 }
 
 </script>

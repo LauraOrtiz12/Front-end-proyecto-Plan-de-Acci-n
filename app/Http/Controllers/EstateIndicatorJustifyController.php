@@ -42,7 +42,7 @@ class EstateIndicatorJustifyController extends Controller
             'human_resource' => 'Recurso Humano'
         ]);
 
-        $insert = EstateIndicatorJustify::create($request->all() +  ['responsible_indicator' => auth()->id()]);
+        $insert = EstateIndicatorJustify::create($request->all() +  ['responsible_indicator' => auth()->id(), 'user_id' => auth()->id()]);
         if ($insert)
             EstateIndicator::whereId($request->estate_indicator_id)->update([
                 'cicly_indicator' => 2

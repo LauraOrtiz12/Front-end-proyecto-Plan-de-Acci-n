@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('indicator', 20);
             $table->string('name_indicator', 500);
-            $table->integer('perspective')->default(0);
+            $table->text('perspective')->nullable();
             $table->string('name_perspective', 500)->nullable();
             $table->string('objective_strategy')->nullable();
             $table->string('name_strategy')->nullable();

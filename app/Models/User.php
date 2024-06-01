@@ -23,6 +23,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $with = ['getEstateIndicatorResponsability', 'getEstateIndicatorAdviser', 'getAdviserOffice'];
     protected $fillable = [
         'name',
         'email',
@@ -75,6 +77,10 @@ class User extends Authenticatable
     public function getRole()
     {
         return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
+    public function getAdviserOffice(){
+        return $this->hasMany( AdvisorOffices::class, 'advisor_id');
     }
 
 }
