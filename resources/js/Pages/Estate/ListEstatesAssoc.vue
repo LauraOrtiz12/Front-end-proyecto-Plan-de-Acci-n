@@ -18,17 +18,11 @@ const props = defineProps({
     edit: null
 });
 
-
+const emit = defineEmits(['close'])
 onMounted(() => {
     dataEstates.value = props.estates;
     let advisorIds = props.user.get_adviser_office.map(advisor => advisor.estate_id);
     for (const key in props.estates) {
-        //if (props.estates.hasOwnProperty(key)) {
-           /* const estateData = props.estates[key];
-            if (!advisorIds.includes(estateData.id)) {
-                dataEstates.value[key] = estateData;
-            }*/
-        //}
     }
 });
 
@@ -50,10 +44,10 @@ const onSelectionChanged = (data) => {
     selected.forEach(function (selectedRow, index) {
         selectorIndicator.value.push(selectedRow.id);
     });
-    form.estate_id = selectorIndicator.value
+    form.value.estate_id = selectorIndicator.value
 }
 
-const form = useForm({
+const form = ref({
     advisor_id: props.user.id,
     estate_id: null,
 });
@@ -72,13 +66,16 @@ const save = () => {
         cancelButtonText: "Cancelar"
     }).then((result) => {
         if (result.isConfirmed) {
-
-            form.post('advisorOffices', {
+            axios.post('advisorOffices', form.value)
+                .then(response => {
+                    emit('close');
+                });
+            /*form.post('advisorOffices', {
                 onSuccess: (res) => {
                     form.reset()
                     console.log(res)
                 }
-            });
+            });*/
 
         }
     });
