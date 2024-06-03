@@ -6,7 +6,6 @@ import Register from "@/Pages/Auth/Register.vue";
 import {router} from '@inertiajs/vue3'
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
-
 defineProps({
     role: Array,
     estates: Object
@@ -24,6 +23,11 @@ const close = () => {
 const openAssocAdviser = (user) => {
     userSelect.value = user;
     assocAdviser.value = !assocAdviser.value;
+}
+
+const closeAssoc = () => {
+    assocAdviser.value = !assocAdviser.value;
+    window.location.reload();
 }
 </script>
 <template>
@@ -145,7 +149,7 @@ const openAssocAdviser = (user) => {
         </Modal>
 
         <Modal :show="assocAdviser" maxWidth="w-full" :closeable="true" @close="assocAdviser = !assocAdviser">
-            <ListEstatesAssoc :user="userSelect" :estates="estates"></ListEstatesAssoc>
+            <ListEstatesAssoc :user="userSelect" :estates="estates" @close="closeAssoc"></ListEstatesAssoc>
         </Modal>
     </AppLayout>
 </template>

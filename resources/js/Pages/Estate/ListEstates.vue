@@ -8,12 +8,15 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 import {AgGridVue} from "ag-grid-vue3";
 import {useForm} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
+import Modal from "@/Components/Modal.vue";
+import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
 const autoSizeStrategy = ref(null);
-
+const fileImport = ref();
 const props = defineProps({
     estates: Object,
     users: Object,
+    validity: Object,
     edit: null
 });
 
@@ -28,7 +31,6 @@ const columnsTable = [
 ];
 
 const viewForm = ref(false);
-
 const form = useForm({
     id: 0,
     cod_reg: null,
@@ -37,7 +39,11 @@ const form = useForm({
     responsible_id: null,
     adviser_id: null,
 });
-
+const uploadStatus = ref(false);
+const selectorValidity = ref(0);
+const loadFile = (event) => {
+    fileImport.value = event.target.files[0];
+}
 const save = () => {
 
     Swal.fire({
@@ -76,6 +82,30 @@ if (props.edit > 0) {
     });
 }
 
+
+const importFile = () => {
+    const formData = new FormData();
+    formData.append('file', fileImport.value);
+    axios.post('importExcelIndicatorGen', formData).then((response) => {
+        console.log(response);
+        uploadStatus.value = !uploadStatus.value;
+        if (response.status == 200) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error al Cargar el Archivo",
+            });
+        }
+        if (response.status == 201) {
+            Swal.fire({
+                icon: "success",
+                title: "Excelente",
+                text: "Archivo Cargado",
+            });
+        }
+    })
+
+}
 </script>
 
 <template>
@@ -86,10 +116,19 @@ if (props.edit > 0) {
             </h2>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end">
-                <button class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
-                        @click="viewForm = !viewForm">Nueva Dependencia
+            <div class="flex justify-end gap-3">
+                <button
+                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
+                    @click="viewForm = !viewForm">Nueva Dependencia
                 </button>
+
+                <button
+                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
+                    @click="uploadStatus = !uploadStatus">Cargar Indicadores Masivo
+                </button>
+                <div class="pt-2 font-weight-bold">
+                    Descargar Ejemplo
+                </div>
             </div>
             <div v-if="viewForm">
                 <div class="w-100 bg-white p-6 rounded-lg shadow-md">
@@ -149,6 +188,26 @@ if (props.edit > 0) {
                 </ag-grid-vue>
             </div>
         </div>
+        <Modal :show="uploadStatus" maxWidth="w-full" :closeable="true">
+
+            <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
+                </div>
+                <div class="mb-6">
+                    <input type="file" name="" id="" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                           accept="">
+                </div>
+                <div class="flex justify-end">
+
+                    <button @click="importFile"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        Cargar Archivo
+                    </button>
+                </div>
+            </div>
+        </Modal>
     </AppLayout>
 </template>
 <style scoped>

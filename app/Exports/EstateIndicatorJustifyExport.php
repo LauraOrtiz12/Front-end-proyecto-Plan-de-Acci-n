@@ -1,29 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Exports;
 
 use App\Models\Estate;
+use App\Models\EstateIndicator;
 use App\Models\FollowUp;
-use App\Models\User;
 use App\Models\Validity;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\EstateIndicatorJustifyExport;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class ExportController extends Controller
+class EstateIndicatorJustifyExport implements FromView
 {
-    public function getExport(Request $request)
+    protected $validity = 0;
+    public function __construct($validity){
+        $this->validity = $validity;
+    }
+    /**
+    * @return \Illuminate\Support\Collection
+    */
+    public function view(): View
     {
         $validity = Validity::all()->keyBy('id');
         $estates = Estate::all()->keyBy('id');
-        $followupComplete = FollowUp::where('validity_id', $request->validity)
+        $followupComplete = FollowUp::where('validity_id', $this->validity)
             ->where('cicle', 3)
             ->with(['getEstateIndicator.getIndicator'])
             ->get()
-            ->flatMap(function ($item) use ($validity, $estates) {
-                return $item->getEstateIndicator->map(function ($indicator) use ($item, $validity, $estates) {
+            ->flatMap(function($item) use ($validity, $estates) {
+                return $item->getEstateIndicator->map(function($indicator) use ($item, $validity, $estates) {
                     return [
                         'cod_dep' => $indicator->estate_id,
                         'Dependence' => $estates[$indicator->estate_id]->dependence ?? null,
@@ -47,12 +52,12 @@ class ExportController extends Controller
                 });
             });
 
-        $followupIncomplete = FollowUp::where('validity_id', $request->validity)
-            ->whereIn('cicle', [1, 2])
+        $followupIncomplete = FollowUp::where('validity_id', $this->validity)
+            ->whereIn('cicle', [1,2])
             ->with(['getEstateIndicator.getIndicator'])
             ->get()
-            ->flatMap(function ($item) use ($validity, $estates) {
-                return $item->getEstateIndicator->map(function ($indicator) use ($item, $validity, $estates) {
+            ->flatMap(function($item) use ($validity, $estates) {
+                return $item->getEstateIndicator->map(function($indicator) use ($item, $validity, $estates) {
                     return [
                         'cod_dep' => $indicator->estate_id,
                         'Dependence' => $estates[$indicator->estate_id]->dependence ?? null,
@@ -75,16 +80,30 @@ class ExportController extends Controller
                     ];
                 });
             });
+
+        $followOutIndicators = FollowUp::where('validity_id', $this->validity)
+            ->whereIn('cicle', [1,2])
+            ->get()->map(function($indicator) use ($validity, $estates) {
+                return [
+                    'cod_dep' => $indicator->estate_id,
+                    'Dependence' => $estates[$indicator->estate_id]->dependence ?? null,
+                    'validity' => $validity[$indicator->validity_id]->validity ?? null,
+                    'justify_estate_indicator' => $indicator->justify_estate_indicator,
+                    'justify_estate_money' => $indicator->justify_estate_money,
+                    'observation_control' => $indicator->observation_control,
+                    'assesor' => $indicator->assesor,
+                ];
+
+
+            });
+
         $props = [
             'followupComplete' => $followupComplete,
             'followupIncomplete' => $followupIncomplete,
+            'followOutIndicators' => $followOutIndicators,
             'viability' => Validity::all(),
         ];
-        return Inertia::render('Export/PrepareExport', $props);
-    }
 
-    public function download(Request $request)
-    {
-        return Excel::download(new EstateIndicatorJustifyExport($request->validity), 'Seguimiento_Vigencia_.xlsx');
+        return view('Export.EstateIndicatorJustify', $props);
     }
 }

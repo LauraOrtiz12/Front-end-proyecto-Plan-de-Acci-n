@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 
 defineProps({
     viability: Object,
+    followupComplete: Object
 });
 
 const viabilityExport = () => {
@@ -29,6 +30,53 @@ const viabilityExport = () => {
                     Generar Excel
                 </button>
             </div>
+        </div>
+
+        <hr>
+        <div>
+            <h1>Follow Up Complete</h1>
+            <table>
+                <thead>
+                <tr>
+                    <th>Código Dependencia</th>
+                    <th>Dependencia</th>
+                    <th>Validez</th>
+                    <th>Código Indicador</th>
+                    <th>Nombre Indicador</th>
+                    <th>Perspectiva</th>
+                    <th>Nombre Perspectiva</th>
+                    <th>Objetivo Estrategia</th>
+                    <th>Nombre Estrategia</th>
+                    <th>Mes</th>
+                    <th>Meta</th>
+                    <th>Ejecución Metas</th>
+                    <th>Justificación Estado Indicador</th>
+                    <th>Justificación Estado Presupuesto</th>
+                    <th>Observación Control</th>
+                    <th>Asesor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(item, index) in followupComplete" :key="index">
+                    <td>{{ item.cod_dep }}</td>
+                    <td>{{ item.Dependence }}</td>
+                    <td>{{ item.validity }}</td>
+                    <td>{{ item.cod_indicator }}</td>
+                    <td>{{ item.name_indicator }}</td>
+                    <td>{{ item.perspective }}</td>
+                    <td>{{ item.name_perspective }}</td>
+                    <td>{{ item.objective_strategy }}</td>
+                    <td>{{ item.name_strategy }}</td>
+                    <td>{{ item.month }}</td>
+                    <td>{{ item.goal }}</td>
+                    <td>{{ item.execution_goals }}</td>
+                    <td>{{ item.justify_estate_indicator }}</td>
+                    <td>{{ item.justify_estate_money }}</td>
+                    <td>{{ item.observation_control }}</td>
+                    <td>{{ item.assesor }}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </AppLayout>
 </template>

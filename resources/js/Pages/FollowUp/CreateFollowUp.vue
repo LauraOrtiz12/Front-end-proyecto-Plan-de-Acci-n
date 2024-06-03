@@ -42,6 +42,19 @@ const saveFollow = () => {
         }
      });
 }
+
+const downloadRoute =  () => {
+    //exportDownload validity.value
+    const url = `/exportDownload?validity=${validity.value}`;
+    try {
+        // Abre una nueva ventana o pestaña
+        window.open(url, '_blank');
+    } catch (error) {
+        this.error = error.response ? error.response.data : error.message;
+        console.error('Error fetching data:', error);
+    }
+
+}
 </script>
 <template>
     <AppLayout>
@@ -99,7 +112,7 @@ const saveFollow = () => {
 
             </div>
             <div v-if="Object.keys(data.follow).length > 0" class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
-                <button @click="consult"
+                <button @click="downloadRoute"
                         class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                 >
                     <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
