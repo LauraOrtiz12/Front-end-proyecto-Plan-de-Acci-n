@@ -81,8 +81,6 @@ if (props.edit > 0) {
         }
     });
 }
-
-
 const importFile = () => {
     const formData = new FormData();
     formData.append('file', fileImport.value);
@@ -190,23 +188,33 @@ const importFile = () => {
         </div>
         <Modal :show="uploadStatus" maxWidth="w-full" :closeable="true">
 
-            <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
-                <div class="mb-6">
+            <div class="modal-container max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="modal-header mb-6">
                     <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
                 </div>
-                <div class="mb-6">
-                    <input type="file" name="" id="" @change="loadFile"
-                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                <div class="modal-body mb-6">
+                    <input type="file" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
                            accept="">
                 </div>
-                <div class="flex justify-end">
-
+                <div class="modal-footer flex justify-end mb-6">
                     <button @click="importFile"
                             class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar Archivo
                     </button>
                 </div>
+                <div class="modal-actions flex justify-between items-center">
+                    <a href="/format/Assoc_Indicator_Generico.xlsx"
+                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        Descargar Plantilla XLSX
+                    </a>
+                    <button @click="uploadStatus = !uploadStatus"
+                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        Cerrar
+                    </button>
+                </div>
             </div>
+
         </Modal>
     </AppLayout>
 </template>

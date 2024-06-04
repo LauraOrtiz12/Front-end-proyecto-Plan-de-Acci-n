@@ -22,6 +22,7 @@ const openModalImport = ref(false);
 const fileImport = ref(null);
 const indicators = ref([]);
 const selectIndicatorTable = ref([]);
+const selectIndicatorTableTwo = ref([]);
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
@@ -29,8 +30,7 @@ const onGridReady = (params) => {
 
 const columnsTable = [
     {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
-    {field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
-    {field: 'name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
+    {field: '.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
     {field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
     {field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true},
     {field: 'objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true},
@@ -38,6 +38,20 @@ const columnsTable = [
     {field: 'indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true},
     {field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
     {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
+];
+
+const columnsTableAssoc = [
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'get_indicator.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true},
+    {field: 'get_indicator.objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true},
+    {field: 'get_indicator.indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
+    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
+    {field: 'execution_goals', headerName: 'Ejecución de Meta', filter: true, floatingFilter: true},
+    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
 ];
 
 const onSelectionChanged = (data) => {
@@ -60,7 +74,7 @@ const getIndicators = () => {
                 for (let assigngIndicator in response.data) {
                     select.push(response.data[assigngIndicator].indicator_id);
                 }
-
+                selectIndicatorTableTwo.value = response.data;
                 for (let x in allIndicator) {
                     if (select.includes(allIndicator[x].id)) {
                         selectIndicatorTable.value.push(allIndicator[x]);
@@ -113,94 +127,98 @@ const importFile = () => {
         <template #header>
             Indicadores Asignados o por Asignar
         </template>
-        <div class="">
-            <div class=" mx-3 bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="md:flex">
-                    <div class="p-3">
-                        <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">ID:
-                            {{ $page.props.estate.id }}
-                        </div>
-                        <p class="mt-2 text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
-                        <p class="mt-2 text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
-                        <p class="mt-2 text-gray-500">Dependencia Control: {{
-                                $page.props.estate.dependence_control
-                            }}</p>
-                        <p class="mt-2 text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
+        <div class="container mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="info-box mx-3 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="p-3">
+                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                        ID: {{ $page.props.estate.id }}
                     </div>
+                    <p class="mt-2 text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
+                    <p class="mt-2 text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
+                    <p class="mt-2 text-gray-500">Dependencia Control: {{ $page.props.estate.dependence_control }}</p>
+                    <p class="mt-2 text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
                 </div>
             </div>
-            {{ selectorIndicator }}
-            <div class="w-100 mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <select name="" id="" v-model="validity">
-                        <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
-                    </select>
-                    <div>
-                        <button @click="getIndicators"
-                                class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Validar
-                        </button>
-                    </div>
 
+            <div class="form-section grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+                <select v-model="validity" class="w-full p-2 border border-gray-300 rounded">
+                    <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
+                </select>
+                <button @click="getIndicators" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Validar
+                </button>
+            </div>
+
+            <div class="result-section bg-white overflow-hidden shadow-xl sm:rounded-lg mt-6" v-if="estateValidator">
+                <button @click="openModalImport = !openModalImport"
+                        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
+                    Importar Excel
+                </button>
+
+                <div class="py-6 px-2 section-title">Asignados</div>
+                <div class="ag-grid-section px-2 mb-6">
+                    <ag-grid-vue
+                        :rowData="selectIndicatorTableTwo"
+                        :columnDefs="columnsTableAssoc"
+                        class="ag-theme-quartz h-64"
+                        rowSelection="multiple"
+                        @selection-changed="onSelectionChanged"
+                        @grid-ready="onGridReady">
+                    </ag-grid-vue>
                 </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" v-if="estateValidator">
-                    <div>
-                        <div>
-                            <button @click="openModalImport = !openModalImport"
-                                    class="col-span-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Importar Excel
-                            </button>
-                        </div>
-                    </div>
-                    <div class="py-6 px-2">Asignados</div>
 
-                    <div class=" px-2">
-                        <ag-grid-vue
-                            :rowData="selectIndicatorTable"
-                            :columnDefs="columnsTable"
-                            style=""
-                            class="ag-theme-quartz h-64"
-                            rowSelection="multiple"
-                            @selection-changed="onSelectionChanged"
-                            @grid-ready="onGridReady"
-                        >
-                        </ag-grid-vue>
-                    </div>
-                    <div class="py-6 px-2">Por Asignar</div>
-
-                    <div class="py-6 px-2">
-                        <ag-grid-vue
-                            :rowData="indicators"
-                            :columnDefs="columnsTable"
-                            style=""
-                            class="ag-theme-quartz h-screen"
-                            rowSelection="multiple"
-                            @selection-changed="onSelectionChanged"
-                            @grid-ready="onGridReady"
-                        >
-                        </ag-grid-vue>
-                    </div>
+                <div class="py-6 px-2 section-title">Por Asignar</div>
+                <div class="ag-grid-section px-2">
+                    <ag-grid-vue
+                        :rowData="indicators"
+                        :columnDefs="columnsTable"
+                        class="ag-theme-quartz h-screen"
+                        rowSelection="multiple"
+                        @selection-changed="onSelectionChanged"
+                        @grid-ready="onGridReady">
+                    </ag-grid-vue>
                 </div>
             </div>
         </div>
+
         <Modal :show="openModalImport" class="py-8" :closeable="true">
-            <div class="max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
-                <div class="mb-6">
+            <div class="modal-container max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="modal-header mb-6">
                     <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
                 </div>
-                <div class="mb-6">
-                    <input type="file" name="" id="" @change="loadFile"
-                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                <div class="modal-body mb-6">
+                    <input type="file" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
                            accept="">
                 </div>
-                <div class="flex justify-end">
-
+                <div class="modal-footer flex justify-end mb-6">
                     <button v-if="fileImport" @click="importFile"
                             class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar
                     </button>
                 </div>
+                <div class="modal-actions flex justify-between items-center">
+                    <a href="/format/Assoc_Indicator.xlsx"
+                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        Descargar Plantilla XLSX
+                    </a>
+                    <button @click="openModalImport = !openModalImport"
+                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        Cerrar
+                    </button>
+                </div>
             </div>
+
         </Modal>
     </AppLayout>
 </template>
+<style>
+.section-title {
+    font-size: 1.5rem; /* Tamaño de fuente */
+    font-weight: bold; /* Peso de la fuente */
+    color: #333; /* Color del texto */
+    margin-bottom: 1rem; /* Margen inferior */
+    border-bottom: 2px solid #e5e7eb; /* Línea inferior */
+    padding-bottom: 0.5rem; /* Padding inferior */
+}
+</style>
