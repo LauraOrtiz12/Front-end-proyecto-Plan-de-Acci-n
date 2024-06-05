@@ -59,36 +59,36 @@ const openEditUser = (user) => {
                     Nuevo Usuario
                 </button>
             <div class="overflow-x-auto rounded-xl shadow-md">
-                <table class="w-full min-w-[970px] overflow-hidden table-fixed">
+                <table class="overflow-hidden table-fixed">
                     <thead class="bg-secondary-default text-white uppercase text-xs tracking-wider whitespace-nowrap">
                     <tr>
                         <th scope="col" class="px-6 py-4">
-                            <div class="flex items-center flex-nowrap gap-3">
+                            <div class="flex items-center flex-nowrap gap-3 min-w-max">
                                 <img class="align-middle" src="assets/images/ID.webp" alt="" width="35px">
                                 Código
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 min-w-fit">
                             <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/nombre.webp" alt="" width="35px">
                                 Nombre
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 min-w-fit">
                             <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/correo-electronico.webp" alt=""
                                      width="35px">
                                 Correo electrónico
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 min-w-fit">
                             <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/correo-electronico.webp" alt=""
                                      width="35px">
                                 *Responsabilidad
                             </div>
                         </th>
-                        <th scope="col" class="px-6 py-4">
+                        <th scope="col" class="px-6 py-4 min-w-fit">
                             <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/correo-electronico.webp" alt=""
                                      width="35px">
