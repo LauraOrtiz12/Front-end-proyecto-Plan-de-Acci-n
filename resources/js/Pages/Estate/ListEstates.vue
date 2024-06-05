@@ -101,7 +101,6 @@ const importFile = () => {
             });
         }
     })
-
 }
 </script>
 
@@ -123,9 +122,7 @@ const importFile = () => {
                     class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
                     @click="uploadStatus = !uploadStatus">Cargar Indicadores Masivo
                 </button>
-                <div class="pt-2 font-weight-bold">
-                    Descargar Ejemplo
-                </div>
+
             </div>
             <div v-if="viewForm">
                 <div class="w-100 bg-white p-6 rounded-lg shadow-md">

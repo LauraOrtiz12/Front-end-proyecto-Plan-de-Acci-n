@@ -4,6 +4,9 @@ import {ref} from 'vue';
 import {router} from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
+import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import {AgGridVue} from "ag-grid-vue3";
 
 defineProps({
     followUp: Object,
@@ -19,7 +22,30 @@ const followUp = ref({});
 const showModalJustifyOne = ref(false);
 const cicle = ref(1);
 const selectSaveJustify = ref(0);
-const selectFollow = ref({})
+const selectFollow = ref({});
+const gridApi = ref();
+
+const columnsTable = [
+
+    {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true},
+    {
+        field: 'get_indicator.name_indicator_strategy',
+        headerName: 'Indicador Estrategico',
+        filter: true,
+        floatingFilter: true
+    },
+    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
+    {field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true},
+    {
+        field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
+            return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
+        }
+    },
+    {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
+];
 
 const loadViabilityControl = () => {
     axios.get('estateIndicatorsAdviser', {params: {validity: validity.value}})
@@ -43,6 +69,14 @@ const openJustifyOne = (select) => {
 const closeJustifyOne = () => {
     loadViabilityControl();
     showModalJustifyOne.value = !showModalJustifyOne.value;
+}
+
+const onGridReady = (params) => {
+    gridApi.value = params.api;
+}
+const onBtExport = () => {
+
+    gridApi.value.exportDataAsCsv({columnSeparator: "&"});
 }
 </script>
 <template>
@@ -91,6 +125,7 @@ const closeJustifyOne = () => {
                             }}
                         </dd>
                     </div>
+
                     <div v-for="(fup, index) in followUp" class="col-span-2">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
@@ -127,14 +162,18 @@ const closeJustifyOne = () => {
                  v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
 
 
-                <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                <div class="mt-3 rounded-md shadow overflow-x-auto"
+                     v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+
                     <div class="w-full py-4 my-4" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3" class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
+                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3"
+                             class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
                             <div class="md:col-span-3 mb-2">
                                 <span class="font-bold text-lg">Justificaciones En Proceso</span>
                             </div>
                             <div class="md:col-span-3 mb-2">
-                                <span class="font-semibold">Mes de Seguimiento: </span>{{fupTwo.month}}</div>
+                                <span class="font-semibold">Mes de Seguimiento: </span>{{ fupTwo.month }}
+                            </div>
                             <div class="p-2 border border-gray-300 rounded-md bg-white">
                                 <span class="font-semibold block">Indicadores:</span>
                                 <span>{{ fupTwo.justify_estate_indicator }}</span>
@@ -151,74 +190,25 @@ const closeJustifyOne = () => {
                     </div>
                 </div>
 
-                <table class="w-full">
-                    <thead>
-                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th class="py-3 px-6 text-left">Nombre de Indicador</th>
-                        <th class="py-3 px-6 text-left">Perspectiva</th>
-                        <th class="py-3 px-6 text-left">Nombre de Perspectiva</th>
-                        <th class="py-3 px-6 text-left">Objetivo Estrategico</th>
-                        <th class="py-3 px-6 text-left">Nombre de Objetivo Estrategico</th>
-                        <th class="py-3 px-6 text-left">Indicador Estrategico</th>
-                        <th class="py-3 px-6 text-left">Nombre de Indicador Estrategico</th>
-                        <th class="py-3 px-6 text-left">Mes</th>
-                        <th class="py-3 px-6 text-left">Meta</th>
-                        <th class="py-3 px-6 text-left">Objetivos de ejecución</th>
-                        <th class="py-3 px-6 text-left">Porcentaje ejecución</th>
-                        <th class="py-3 px-6 text-left">Estado</th>
-                        <th class="py-3 px-6 text-left">Acción</th>
-                    </tr>
-                    </thead>
-                    <tbody class="text-gray-600 text-sm font-light">
-                    <tr v-for="item in estateIndicators" :key="item.id"
-                        :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.name_indicator
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.perspective
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.name_perspective
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.objective_strategy
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.name_strategy
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.indicator_strategy
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{
-                                item.get_indicator.name_indicator_strategy
-                            }}
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.month }}</td>
-                        <td class="py-3 px-6 text-left">{{ item.goal }}</td>
-                        <td class="py-3 px-6 text-left">{{ item.execution_goals }}</td>
-                        <td class="py-3 px-6 text-left">{{
-                                Math.floor((item.execution_goals / item.goal) * 100)
-                            }}%
-                        </td>
-                        <td class="py-3 px-6 text-left">{{ item.status }}</td>
-                        <td class="py-3 px-1 center">
-                            <button
-                                class=" hover:bg-primary-default hover:text-white text-primary-default border border-primary-default font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                v-if="item.cicly_indicator == 1" @click="goJustify(item)">
-                                Justificar
-                            </button>
+                <div>
+                    <button @click="onBtExport"
+                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >
+                        <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
+                    </button>
+                </div>
 
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <ag-grid-vue
+                    :rowData="estateIndicators"
+                    :columnDefs="columnsTable"
+                    style=""
+                    class="ag-theme-quartz h-screen"
+                    rowSelection="multiple"
+
+                    @grid-ready="onGridReady"
+                >
+                </ag-grid-vue>
+
             </div>
             <div class="w-full mt-4"
                  v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
@@ -247,7 +237,7 @@ const closeJustifyOne = () => {
                                         <th class="py-3 px-6 text-left">Objetivos de ejecución</th>
                                         <th class="py-3 px-6 text-left">Porcentaje ejecución</th>
                                         <th class="py-3 px-6 text-left">Estado</th>
-                                        <th class="py-3 px-6 text-left">Acción</th>
+                                        <!--<th class="py-3 px-6 text-left">Acción</th>-->
                                     </tr>
                                     </thead>
                                     <tbody class="text-gray-600 text-sm font-light">
@@ -292,7 +282,7 @@ const closeJustifyOne = () => {
                                             }}%
                                         </td>
                                         <td class="py-3 px-6 text-left">{{ item.status }}</td>
-                                        <td class="py-3 px-1 center">
+                                        <!--<td class="py-3 px-1 center">
                                             <div class="grid grid-cols-1 gap-1">
                                                 <div class="col-auto">
                                                     <button
@@ -303,7 +293,7 @@ const closeJustifyOne = () => {
                                                     </button>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td>-->
                                     </tr>
                                     </tbody>
                                 </table>

@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'role_id' => 1,
+            'code' => 'admin001',
             'name' => 'Wilson Ramirez Zuluaga',
             'email' => 'wramirez@sena.edu.co',
             'phone' => '123-456-',
