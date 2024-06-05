@@ -12,6 +12,8 @@ defineProps({
     estates: Object
 });
 
+
+const pageTitle = "Lista de Usuarios";
 const newUserModal = ref(false);
 const editUserModal = ref(false);
 const assocAdviser = ref(false);
@@ -44,10 +46,10 @@ const openEditUser = (user) => {
 }
 </script>
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
 
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Lista de Usuarios</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
 
         <div class="">

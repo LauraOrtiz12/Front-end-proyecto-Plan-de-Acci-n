@@ -4,6 +4,8 @@ import { ref } from 'vue';
 import { red } from "vuetify/util/colors";
 import Swal from "sweetalert2";
 
+const pageTitle = "Generar Seguimiento";
+
 const validity = ref(null);
 const data = ref();
 const selectMonth = ref('');
@@ -57,9 +59,9 @@ const downloadRoute = () => {
 }
 </script>
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Generar Seguimiento</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="flex flex-col gap-4">

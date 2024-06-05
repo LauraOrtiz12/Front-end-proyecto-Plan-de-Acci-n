@@ -11,13 +11,15 @@ defineProps({
     confirmsTwoFactorAuthentication: Boolean,
     sessions: Array,
 });
+
+const pageTitle = "Perfil";
 </script>
 
 <template>
-    <AppLayout title="Profile">
+    <AppLayout :title="pageTitle">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Perfil
+                {{pageTitle}}
             </h2>
         </template>
 

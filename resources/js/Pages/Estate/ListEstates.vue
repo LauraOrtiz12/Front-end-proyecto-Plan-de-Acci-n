@@ -11,6 +11,9 @@ import Swal from "sweetalert2";
 import Modal from "@/Components/Modal.vue";
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
+
+const pageTitle = "Listar Dependencias";
+
 const autoSizeStrategy = ref(null);
 const fileImport = ref();
 const props = defineProps({
@@ -105,10 +108,10 @@ const importFile = () => {
 </script>
 
 <template>
-    <AppLayout title="Profile">
+    <AppLayout :title="pageTitle">
         <template #header>
             <h2 class="font-semibold text-xl text-secondary-default my-auto">
-                Listar Dependencias
+                {{pageTitle}}
             </h2>
         </template>
         <div class="flex flex-col gap-4">
