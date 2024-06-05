@@ -25,6 +25,10 @@ const showModalJustifyOne = ref(false);
 const cicle = ref(1);
 const followUps = ref();
 const justifyControl = ref('');
+const gridApi = ref();
+
+
+
 const columnsTable = [
     {field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true},
     {field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
@@ -124,7 +128,16 @@ const update = (item) => {
     });
 
 
+
 };
+
+const onGridReady = (params) => {
+    gridApi.value = params.api;
+}
+const onBtExport = () => {
+
+    gridApi.value.exportDataAsCsv({columnSeparator: "&"});
+}
 </script>
 <template>
     <AppLayout>
@@ -213,6 +226,14 @@ const update = (item) => {
             </div>
             <div class="w-full mt-4"
                  v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+
+                <div>
+                    <button @click="onBtExport"
+                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                    >
+                        <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
+                    </button>
+                </div>
                 Indicadores
                 <div class="grid grid-cols-1 gap-2">
                     <ag-grid-vue

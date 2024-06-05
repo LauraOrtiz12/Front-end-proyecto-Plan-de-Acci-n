@@ -21,9 +21,7 @@ const columnsTable = [
     { field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
     { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
 ];
-
 </script>
-
 <template>
     <AppLayout>
         <template #header>

@@ -39,7 +39,6 @@ const columnsTable = [
     {field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
     {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
 ];
-
 const columnsTableAssoc = [
     {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
     {field: 'get_indicator.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
@@ -51,6 +50,18 @@ const columnsTableAssoc = [
     {field: 'get_indicator.name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
     {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
     {field: 'execution_goals', headerName: 'Ejecución de Meta', filter: true, floatingFilter: true},
+    {
+        field: 'compliance',
+        headerName: '% Cumplimiento',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+            const executionGoals = params.data.execution_goals;
+            const goal = params.data.goal;
+            const compliance = (goal > 0) ? (executionGoals / goal) * 100 : 0;
+            return compliance.toFixed(2) + '%';
+        }
+    },
     {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
 ];
 
