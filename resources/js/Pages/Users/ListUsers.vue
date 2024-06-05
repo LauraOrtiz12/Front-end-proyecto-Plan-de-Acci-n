@@ -58,12 +58,60 @@ const openEditUser = (user) => {
                 <i class="fa-solid fa-user-plus mr-1"></i>
                 Nuevo Usuario
             </button>
-            <div class="overflow-x-auto rounded-md shadow-md">
+            <div class="overflow-x-auto rounded-md shadow-md" >
+                <table class=" overflow-hidden w-full">
+                    <thead class="bg-secondary-default text-white">
+                        <tr>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user"></i> Nombre</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-envelope"></i> Usuario o Correo</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-bars-progress"></i> Responsabilidad</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user-tag"></i> Rol</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in $page.props.users" :key="user.id">
+                            <td class="bg-gray-200 px-5 py-4 text-nowrap">{{ user.code }}</td>
+                            <td class="bg-gray-100 px-5 py-4 text-nowrap">{{ user.name }}</td>
+                            <td class="bg-gray-200 px-5 py-4 text-nowrap">{{ user.email }}</td>
+                            <td class="bg-gray-100 px-5 py-4 text-nowrap">
+                                <span v-for="adviserUser in user.get_adviser_office" :key="adviserUser.get_estate.cod_dep">
+                                    {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+                                </span>
+                            </td>
+                            <td class="bg-gray-200 px-5 py-4 text-nowrap">{{ user.get_role.rol }} ({{ user.get_role.id }})</td>
+                            <td class="flex flex-col px-5 py-4 text-nowrap text-sm font-medium gap-2">
+    
+                                <button
+                                    class="transition-all text-primary-default border border-primary-default rounded-lg px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
+                                    @click="openEditUser(user)">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Editar
+                                </button>
+                                <button v-if="user.role_id == 3"
+                                    class="transition-all text-secondary-default border border-secondary-default rounded-lg px-2 py-1 hover:text-white hover:bg-secondary-default hover:scale-105 overflow-hidden"
+                                    @click="openAssocAdviser(user)">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Agregar Responsabilidad
+                                </button>
+                                <button
+                                    class="transition-all text-red-500 border border-red-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- <div class="overflow-x-auto rounded-md shadow-md">
                 <table class="overflow-hidden table-fixed">
                     <thead class="bg-secondary-default text-white uppercase text-xs tracking-wider ">
                         <tr>
-                            <th scope="col" class="px-6 py-4 min-w-fit">
-                                <div class="flex items-center flex-nowrap gap-3">
+                            <th scope="col" class="px-6 py-4">
+                                <div class="flex items-center flex-nowrap gap-3 min-w-fit">
                                     <img class="align-middle" src="assets/images/ID.webp" alt="" width="35px">
                                     Código
                                 </div>
@@ -141,7 +189,7 @@ const openEditUser = (user) => {
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
         </div>
         <Modal :show="newUserModal" :closeable="true" @close="newUserModal = !newUserModal">
             <Register :role="$page.props.role" @close="close"></Register>
