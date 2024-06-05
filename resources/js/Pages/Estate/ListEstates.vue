@@ -84,16 +84,16 @@ const importFile = () => {
     const formData = new FormData();
     formData.append('file', fileImport.value);
     axios.post('importExcelIndicatorGen', formData).then((response) => {
-        console.log(response);
+
         uploadStatus.value = !uploadStatus.value;
-        if (response.status == 200) {
+        if (response.status === 200) {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: "Error al Cargar el Archivo",
             });
         }
-        if (response.status == 201) {
+        if (response.status === 201) {
             Swal.fire({
                 icon: "success",
                 title: "Excelente",
@@ -175,7 +175,6 @@ const importFile = () => {
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
-                    style="height: 500px"
                     :autoSizeStrategy="autoSizeStrategy"
                     class="ag-theme-quartz h-screen"
                 >
