@@ -58,8 +58,57 @@ const openEditUser = (user) => {
                 <i class="fa-solid fa-user-plus mr-1"></i>
                 Nuevo Usuario
             </button>
-            <div class="overflow-x-auto rounded-xl shadow-md">
-                <table class="overflow-hidden w-full">
+            <div class="overflow-x-auto rounded-md shadow-md w-full">
+                <table class="table-fix w-full">
+                    <thead class="bg-secondary-default text-white">
+                        <tr>
+                            <th class="px-4 py-2">Codigo</th>
+                            <th class="px-4 py-2">Nombre</th>
+                            <th class="px-4 py-2">Usuario o Correo</th>
+                            <th class="px-4 py-2">Responsabilidad</th>
+                            <th class="px-4 py-2">Rol</th>
+                            <th class="px-4 py-2">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in $page.props.users" :key="user.id">
+                            <td class="px-4 py-2">{{ user.code }}</td>
+                            <td class="px-4 py-2">{{ user.name }}</td>
+                            <td class="px-4 py-2">{{ user.email }}</td>
+                            <td class="px-6 py-4">
+                                <span v-for="adviserUser in user.get_adviser_office"
+                                    :key="adviserUser.get_estate.cod_dep">
+                                    {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ user.get_role.rol }} ({{ user.get_role.id }})
+                            </td>
+                            <td class="px-6 py-4 flex flex-col gap-3">
+
+                                <button
+                                    class="transition-all text-primary-default border border-primary-default rounded-md px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
+                                    @click="openEditUser(user)">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Editar
+                                </button>
+                                <button v-if="user.role_id == 3"
+                                    class="transition-all text-secondary-default border border-secondary-default rounded-md px-2 py-1 hover:text-white hover:bg-secondary-default hover:scale-105"
+                                    @click="openAssocAdviser(user)">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Agregar Responsabilidad
+                                </button>
+                                <button
+                                    class="transition-all text-red-500 border border-red-500 rounded-md px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- <table class="overflow-hidden w-full">
                     <thead class="bg-secondary-default text-white uppercase text-xs tracking-wider whitespace-nowrap">
                         <tr>
                             <th scope="col" class="px-6 py-4">
@@ -104,7 +153,6 @@ const openEditUser = (user) => {
                         </tr>
                     </thead>
                     <tbody class="divide-y-4 divide-white">
-                        <!-- Itera sobre cada usuario y muestra una fila en la tabla -->
                         <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
                             <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.code }}</td>
                             <td class="bg-gray-100 px-6 py-4 whitespace-nowrap">{{ user.name }}</td>
@@ -142,7 +190,7 @@ const openEditUser = (user) => {
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> -->
             </div>
         </div>
         <Modal :show="newUserModal" :closeable="true" @close="newUserModal = !newUserModal">
