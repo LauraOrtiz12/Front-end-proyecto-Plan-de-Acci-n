@@ -5,7 +5,7 @@ import {red} from "vuetify/util/colors";
 import Swal from "sweetalert2";
 
 const validity = ref(null);
-const data = ref();
+const data = ref(null);
 const selectMonth = ref('');
 const activeFollow = ref(false);
 
@@ -26,7 +26,7 @@ const consult = () => {
 const saveFollow = () => {
  axios.post('createFollowUp', { validity_id: validity.value, month: selectMonth.value})
      .then(response => {
-        if(response.status == 201){
+        if(response.status === 201){
             Swal.fire({
                 title: "Seguimiento!",
                 text: "Se ha Generado Correctamente.",
@@ -79,7 +79,7 @@ const downloadRoute =  () => {
                 </div>
             </div>
         </div>
-        <div v-if="validity">
+        <div v-if="data != null">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg my-3">
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-center items-center">
                     <div class="p-4">
