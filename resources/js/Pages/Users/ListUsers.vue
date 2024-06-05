@@ -124,7 +124,7 @@ const openEditUser = (user) => {
                                 Editar
                             </button>
                             <button v-if="user.role_id == 3"
-                                    class="border border-secondary-default w-full py-1 rounded-lg justify-center flex items-center text-balack hover:bg-secondary-default hover:text-white"
+                                    class="border border-secondary-default w-full py-1 rounded-lg justify-center flex items-center text-balack hover:bg-secondary-default hover:text-white transition-all"
                                     @click="openAssocAdviser(user)">
                                     <i class="fa-solid fa-plus"></i>
                                 Agregar Responsabilidad
