@@ -6,6 +6,8 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 import { AgGridVue } from "ag-grid-vue3";
 import ButtonAction from "@/Components/ButtonAction.vue";
 
+const pageTitle = "Listar Indicadores";
+
 const props = defineProps({
     indicators: Object,
 });
@@ -23,9 +25,9 @@ const columnsTable = [
 ];
 </script>
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Listar Indicadores</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="py-6 px-2">
