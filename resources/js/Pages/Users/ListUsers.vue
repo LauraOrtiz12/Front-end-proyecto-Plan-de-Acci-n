@@ -117,35 +117,21 @@ const openEditUser = (user) => {
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
                             {{ user.get_role.rol }} ({{ user.get_role.id }})
                         </td>
-                        <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <td class="flex flex-col bg-gray-100 px-5 py-4 whitespace-nowrap text-sm font-medium gap-2">
 
-                            <button class="flex items-center text-indigo-600 hover:text-indigo-900" @click="openEditUser(user)">
-                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     fill="currentColor">
-                                    <path
-                                        d="M17.414 2.586a2 2 0 00-2.828 0l-11 11A2 2 0 003 15v2a1 1 0 001 1h2a2 2 0 001.414-.586l11-11a2 2 0 000-2.828zM5 16H4v-1l9.293-9.293 1 1L5 16z"/>
-                                </svg>
+                            <button class="border border-primary-default w-full py-1 rounded-lg flex items-center justify-center text-black hover:bg-primary-default transition-all gap-1 hover:text-white " @click="openEditUser(user)">
+                                <i class="fa-solid fa-pen-to-square"></i>
                                 Editar
                             </button>
                             <button v-if="user.role_id == 3"
-                                    class="flex items-center text-indigo-600 hover:text-indigo-900"
+                                    class="border border-secondary-default w-full py-1 rounded-lg justify-center flex items-center text-balack hover:bg-secondary-default hover:text-white"
                                     @click="openAssocAdviser(user)">
-                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M10 5a1 1 0 01.993.883L11 6v3h3a1 1 0 01.117 1.993L14 11h-3v3a1 1 0 01-1.993.117L9 14v-3H6a1 1 0 01-.117-1.993L6 9h3V6a1 1 0 01.883-.993L10 5z"
-                                          clip-rule="evenodd"/>
-                                </svg>
+                                    <i class="fa-solid fa-plus"></i>
                                 Agregar Responsabilidad
                             </button>
-                            <button class="flex items-center text-red-600 hover:text-red-900">
-                                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                     fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                          d="M8 4a1 1 0 00-.117 1.993L8 6h4a1 1 0 00.117-1.993L12 4H8zM5 7a1 1 0 011-.883L6 7v9a1 1 0 01-1.993.117L4 16V7zm8-1a1 1 0 01.117 1.993L13 7v9a1 1 0 01-1.993.117L11 16V7a1 1 0 011-1z"
-                                          clip-rule="evenodd"/>
-                                </svg>
-                                Eliminar
+                            <button class="w-full py-1 rounded-lg flex border border-red-500 items-center justify-center text-red-600 hover:bg-red-600 hover:text-white transition-all  gap-1">
+                                <i class="fa-solid fa-trash"></i>
+                                Eliminar    
                             </button>
 
                         </td>
