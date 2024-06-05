@@ -117,9 +117,6 @@ const openEditUser = (user) => {
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
                             {{ user.get_role.rol }} ({{ user.get_role.id }})
                         </td>
-                        <<td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            {{ user.get_role.rol }} ({{ user.get_role.id }})
-                        </td>
                         <td class="flex flex-col bg-gray-100 px-5 py-4 whitespace-nowrap text-sm font-medium gap-2">
 
                             <button class="border border-primary-default w-full py-1 rounded-lg flex items-center justify-center text-black hover:bg-primary-default transition-all gap-1 hover:text-white " @click="openEditUser(user)">
@@ -127,7 +124,7 @@ const openEditUser = (user) => {
                                 Editar
                             </button>
                             <button v-if="user.role_id == 3"
-                                    class="border border-secondary-default w-full py-1 rounded-lg justify-center flex items-center text-balack hover:bg-secondary-default hover:text-white"
+                                    class="border border-secondary-default w-full py-1 rounded-lg justify-center flex items-center text-balack hover:bg-secondary-default hover:text-white transition-all"
                                     @click="openAssocAdviser(user)">
                                     <i class="fa-solid fa-plus"></i>
                                 Agregar Responsabilidad
@@ -138,7 +135,6 @@ const openEditUser = (user) => {
                             </button>
 
                         </td>
-
                     </tr>
                     </tbody>
                 </table>
