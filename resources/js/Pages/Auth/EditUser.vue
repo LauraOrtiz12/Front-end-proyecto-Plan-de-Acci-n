@@ -7,34 +7,34 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
-const form = useForm({
-    code: '',
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-    terms: false,
-    role_id: '',
-});
-
-defineProps({
+const props = defineProps({
+    user: Object,
     role: Array
 });
 
+const form = useForm({
+    id: props.user.id,
+    code: props.user.code,
+    name: props.user.name,
+    email: props.user.email,
+    password: '',
+    password_confirmation: '',
+    terms: false,
+    role_id: props.user.role_id,
+});
 const emit = defineEmits(['close'])
-
 const submit = () => {
-    form.post(route('newUser'), {
+    form.post(route('editUser'), {
         onFinish: () => {
             emit('close');
         },
     });
 };
 </script>
-
 <template>
     <AuthenticationCard>
         <form @submit.prevent="submit">
+            <div><span>Edición Usuario: {{props.user.id}}</span></div>
             <div>
                 Código Interno: {{form.code}}
                 <InputLabel for="code" value="Código"/>
@@ -43,7 +43,7 @@ const submit = () => {
                     v-model="form.code"
                     type="text"
                     class="mt-1 block w-full"
-
+                    required
                     autofocus
                     autocomplete="code"
                 />
@@ -82,12 +82,11 @@ const submit = () => {
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
+                    placeholder="OMITIR = CLAVE"
                 />
                 <InputError class="mt-2" :message="form.errors.password"/>
             </div>
-
             <div class="mt-4">
                 <InputLabel for="password_confirmation" value="Confirmar Clave"/>
                 <TextInput
@@ -95,8 +94,8 @@ const submit = () => {
                     v-model="form.password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
+                    placeholder="OMITIR = CLAVE"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation"/>
             </div>
@@ -113,8 +112,6 @@ const submit = () => {
                 <InputLabel for="terms">
                     <div class="flex items-center">
                         <Checkbox id="terms" v-model:checked="form.terms" name="terms" required/>
-
-
                     </div>
                     <InputError class="mt-2" :message="form.errors.terms"/>
                 </InputLabel>
@@ -122,7 +119,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Crear Usuario
+                    Actualizar Usuario
                 </PrimaryButton>
             </div>
         </form>

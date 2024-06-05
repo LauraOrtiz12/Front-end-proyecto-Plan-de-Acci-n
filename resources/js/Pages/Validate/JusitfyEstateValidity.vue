@@ -1,5 +1,4 @@
 <script setup>
-import {useForm} from "@inertiajs/vue3";
 import {defineProps, ref} from "vue";
 import Swal from "sweetalert2";
 
@@ -12,7 +11,7 @@ const props = defineProps({
         default: 2
     }
 })
-
+const limit = ref(1500);
 const emit = defineEmits(['close']);
 
 const form = ref({
@@ -73,7 +72,10 @@ const save = () => {
                     <textarea name="justify_estate_indicator" id="justify_estate_indicator"
                               class="w-full px-3 py-2 border rounded-md"
                               v-model="form.justify_estate_indicator"></textarea>
-                    Longitud: {{ form.justify_estate_indicator == null ? 0 : form.justify_estate_indicator.length }}
+                    <span :class="limit - (form.justify_estate_indicator == null ? 0 : form.justify_estate_indicator.length) >= 0 ?'text-teal-500' : 'text-rose-600'	">
+                        Longitud: {{ limit - (form.justify_estate_indicator == null ? 0 : form.justify_estate_indicator.length) }}
+                    </span>
+
 
                 </div>
                 <div class="mb-4">
@@ -82,7 +84,10 @@ const save = () => {
                     <textarea name="justify_estate_money" id="justify_estate_money"
                               class="w-full px-3 py-2 border rounded-md" required
                               v-model="form.justify_estate_money"></textarea>
-                    Longitud: {{ form.justify_estate_money == null ? 0 : form.justify_estate_money.length }}
+                    <span :class="limit - (form.justify_estate_money == null ? 0 : form.justify_estate_money.length) >= 0 ?'text-teal-500' : 'text-rose-600'	">
+                      Longitud: {{ limit - (form.justify_estate_money == null ? 0 : form.justify_estate_money.length) }}
+                    </span>
+
 
                 </div>
 
@@ -101,7 +106,7 @@ const save = () => {
                     <div class="flex justify-end">
                         <button type="button"
                                 class="flex items-center bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded-md"
-                                @click="save">
+                                @click="save" v-if="limit >= (form.justify_estate_money == null ? 0 : form.justify_estate_money.length) && limit >= (form.justify_estate_indicator == null ? 0 : form.justify_estate_indicator.length)">
                             <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M5 13l4 4L19 7"></path>

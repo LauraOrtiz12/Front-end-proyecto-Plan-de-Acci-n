@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
 import Register from "@/Pages/Auth/Register.vue";
+import EditUser from "@/Pages/Auth/EditUser.vue";
 import {router} from '@inertiajs/vue3'
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 
@@ -12,11 +13,18 @@ defineProps({
 });
 
 const newUserModal = ref(false);
+const editUserModal = ref(false);
 const assocAdviser = ref(false);
 const userSelect = ref(null);
 
 const close = () => {
     newUserModal.value = false;
+    router.reload({only: ['users']})
+
+}
+
+const closeEdit = () => {
+    editUserModal.value = false;
     router.reload({only: ['users']})
 
 }
@@ -28,6 +36,11 @@ const openAssocAdviser = (user) => {
 const closeAssoc = () => {
     assocAdviser.value = !assocAdviser.value;
     window.location.reload();
+}
+
+const openEditUser = (user) => {
+    userSelect.value = user;
+    editUserModal.value = !editUserModal.value;
 }
 </script>
 <template>
@@ -52,7 +65,7 @@ const closeAssoc = () => {
                         <th scope="col" class="px-6 py-4">
                             <div class="flex items-center flex-nowrap gap-3">
                                 <img class="align-middle" src="assets/images/ID.webp" alt="" width="35px">
-                                ID
+                                Código
                             </div>
                         </th>
                         <th scope="col" class="px-6 py-4">
@@ -93,23 +106,20 @@ const closeAssoc = () => {
                     <tbody class="divide-y-4 divide-white">
                     <!-- Itera sobre cada usuario y muestra una fila en la tabla -->
                     <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
-                        <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.id }}</td>
+                        <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.code }}</td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap">{{ user.name }}</td>
                         <td class="bg-gray-200 px-6 py-4 whitespace-nowrap">{{ user.email }}</td>
                         <td class="bg-gray-200 px-6 py-4 table-cell">
-                        <span
-                            v-for="adviserUser in user.get_adviser_office"
-                            :key="adviserUser.get_estate.cod_dep"
-                            class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded-full border border-blue-400 inline-block">
+                         <span v-for="adviserUser in user.get_adviser_office" :key="adviserUser.get_estate.cod_dep" class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 border border-blue-400 inline-block">
           {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
         </span>
                         </td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            {{user.get_role.rol}} ({{user.get_role.id}})
+                            {{ user.get_role.rol }} ({{ user.get_role.id }})
                         </td>
                         <td class="bg-gray-100 px-6 py-4 whitespace-nowrap text-sm font-medium">
 
-                            <button class="flex items-center text-indigo-600 hover:text-indigo-900">
+                            <button class="flex items-center text-indigo-600 hover:text-indigo-900" @click="openEditUser(user)">
                                 <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                      fill="currentColor">
                                     <path
@@ -148,7 +158,11 @@ const closeAssoc = () => {
             <Register :role="$page.props.role" @close="close"></Register>
         </Modal>
 
-        <Modal :show="assocAdviser" maxWidth="w-full" :closeable="true" @close="assocAdviser = !assocAdviser">
+        <Modal :show="editUserModal" :closeable="true" @close="editUserModal = !editUserModal">
+            <EditUser :user="userSelect" :role="$page.props.role" @close="closeEdit"></EditUser>
+        </Modal>
+
+        <Modal :show="assocAdviser" :closeable="true" @close="assocAdviser = !assocAdviser">
             <ListEstatesAssoc :user="userSelect" :estates="estates" @close="closeAssoc"></ListEstatesAssoc>
         </Modal>
     </AppLayout>

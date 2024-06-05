@@ -35,6 +35,7 @@ Route::middleware([
 
     Route::controller(UserController::class)->group(function () {
         Route::get('listUsers', 'show')->name('listUsers');
+        Route::post('editUser', 'edit')->name('editUser');
         Route::post('newUser', 'store')->name('newUser');
     });
 

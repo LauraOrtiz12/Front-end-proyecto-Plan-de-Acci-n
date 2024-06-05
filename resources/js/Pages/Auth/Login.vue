@@ -60,7 +60,7 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                 <div>
                     <i class="fa-solid fa-envelope absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
                     <InputLabel for="email" value="Correo Electrónico" class="text-white" />
-                    <TextInput id="email" v-model="form.email" type="email" required
+                    <TextInput id="email" v-model="form.email" type="text" required
                         class="mt-1 block w-full pl-8 pr-10" autofocus autocomplete="username" />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>

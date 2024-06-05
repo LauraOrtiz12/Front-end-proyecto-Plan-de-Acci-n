@@ -134,18 +134,18 @@ const update = (item) => {
                             <th class="py-3 px-6 text-left">Justificación Presupuestal</th>
                             <th class="py-3 px-6 text-left">Fecha</th>
                             <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
-                            <th class="py-3 px-6 text-left">Asesor</th>
+                            <!--<th class="py-3 px-6 text-left">Asesor</th>-->
                         </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
                         <tr v-for="item in followUps" :key="item.id"
                             :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.estate_id }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_indicator }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_money }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ formatDate(item.created_at) }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.observation_control }}</td>
-                            <td class="py-3 px-6 text-left" v-if="item.assesor == null">
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.estate_id }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_indicator }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.observation_control }}</td>
+                            <!--<td class="py-3 px-6 text-left" v-if="item.assesor == null">
                                 <div class="grid grid-cols-1 gap-3">
                                     <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="60"
                                               rows="8" class="w-full px-3 py-2 border rounded-md"></textarea>
@@ -158,7 +158,7 @@ const update = (item) => {
                             </td>
                             <td class="py-3 px-6 text-left" v-else>
                                 {{ item.assesor }}
-                            </td>
+                            </td>-->
                         </tr>
                         </tbody>
                     </table>

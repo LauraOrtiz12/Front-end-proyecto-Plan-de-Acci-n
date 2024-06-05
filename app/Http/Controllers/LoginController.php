@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -16,7 +17,16 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        if(strpos($request->email, '@')){
+            $credentials = $request->only('email', 'password');
+        }else{
+            $credentials = [
+                'email' => User::whereCode($request->email)->first()->email,
+                'password' => $request->password,
+            ];
+        }
+
+
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();

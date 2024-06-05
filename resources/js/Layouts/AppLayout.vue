@@ -10,10 +10,7 @@ import NavLink from '@/Components/NavLink.vue';
 defineProps({
     title: String,
 });
-
 // const showingNavigationDropdown = ref(false);
-
-
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
@@ -31,16 +28,11 @@ let menu = window.innerWidth > 768 ? ref(true) : ref(false);
 function toggleMenu() {
     menu.value = !menu.value;
 };
-
 </script>
-
 <template>
     <div>
-
         <Head :title="title"/>
-
         <Banner/>
-
         <div class="min-h-screen bg-gray-100 flex ">
             <div
                 :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto' : 'transparent', 'transition-all fixed w-screen z-10']"
@@ -50,7 +42,7 @@ function toggleMenu() {
                 <Link :href="route('dashboard')">
                     <ApplicationMark class="m-auto h-10 w-auto"/>
                 </Link>
-                <h1 class="font-bold text-primary-default text-center">Plan Anual de Acción</h1>
+                <h1 class="font-bold text-primary-default text-center">Plan de Acción</h1>
                 <div class="flex flex-col gap-4">
                     <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Principal</h1>
                     <NavLink :href="route('dashboard')" :active="route().current('dashboard')"><i
@@ -63,15 +55,13 @@ function toggleMenu() {
                     </NavLink>
                     <NavLink :href="route('listValiditiesControl')" :active="route().current('listValiditiesControl')"
                              v-if="Object.keys($page.props.auth.user.get_estate_indicator_adviser).length > 0"><i
-                        class="fa-solid fa-list-check"></i> Observacion - Seguimiento
+                        class="fa-solid fa-list-check"></i> Observacion - Control
                     </NavLink>
                     <NavLink :href="route('gestionAdvisorOffices')" :active="route().current('gestionAdvisorOffices')"
                              v-if="Object.keys($page.props.auth.user.get_adviser_office).length > 0"><i
                         class="fa-solid fa-list-check"></i> Gestión de Asesor
                     </NavLink>
-
                 </div>
-
                 <div class="flex flex-col gap-4" v-if="$page.props.auth.user.role_id == 1">
                     <h1 class="text-white bg-secondary-900 px-4 py-2">Menú Administración</h1>
                     <NavLink :href="route('listUsers')" :active="route().current('listUsers')"><i
@@ -93,7 +83,6 @@ function toggleMenu() {
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
             </nav>
-
             <main class="transition-all max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col">
                 <div class="flex gap-4 justify-between">
                     <div class="flex gap-4 items-center text-xl">
@@ -114,23 +103,18 @@ function toggleMenu() {
                                 <i class="fa-solid fa-angle-down"></i>
                             </button>
                         </template>
-
                         <template #content>
                             <!-- Account Management -->
                             <div class="block px-4 py-2 text-xs text-gray-400">
                                 Administración
                             </div>
-
                             <DropdownLink :href="route('profile.show')">
                                 Perfil
                             </DropdownLink>
-
                             <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">
                                 API Tokens
                             </DropdownLink>
-
                             <div class="border-t border-gray-200"/>
-
                             <!-- Authentication -->
                             <form @submit.prevent="logout">
                                 <DropdownLink as="button">
@@ -145,7 +129,6 @@ function toggleMenu() {
         </div>
     </div>
 </template>
-
 <style>
 .bg-menu {
     background-color: rgba(0, 0, 0, 0.5);

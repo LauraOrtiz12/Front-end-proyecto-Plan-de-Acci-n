@@ -133,6 +133,8 @@ const closeJustifyOne = () => {
                             <div class="md:col-span-3 mb-2">
                                 <span class="font-bold text-lg">Justificaciones En Proceso</span>
                             </div>
+                            <div class="md:col-span-3 mb-2">
+                                <span class="font-semibold">Mes de Seguimiento: </span>{{fupTwo.month}}</div>
                             <div class="p-2 border border-gray-300 rounded-md bg-white">
                                 <span class="font-semibold block">Indicadores:</span>
                                 <span>{{ fupTwo.justify_estate_indicator }}</span>

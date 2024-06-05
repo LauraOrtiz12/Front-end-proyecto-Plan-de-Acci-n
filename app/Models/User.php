@@ -26,6 +26,7 @@ class User extends Authenticatable
 
     protected $with = ['getEstateIndicatorResponsability', 'getEstateIndicatorAdviser', 'getAdviserOffice'];
     protected $fillable = [
+        'code',
         'name',
         'email',
         'password',

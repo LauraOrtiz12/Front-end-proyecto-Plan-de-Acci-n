@@ -28,8 +28,8 @@ const justifyControl = ref('');
 const columnsTable = [
     {field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true},
     {field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
-    {field: 'get_estate.id', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_indicator', headerName: 'Dependencia', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
     {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
     {field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true},
     {
@@ -182,16 +182,16 @@ const update = (item) => {
                             <th class="py-3 px-6 text-left">Justificación de Indicadores</th>
                             <th class="py-3 px-6 text-left">Justificación Presupuestal</th>
                             <th class="py-3 px-6 text-left">Fecha</th>
-                            <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
+                            <th class="py-3 px-6 text-left">Observación</th>
                         </tr>
                         </thead>
                         <tbody class="text-gray-600 text-sm font-light">
                         <tr v-for="item in followUps" :key="item.id"
                             :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.estate_id }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_indicator }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ item.justify_estate_money }}</td>
-                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ formatDate(item.created_at) }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.estate_id }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_indicator }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}</td>
                             <td class="py-3 px-6 text-left" v-if="item.observation_control == null">
                                 <div class="grid grid-cols-1 gap-3">
                     <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="30" rows="5"
@@ -203,7 +203,7 @@ const update = (item) => {
                                     </button>
                                 </div>
                             </td>
-                            <td class="py-3 px-6 text-left" v-else>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white" v-else>
                                 {{ item.observation_control }}
                             </td>
                         </tr>

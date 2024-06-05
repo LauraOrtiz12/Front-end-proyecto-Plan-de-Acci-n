@@ -22,7 +22,6 @@ const props = defineProps({
 
 const columnsTable = [
     {field: 'cod_reg', headerName: 'Código de Regional', filter: true, floatingFilter: true},
-    {field: 'dependence_control', headerName: 'Dependencia Control / Regional', filter: true, floatingFilter: true},
     {field: 'cod_dep', headerName: 'Código de Dependencia', filter: true, floatingFilter: true},
     {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
     {field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},

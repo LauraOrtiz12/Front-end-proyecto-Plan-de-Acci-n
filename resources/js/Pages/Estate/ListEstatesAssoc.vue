@@ -4,10 +4,8 @@ import {ref, onMounted, defineProps} from 'vue';
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
-import {useForm} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 
-const autoSizeStrategy = ref(null);
 const gridApi = ref();
 const selectorIndicator = ref([]);
 const dataEstates = ref({});
@@ -30,8 +28,8 @@ const columnsTable = [
     {field: 'cod_reg', headerName: 'Código de Regional', filter: true, floatingFilter: true, checkboxSelection: true},
     {field: 'cod_dep', headerName: 'Código de Dependencia', filter: true, floatingFilter: true},
     {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
-    {field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},
-    {field: 'get_adviser.name', headerName: 'Responsable Control', filter: true, floatingFilter: true},
+    //{field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},
+    //{field: 'get_adviser.name', headerName: 'Responsable Control', filter: true, floatingFilter: true},
 ];
 
 const onGridReady = (params) => {
@@ -70,49 +68,30 @@ const save = () => {
                 .then(response => {
                     emit('close');
                 });
-            /*form.post('advisorOffices', {
-                onSuccess: (res) => {
-                    form.reset()
-                    console.log(res)
-                }
-            });*/
-
         }
     });
 }
-
-
 </script>
-
 <template>
-    <div class="card" id="card-assoc">
-
-        <div class="grid grid-cols-1" v-if="dataEstates.length > 0">
-            <div>
-                <ag-grid-vue
-                    :rowData="dataEstates"
-                    :columnDefs="columnsTable"
-                    style="height: 500px"
-                    :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz"
-                    rowSelection="multiple"
-                    @selection-changed="onSelectionChanged"
-                    @grid-ready="onGridReady"
-                >
-                </ag-grid-vue>
-            </div>
-            <div class="p-3">
-                <button v-if="selectorIndicator.length > 0 " @click="save"
-                        class="inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                    <i class="fa-solid fa-save mr-1"></i>
-                    Guardar
-                </button>
-
-
-            </div>
+    <div class="grid grid-cols-1" v-if="dataEstates.length > 0" id="card-assoc">
+        <div class="bg-gray-100">Dependencias</div>
+            <ag-grid-vue
+                :rowData="dataEstates"
+                :columnDefs="columnsTable"
+                style="height: 80vh; width: 100vw"
+                class="ag-theme-quartz"
+                rowSelection="multiple"
+                @selection-changed="onSelectionChanged"
+                @grid-ready="onGridReady"
+            >
+            </ag-grid-vue>
+        <div class="p-3">
+            <button v-if="selectorIndicator.length > 0 " @click="save"
+                    class="inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                <i class="fa-solid fa-save mr-1"></i>
+                Guardar
+            </button>
         </div>
     </div>
-
 </template>
-<style scoped>
-</style>
+
