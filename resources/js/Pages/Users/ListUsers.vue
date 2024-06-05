@@ -59,7 +59,7 @@ const openEditUser = (user) => {
                 Nuevo Usuario
             </button>
             <div class="overflow-auto rounded-md shadow-md w-full" >
-                <table >
+                <table class="w-full min-w-[1248px]">
                     <thead class="bg-secondary-default text-white">
                         <tr>
                             <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
