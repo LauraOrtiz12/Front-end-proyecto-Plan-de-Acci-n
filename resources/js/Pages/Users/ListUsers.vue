@@ -52,14 +52,12 @@ const openEditUser = (user) => {
             <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
 
-        <div class="">
-            <div class="py-6">
+        <div class="flex flex-col gap-4">
                 <button @click="newUserModal = !newUserModal"
-                        class="inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-secondary focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        class="transition-all w-fit ml-auto text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Nuevo Usuario
                 </button>
-            </div>
             <div class="overflow-x-auto rounded-xl shadow-md">
                 <table class="w-full min-w-[970px] overflow-hidden table-fixed">
                     <thead class="bg-secondary-default text-white uppercase text-xs tracking-wider whitespace-nowrap">
