@@ -33,12 +33,12 @@ function toggleMenu() {
     <div>
         <Head :title="title"/>
         <Banner/>
-        <div class="min-h-screen bg-gray-100 flex ">
+        <div class="min-h-screen bg-gray-100 flex">
             <div
                 :class="[menu ? 'bg-menu backdrop-blur-sm h-screen lg:h-auto' : 'transparent', 'transition-all fixed w-screen z-10']"
                 @click="toggleMenu"></div>
             <nav
-                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed shadow-xl flex z-20 transition-all bg-secondary-default w-64 h-screen flex-col gap-4 top-0 overflow-y-auto py-4']">
+                :class="[menu ? 'lg:sticky' : '-translate-x-full', 'fixed shadow-xl flex z-20 transition-all bg-secondary-default min-w-64 w-64 h-screen flex-col gap-4 top-0 overflow-y-auto py-4']">
                 <Link :href="route('dashboard')">
                     <ApplicationMark class="m-auto h-10 w-auto"/>
                 </Link>
@@ -83,7 +83,7 @@ function toggleMenu() {
                 <!-- <img src="assets/images/login-background-overlay.webp" alt=""
                 class="object-cover transition-all duration-1000 absolute w-auto h-20" /> -->
             </nav>
-            <main class="transition-all max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col">
+            <main class="max-w-7xl w-full mx-auto p-4 gap-4 flex flex-col overflow-hidden">
                 <div class="flex gap-4 justify-between">
                     <div class="flex gap-4 items-center text-xl">
                         <button @click="toggleMenu"
