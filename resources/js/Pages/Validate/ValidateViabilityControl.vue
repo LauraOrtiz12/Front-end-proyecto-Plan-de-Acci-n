@@ -1,13 +1,16 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {ref} from 'vue';
-import {router} from "@inertiajs/vue3";
+import { ref } from 'vue';
+import { router } from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
 import Swal from "sweetalert2";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import {AgGridVue} from "ag-grid-vue3";
+import { AgGridVue } from "ag-grid-vue3";
+
+
+const pageTitle = "Vigencia (Seguimiento)";
 
 const props = defineProps({
     followUp: Object,
@@ -30,26 +33,26 @@ const gridApi = ref();
 
 
 const columnsTable = [
-    {field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true},
-    {field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
-    {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true},
+    { field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true },
+    { field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true },
+    { field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true },
     {
         field: 'get_indicator.name_indicator_strategy',
         headerName: 'Indicador Estrategico',
         filter: true,
         floatingFilter: true
     },
-    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
-    {field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true},
+    { field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true },
+    { field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true },
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
             return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
         }
     },
-    {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
+    { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
 ];
 
 const formatDate = (setDate) => {
@@ -61,14 +64,14 @@ const formatDate = (setDate) => {
     let minutos = fechaObjeto.getMinutes();
     let segundos = fechaObjeto.getSeconds();
 
-// Formatear el resultado como "año-mes-día hora:minutos:segundos"
+    // Formatear el resultado como "año-mes-día hora:minutos:segundos"
     let formato = `${año}-${mes < 10 ? '0' + mes : mes}-${dia < 10 ? '0' + dia : dia} ${hora < 10 ? '0' + hora : hora}:${minutos < 10 ? '0' + minutos : minutos}:${segundos < 10 ? '0' + segundos : segundos}`;
     return formato;
 }
 
 const loadViabilityControl = () => {
     const adviser = props.user.get_estate_indicator_adviser.map(res => res.id);
-    axios.get('getDataAdviser', {params: {validity: validity.value, adviser: adviser}})
+    axios.get('getDataAdviser', { params: { validity: validity.value, adviser: adviser } })
         .then((response) => {
             estateIndicatorsAdviser.value = response.data.indicator;
             followUps.value = response.data.followups;
@@ -112,7 +115,7 @@ const update = (item) => {
         target: "#justifyForModal"
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('updateFollowUp', {id: item.id, observation_control: text})
+            axios.post('updateFollowUp', { id: item.id, observation_control: text })
                 .then((response) => {
                     loadViabilityControl();
                     Swal.fire({
@@ -136,31 +139,30 @@ const onGridReady = (params) => {
 }
 const onBtExport = () => {
 
-    gridApi.value.exportDataAsCsv({columnSeparator: "&"});
+    gridApi.value.exportDataAsCsv({ columnSeparator: "&" });
 }
 </script>
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Vigencia (Seguimiento)</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{ pageTitle }}</h1>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="flex items-center">
-                <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img
-                    src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
-                <select
-                    class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                    name="viability" id="viability" v-model="validity">
+            <div class="flex items-center gap-4">
+                <h1 class="text-secondary-default font-bold"><i class="fa-regular fa-calendar-days"></i> Vigencia</h1>
+                <select placeholder="Seleccione una fecha" class="rounded-md" name="viability" id="viability"
+                    v-model="validity">
+                    <option value="" disabled selected>Seleccione el año</option>
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
                 <button @click="loadViabilityControl"
-                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                        v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
+                    class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
+                    v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                     Validar
                 </button>
             </div>
             <div class="flex flex-wrap lg:flex-nowrap gap-3 shadow p-3 rounded-md bg-white"
-                 v-if="$page.props.auth.user.role_id == 3 || $page.props.auth.user.role_id == 4">
+                v-if="$page.props.auth.user.role_id == 3 || $page.props.auth.user.role_id == 4">
                 <div>
                     <h3 class="text-lg font-medium text-gray-900">Información de Usuario</h3>
                 </div>
@@ -186,32 +188,32 @@ const onBtExport = () => {
                     </div>
                 </dl>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto">
-                <div>
-                    <table class="table-auto">
-                        <thead>
-                        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                            <th class="py-3 px-6 text-left">Cod Dependencia</th>
-                            <th class="py-3 px-6 text-left">Justificación de Indicadores</th>
-                            <th class="py-3 px-6 text-left">Justificación Presupuestal</th>
-                            <th class="py-3 px-6 text-left">Fecha</th>
-                            <th class="py-3 px-6 text-left">Observación</th>
+            <div class="rounded-md overflow-x-auto">
+                <table class="table-auto w-full">
+                    <thead>
+                        <tr class="bg-secondary-default text-white">
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Cod Dependencia</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-lines"></i> Justificación de Indicadores</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-invoice-dollar"></i> Justificación Presupuestal</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-regular fa-calendar-days"></i> Fecha</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-comment-dots"></i> Observación</th>
                         </tr>
-                        </thead>
-                        <tbody class="text-gray-600 text-sm font-light">
-                        <tr v-for="item in followUps" :key="item.id"
-                            :class="{ 'bg-gray-100': item.status === 'Activo' }">
+                    </thead>
+                    <tbody class="text-gray-600 text-sm font-light">
+                        <tr v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
                             <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.estate_id }}</td>
-                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_indicator }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_indicator }}
+                            </td>
                             <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}</td>
-                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}</td>
+                            <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}
+                            </td>
                             <td class="py-3 px-6 text-left" v-if="item.observation_control == null">
                                 <div class="grid grid-cols-1 gap-3">
-                    <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="30" rows="5"
-                              class="w-full px-3 py-2 border rounded-md"></textarea>
+                                    <textarea :name="`updateJustify` + item.id" :id="`updateJustify` + item.id" cols="30"
+                                        rows="5" class="w-full px-3 py-2 border rounded-md"></textarea>
                                     <button @click="update(item)"
-                                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                            v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
+                                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                        v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                                         Guardar
                                     </button>
                                 </div>
@@ -220,37 +222,30 @@ const onBtExport = () => {
                                 {{ item.observation_control }}
                             </td>
                         </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
+
             <div class="w-full mt-4"
-                 v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+                v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
 
                 <div>
                     <button @click="onBtExport"
-                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                    >
+                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
                     </button>
                 </div>
                 Indicadores
                 <div class="grid grid-cols-1 gap-2">
-                    <ag-grid-vue
-                        :rowData="estateIndicatorsAdviser"
-                        :columnDefs="columnsTable"
-                        style=""
-                        class="ag-theme-quartz h-screen"
-                        rowSelection="multiple"
-                        @selection-changed="onSelectionChanged"
-                        @grid-ready="onGridReady"
-                    >
+                    <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
+                        class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                        @grid-ready="onGridReady">
                     </ag-grid-vue>
                 </div>
             </div>
             <Modal :show="showModalJustifyOne" maxWidth="w-full" :closeable="true">
                 <JusitfyEstateValidity :viability="validity" :estates="estates" :followUp="followUp" :cicle="cicle"
-                                       @close="closeJustifyOne"></JusitfyEstateValidity>
+                    @close="closeJustifyOne"></JusitfyEstateValidity>
             </Modal>
         </div>
     </AppLayout>
