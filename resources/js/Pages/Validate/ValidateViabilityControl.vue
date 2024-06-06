@@ -190,8 +190,8 @@ const onBtExport = () => {
             </div>
             <div class="rounded-md overflow-x-auto">
                 <table class="table-auto w-full">
-                    <thead>
-                        <tr class="bg-secondary-default text-white">
+                    <thead class="bg-secondary-default text-white   ">
+                        <tr>
                             <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Cod Dependencia</th>
                             <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-lines"></i> Justificación de Indicadores</th>
                             <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-invoice-dollar"></i> Justificación Presupuestal</th>

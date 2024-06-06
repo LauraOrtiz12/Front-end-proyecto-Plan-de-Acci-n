@@ -8,17 +8,20 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
 
+
+
 defineProps({
     followUp: Object,
     viability: Object,
     estates: Object,
     estatesControl: Object
-});
-
-const validity = ref('');
-const estateIndicators = ref([]);
-const estateIndicatorsAdviser = ref([]);
-const followUp = ref({});
+    });
+    
+    const pageTitle ="Validar Vigencia";
+    const validity = ref('');
+    const estateIndicators = ref([]);
+    const estateIndicatorsAdviser = ref([]);
+    const followUp = ref({});
 const showModalJustifyOne = ref(false);
 const cicle = ref(1);
 const selectSaveJustify = ref(0);
@@ -80,9 +83,9 @@ const onBtExport = () => {
 }
 </script>
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-4">
