@@ -85,16 +85,16 @@ const onBtExport = () => {
             <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia</h1>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="flex items-center">
-                <span class="flex items-center mr-2 bg-secondary-default px-3 py-1 rounded-lg text-white"><img
-                    src="assets/images/vigencia.webp" alt="" width="35px">Vigencia</span>
+            <div class="flex items-center gap-4">
+                <h1 class="text-secondary-default font-bold"><i class="fa-regular fa-calendar-days"></i> Vigencia</h1>
                 <select
-                    class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    class="rounded-md"
                     name="viability" id="viability" v-model="validity">
+                    <option value="" disabled selected>Seleccione el año</option>
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
                 <button @click="loadViabilityControl"
-                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                        class="mtransition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
                         v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                     Validar
                 </button>

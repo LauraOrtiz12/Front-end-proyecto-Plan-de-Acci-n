@@ -150,7 +150,7 @@ const onBtExport = () => {
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-4">
                 <h1 class="text-secondary-default font-bold"><i class="fa-regular fa-calendar-days"></i> Vigencia</h1>
-                <select placeholder="Seleccione una fecha" class="rounded-md" name="viability" id="viability"
+                <select class="rounded-md" name="viability" id="viability"
                     v-model="validity">
                     <option value="" disabled selected>Seleccione el año</option>
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
