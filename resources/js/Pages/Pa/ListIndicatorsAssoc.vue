@@ -7,6 +7,7 @@ import {ref} from 'vue';
 import {AgGridVue} from "ag-grid-vue3";
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
+import Tab from "@/Components/Tab.vue";
 
 const props = defineProps({
     indicators: Object,
@@ -23,6 +24,7 @@ const fileImport = ref(null);
 const indicators = ref([]);
 const selectIndicatorTable = ref([]);
 const selectIndicatorTableTwo = ref([]);
+const selectIndicatorMoney = ref();
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
@@ -65,6 +67,19 @@ const columnsTableAssoc = [
     {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
 ];
 
+const columnsTableAssocMoney = [
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
+    {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
+    {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
+    {field: 'open_money', headerName: 'Apertura', filter: true, floatingFilter: true},
+    {field: 'commitment', headerName: 'Apertura', filter: true, floatingFilter: true},
+    {field: 'payments', headerName: 'Pagos', filter: true, floatingFilter: true},
+    {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
+    {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
+    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
+];
+
 const onSelectionChanged = (data) => {
     let selected = gridApi.value.getSelectedRows();
     selectorIndicator.value = [];
@@ -95,7 +110,11 @@ const getIndicators = () => {
                 }
                 estateValidator.value = true;
             });
-    })
+    });
+
+    axios.get('/getIndicatorsMoney', {params: {validity: validity.value, estate_id: props.estate.cod_dep}}).then(response => {
+        selectIndicatorMoney.value = response.data;
+    });
 }
 
 const save = () => {
@@ -167,16 +186,32 @@ const importFile = () => {
                 </button>
 
                 <div class="py-6 px-2 section-title">Asignados</div>
-                <div class="ag-grid-section px-2 mb-6">
-                    <ag-grid-vue
-                        :rowData="selectIndicatorTableTwo"
-                        :columnDefs="columnsTableAssoc"
-                        class="ag-theme-quartz h-64"
-                        rowSelection="multiple"
-                        @selection-changed="onSelectionChanged"
-                        @grid-ready="onGridReady">
-                    </ag-grid-vue>
-                </div>
+                <Tab>
+                    <template #t1>
+                        <div class="ag-grid-section px-2 mb-6">
+                            <ag-grid-vue
+                                :rowData="selectIndicatorTableTwo"
+                                :columnDefs="columnsTableAssoc"
+                                class="ag-theme-quartz h-64"
+                                rowSelection="multiple"
+                                @selection-changed="onSelectionChanged"
+                                @grid-ready="onGridReady">
+                            </ag-grid-vue>
+                        </div>
+                    </template>
+                    <template #t2>
+                        <div class="ag-grid-section px-2 mb-6">
+                            <ag-grid-vue
+                                :rowData="selectIndicatorMoney"
+                                :columnDefs="columnsTableAssocMoney"
+                                class="ag-theme-quartz h-64"
+                                rowSelection="multiple"
+                                @selection-changed="onSelectionChanged"
+                                @grid-ready="onGridReady">
+                            </ag-grid-vue>
+                        </div>
+                    </template>
+                </Tab>
 
                 <div class="py-6 px-2 section-title">Por Asignar</div>
                 <div class="ag-grid-section px-2">
