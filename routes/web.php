@@ -69,6 +69,10 @@ Route::middleware([
         Route::get('getIndicators', 'getAll')->name('getIndicators');
     });
 
+    Route::controller(\App\Http\Controllers\IndicatorMoneyController::class)->group(function () {
+        Route::get('getIndicatorsMoney', 'index')->name('getIndicatorsMoney');
+    });
+
     Route::controller(\App\Http\Controllers\AdvisorOfficesController::class)->group(function(){
         Route::get('gestionAdvisorOffices', 'index')->name('gestionAdvisorOffices');
         Route::post('advisorOffices', 'store')->name('advisorOffices');

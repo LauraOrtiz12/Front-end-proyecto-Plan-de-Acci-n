@@ -5,11 +5,13 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import { AgGridVue } from "ag-grid-vue3";
 import ButtonAction from "@/Components/ButtonAction.vue";
+import Tab from "@/Components/Tab.vue";
 
 const pageTitle = "Listar Indicadores";
 
 const props = defineProps({
     indicators: Object,
+    indicatorMoney: Object
 });
 
 const columnsTable = [
@@ -23,18 +25,29 @@ const columnsTable = [
     { field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
     { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
 ];
+
+const columnsTableMoney = [
+    { field: 'siif', headerName: 'SIIF', filter: true, floatingFilter: true },
+    { field: 'project_id', headerName: 'Código Proyecto', filter: true, floatingFilter: true },
+    { field: 'project', headerName: 'Proyecto', filter: true, floatingFilter: true },
+];
 </script>
 <template>
     <AppLayout :title="pageTitle">
         <template #header>
             <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <div class="py-6 px-2">
-                <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable" style=""
-                    class="ag-theme-quartz h-screen">
+        <Tab class="w-100">
+            <template #t1>
+                <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable" style="height: 90vh;"
+                             class="ag-theme-quartz" >
                 </ag-grid-vue>
-            </div>
-        </div>
+            </template>
+            <template #t2>
+                <ag-grid-vue :rowData="$page.props.indicatorMoney" :columnDefs="columnsTableMoney" style="height: 90vh;"
+                             class="ag-theme-quartz" >
+                </ag-grid-vue>
+            </template>
+        </Tab>
     </AppLayout>
 </template>

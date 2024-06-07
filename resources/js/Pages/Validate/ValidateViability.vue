@@ -7,10 +7,9 @@ import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
+import Tab from "@/Components/Tab.vue";
 
-
-
-defineProps({
+const props = defineProps({
     followUp: Object,
     viability: Object,
     estates: Object,
@@ -27,9 +26,10 @@ const cicle = ref(1);
 const selectSaveJustify = ref(0);
 const selectFollow = ref({});
 const gridApi = ref();
+const gridApiMoney = ref();
+const selectIndicatorMoney = ref();
 
 const columnsTable = [
-
     {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
     {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
     {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
@@ -50,6 +50,18 @@ const columnsTable = [
     {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
 ];
 
+const columnsTableAssocMoney = [
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
+    {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
+    {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
+    {field: 'open_money', headerName: 'Apertura', filter: true, floatingFilter: true},
+    {field: 'commitment', headerName: 'Apertura', filter: true, floatingFilter: true},
+    {field: 'payments', headerName: 'Pagos', filter: true, floatingFilter: true},
+    {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
+    {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
+    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
+];
 const loadViabilityControl = () => {
     axios.get('estateIndicatorsAdviser', {params: {validity: validity.value}})
         .then((response) => estateIndicatorsAdviser.value = response.data)
@@ -59,6 +71,10 @@ const loadViabilityControl = () => {
 
     axios.get('getFollowUp', {params: {validity: validity.value}})
         .then((response) => followUp.value = response.data);
+
+    axios.get('/getIndicatorsMoney', {params: {validity: validity.value, estate_id: props.estates.id }}).then(response => {
+        selectIndicatorMoney.value = response.data;
+    });
 }
 
 const goJustify = (item) => {
@@ -77,15 +93,18 @@ const closeJustifyOne = () => {
 const onGridReady = (params) => {
     gridApi.value = params.api;
 }
-const onBtExport = () => {
 
+const onGridReadyMoney = (params) => {
+    gridApiMoney.value = params.api;
+}
+const onBtExport = () => {
     gridApi.value.exportDataAsCsv({columnSeparator: "&"});
 }
 </script>
 <template>
     <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia - {{estates.id}}</h1>
         </template>
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-4">
@@ -163,11 +182,8 @@ const onBtExport = () => {
             </div>
             <div class="mt-3 rounded-md shadow overflow-x-auto"
                  v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-
-
                 <div class="mt-3 rounded-md shadow overflow-x-auto"
                      v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-
                     <div class="w-full py-4 my-4" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
                         <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3"
                              class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
@@ -193,24 +209,43 @@ const onBtExport = () => {
                     </div>
                 </div>
 
-                <div>
-                    <button @click="onBtExport"
-                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                    >
-                        <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
-                    </button>
-                </div>
+                <Tab>
+                    <template #t1>
+                        <div>
+                            <button @click="onBtExport"
+                                    class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                            >
+                                <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
+                            </button>
+                        </div>
+                        <ag-grid-vue
+                            :rowData="estateIndicators"
+                            :columnDefs="columnsTable"
+                            style=""
+                            class="ag-theme-quartz h-screen"
+                            rowSelection="multiple"
 
-                <ag-grid-vue
-                    :rowData="estateIndicators"
-                    :columnDefs="columnsTable"
-                    style=""
-                    class="ag-theme-quartz h-screen"
-                    rowSelection="multiple"
+                            @grid-ready="onGridReady"
+                        >
+                        </ag-grid-vue>
+                    </template>
+                    <template #t2>
+                        <div class="ag-grid-section px-2 mb-6">
+                            <ag-grid-vue
+                                :rowData="selectIndicatorMoney"
+                                :columnDefs="columnsTableAssocMoney"
+                                class="ag-theme-quartz h-64"
+                                rowSelection="multiple"
+                                @selection-changed="onSelectionChanged"
+                                @grid-ready="onGridReady">
+                            </ag-grid-vue>
+                        </div>
+                    </template>
+                </Tab>
 
-                    @grid-ready="onGridReady"
-                >
-                </ag-grid-vue>
+
+
+
 
             </div>
             <div class="w-full mt-4"

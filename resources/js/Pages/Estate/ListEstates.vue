@@ -1,7 +1,7 @@
 <script setup>
 
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {ref, onMounted} from 'vue';
+import {ref, onBeforeMount} from 'vue';
 import ButtonAction from "@/Components/ButtonAction.vue";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
@@ -24,13 +24,25 @@ const props = defineProps({
 });
 
 const columnsTable = [
-    {field: 'cod_reg', headerName: 'Código de Regional', filter: true, floatingFilter: true},
-    {field: 'cod_dep', headerName: 'Código de Dependencia', filter: true, floatingFilter: true},
-    {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
+    {field: 'cod_reg', headerName: 'Código de Regional', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 100},
+    {field: 'cod_dep', headerName: 'Código de Dependencia', filter: true, floatingFilter: true, width: 150},
+    {field: 'dependence', headerName: 'Dependencia', filter: true, floatingFilter: true, suppressSizeToFit: true},
     {field: 'get_responsible.name', headerName: 'Responsable', filter: true, floatingFilter: true},
     {field: 'get_adviser.name', headerName: 'Responsable Control', filter: true, floatingFilter: true},
     {field: 'id', headerName: 'Acciones', cellRenderer: ButtonAction},
 ];
+
+const defaultColDef = ref({
+    initialWidth: 200,
+    wrapHeaderText: true,
+    autoHeaderHeight: true,
+});
+
+onBeforeMount(() => {
+    autoSizeStrategy.value = {
+        type: "fitCellContents",
+    };
+});
 
 const viewForm = ref(false);
 const form = useForm({
@@ -179,7 +191,9 @@ const importFile = () => {
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz h-screen"
+                    class="ag-theme-quartz"
+                    :defaultColDef="defaultColDef"
+                    style="height: 85vh;"
                 >
                 </ag-grid-vue>
             </div>
