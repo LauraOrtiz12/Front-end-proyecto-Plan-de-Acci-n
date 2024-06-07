@@ -38,4 +38,18 @@ class EstateIndicatorController extends Controller
 
     }
 
+    public function estateIndicatorUpdateDep(Request $request){
+        $request->validate([
+            'id' => 'required',
+            'execution_goals' => 'required',
+        ]);
+        $update = EstateIndicator::where('id', $request->id)->update([
+            'execution_goals' => $request->execution_goals
+        ]);
+        if($update)
+            return response()->json(true, 201);
+        return response()->json(false, 200);
+
+    }
+
 }

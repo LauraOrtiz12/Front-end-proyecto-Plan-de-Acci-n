@@ -19,8 +19,8 @@ const form = ref({
     estate_indicator_id: props.followUp.estate_id,
     validity_id: props.followUp.validity_id,
     cicle: parseInt(props.followUp.cicle) + 1,
-    justify_estate_indicator: null,
-    justify_estate_money: null,
+    justify_estate_indicator: props.followUp.justify_estate_indicator,
+    justify_estate_money: props.followUp.justify_estate_money,
 });
 
 const closeEmit = () => {

@@ -8,6 +8,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import {AgGridVue} from "ag-grid-vue3";
 import Tab from "@/Components/Tab.vue";
+import Swal from "sweetalert2";
 
 const props = defineProps({
     followUp: Object,
@@ -16,11 +17,11 @@ const props = defineProps({
     estatesControl: Object
     });
 
-    const pageTitle ="Validar Vigencia";
-    const validity = ref('');
-    const estateIndicators = ref([]);
-    const estateIndicatorsAdviser = ref([]);
-    const followUp = ref({});
+const pageTitle ="Validar Vigencia";
+const validity = ref('');
+const estateIndicators = ref([]);
+const estateIndicatorsAdviser = ref([]);
+const followUp = ref({});
 const showModalJustifyOne = ref(false);
 const cicle = ref(1);
 const selectSaveJustify = ref(0);
@@ -28,6 +29,22 @@ const selectFollow = ref({});
 const gridApi = ref();
 const gridApiMoney = ref();
 const selectIndicatorMoney = ref();
+const depEditing = [
+    1010,
+    1011,
+    1012,
+    1013,
+    1023,
+    1032,
+    2020,
+    3030,
+    4040,
+    5050,
+    6060,
+    7070,
+    8080,
+]
+const editingGoal = ref(depEditing.includes(props.estates.id))
 
 const columnsTable = [
     {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
@@ -41,7 +58,7 @@ const columnsTable = [
         floatingFilter: true
     },
     {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
-    {field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true},
+    {field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true, editable: editingGoal.value, cellStyle: {color: 'black', 'background-color': '#5D86B4'}},
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
             return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
@@ -99,6 +116,22 @@ const onGridReadyMoney = (params) => {
 }
 const onBtExport = () => {
     gridApi.value.exportDataAsCsv({columnSeparator: "&"});
+}
+
+const editingGoalExec = (e) => {
+    console.log(e.newValue);
+    const form = {
+        id: e.data.id,
+        execution_goals: e.newValue
+    };
+    axios.post('estateIndicatorsDep', form).then(response => {
+        Swal.fire({
+            title: "Actualización?",
+            text: "Actualización Realizada con Exito",
+            icon: "success"
+        });
+        loadViabilityControl();
+    })
 }
 </script>
 <template>
@@ -220,7 +253,10 @@ const onBtExport = () => {
                             style=""
                             class="ag-theme-quartz h-screen"
                             rowSelection="multiple"
-
+                            @cell-edit-request="editingGoalExec"
+                            :enterNavigatesVertically="true"
+                            :enterNavigatesVerticallyAfterEdit="true"
+                            :readOnlyEdit="true"
                             @grid-ready="onGridReady"
                         >
                         </ag-grid-vue>

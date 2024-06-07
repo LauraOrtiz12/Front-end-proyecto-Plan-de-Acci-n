@@ -129,17 +129,42 @@ const update = (item) => {
                 });
         }
     });
-
-
-
 };
 
 const onGridReady = (params) => {
     gridApi.value = params.api;
 }
 const onBtExport = () => {
-
     gridApi.value.exportDataAsCsv({ columnSeparator: "&" });
+}
+
+const rollBackSave = (item) => {
+    Swal.fire({
+        title: "Aviso Importante?",
+        text: "Está usted Seguro!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si!",
+        cancelButtonText: "Cancelar",
+        target: "#justifyForModal"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.post('updateFollowUpState', { id: item.id, cicle: 1 })
+                .then((response) => {
+                    loadViabilityControl();
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Se ha actualizado correctamente: ',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Cerrar',
+                        target: "#justifyForModal"
+                    })
+                });
+        }
+    });
 }
 </script>
 <template>
@@ -207,14 +232,17 @@ const onBtExport = () => {
                             <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}</td>
                             <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}
                             </td>
-                            <td class="py-3 px-6 text-left" v-if="item.observation_control == null">
+                            <td class="py-3 px-6 text-left" v-if="item.cicle == 2">
                                 <div class="grid grid-cols-1 gap-3">
                                     <textarea :name="`updateJustify` + item.id" :id="`updateJustify` + item.id" cols="30"
-                                        rows="5" class="w-full px-3 py-2 border rounded-md"></textarea>
+                                        rows="5" class="w-full px-3 py-2 border rounded-md">{{item.observation_control == null ? '' : item.observation_control}}</textarea>
                                     <button @click="update(item)"
                                         class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
                                         v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                                         Guardar
+                                    </button>
+                                    <button @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                        No Validar
                                     </button>
                                 </div>
                             </td>

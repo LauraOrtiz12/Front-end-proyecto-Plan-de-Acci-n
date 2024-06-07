@@ -50,6 +50,7 @@ Route::middleware([
         Route::get('estateIndicators', 'show')->name('estateIndicators');
         Route::get('estateIndicatorsAdmin', 'showAdmin')->name('estateIndicatorsAdmin');
         Route::get('estateIndicatorsAdviser', 'showControl')->name('estateIndicatorsAdviser');
+        Route::post('estateIndicatorsDep', 'estateIndicatorUpdateDep')->name('estateIndicatorsDep');
     });
 
     Route::controller(EstateIndicatorJustifyController::class)->group(function () {
@@ -83,6 +84,7 @@ Route::middleware([
         Route::get('getFollowUp/{validity?}', 'show')->name('getFollowUp');
         Route::post('setFollowUp', 'store')->name('setFollowUp');
         Route::post('updateFollowUp', 'storeUpdate')->name('updateFollowUp');
+        Route::post('updateFollowUpState', 'storeUpdateState')->name('updateFollowUpState');
         Route::post('createFollowUp', 'createFollowUp')->name('createFollowUp');
         Route::get('showCreateFollowUp', 'showCreateFollowUp')->name('showCreateFollowUp');
         Route::get('consultFollowUp', 'consultFollowUp')->name('consultFollowUp');

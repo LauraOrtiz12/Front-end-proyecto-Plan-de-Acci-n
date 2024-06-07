@@ -60,6 +60,20 @@ class FollowUpController extends Controller
 
     }
 
+    public function storeUpdateState(Request $request)
+    {
+        $request->validate([
+            "id" => 'required',
+            "cicle" => 'required',
+        ]);
+        $insert = FollowUp::where('id', $request->id)->update([
+            'cicle' => $request->cicle,
+        ]);
+        return Inertia::share('success', 'Se ha actualizado correctamente.\n Codigo: ' . $request->id);
+    }
+
+
+
     public function showCreateFollowUp(Request $request)
     {
         $props = [

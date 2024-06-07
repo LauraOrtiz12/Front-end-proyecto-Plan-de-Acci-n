@@ -101,6 +101,35 @@ const update = (item) => {
         }
     });
 }
+
+const rollBackSave = (item) => {
+    Swal.fire({
+        title: "Aviso Importante?",
+        text: "Está usted Seguro!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si!",
+        cancelButtonText: "Cancelar",
+        target: "#justifyForModal"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.post('updateFollowUpState', { id: item.id, cicle: 2 })
+                .then((response) => {
+                    consult();
+                    Swal.fire({
+                        title: 'Éxito',
+                        text: 'Se ha actualizado correctamente: ',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Cerrar',
+                        target: "#justifyForModal"
+                    })
+                });
+        }
+    });
+}
 </script>
 <template>
     <AppLayout :title="pageTitle">
@@ -130,7 +159,7 @@ const update = (item) => {
                         <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-invoice-dollar"></i> Justificación Presupuestal</th>
                         <th class="text-left px-4 py-3 text-nowrap"><i class="fa-regular fa-calendar-days"></i> Fecha</th>
                         <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
-                        <!--<th class="py-3 px-6 text-left">Asesor</th>-->
+                        <th class="py-3 px-6 text-left">Asesor</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-600 text-sm font-light">
@@ -143,6 +172,11 @@ const update = (item) => {
                         <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}
                         </td>
                         <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.observation_control }}
+                        </td>
+                        <td class="py-3 px-6 text-left">
+                            <button @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                No Validar
+                            </button>
                         </td>
                         <!--<td class="py-3 px-6 text-left" v-if="item.assesor == null">
                                 <div class="grid grid-cols-1 gap-3">
