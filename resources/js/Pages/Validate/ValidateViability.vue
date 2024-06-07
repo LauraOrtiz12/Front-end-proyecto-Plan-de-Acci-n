@@ -251,7 +251,7 @@ const editingGoalExec = (e) => {
                             :rowData="estateIndicators"
                             :columnDefs="columnsTable"
                             style=""
-                            class="ag-theme-quartz h-screen"
+                            class="ag-theme-quartz h-fit"
                             rowSelection="multiple"
                             @cell-edit-request="editingGoalExec"
                             :enterNavigatesVertically="true"
