@@ -15,7 +15,7 @@ const props = defineProps({
     estates: Object,
     estatesControl: Object
     });
-    
+
     const pageTitle ="Validar Vigencia";
     const validity = ref('');
     const estateIndicators = ref([]);
@@ -180,13 +180,10 @@ const onBtExport = () => {
             <div v-else class="text-center bg-white mt-1">
                 <span>No Tiene Asociado una dependencia</span>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto"
-                 v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-                <div class="mt-3 rounded-md shadow overflow-x-auto"
-                     v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-                    <div class="w-full py-4 my-4" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3"
-                             class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
+            <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                    <div :class="['w-full py-4 my-4']" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
+                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3" class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
                             <div class="md:col-span-3 mb-2">
                                 <span class="font-bold text-lg">Justificaciones En Proceso</span>
                             </div>
@@ -208,7 +205,6 @@ const onBtExport = () => {
                         </div>
                     </div>
                 </div>
-
                 <Tab>
                     <template #t1>
                         <div>
