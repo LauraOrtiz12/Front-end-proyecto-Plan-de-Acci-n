@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Estate;
 use App\Models\EstateIndicator;
 use App\Models\EstateIndicatorSave;
+use App\Models\FollowClose;
 use App\Models\FollowUp;
 use App\Models\IndicatorMoney;
 use App\Models\IndicatorMoneySave;
@@ -173,14 +174,22 @@ ON m.month = f.month AND c.cycle = f.cycle
             'validity_id' =>'required',
             'month' => 'required'
         ]);
+        $now = date('Y-m-d H:m:s');
+        $close = new FollowClose();
+        $close->user_id = Auth::user()->id;
+        $close->validity_id = $request->validity_id;
+        $close->created_at = $now;
+        $close->updated_at = $now;
+        $close->save();
+
         $chunkSize = 1000;
-        DB::transaction(function () use ($chunkSize, $request) {
-            EstateIndicator::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($estateInd) {
+        DB::transaction(function () use ($chunkSize, $request, $close, $now) {
+            EstateIndicator::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($estateInd) use ($close, $now) {
                 $save = [];
-                $now = date('Y-m-d H:m:s');
                 foreach ($estateInd as $estate) {
                     $save[] = [
                         'validity_id' => $estate->validity_id,
+                        'follow_close_id' => $close->id,
                         'estate_id' => $estate->estate_id,
                         'indicator_id' => $estate->indicator_id,
                         'month' => $estate->month,
@@ -196,13 +205,13 @@ ON m.month = f.month AND c.cycle = f.cycle
             });
         });
 
-        DB::transaction(function () use ($chunkSize, $request) {
-            IndicatorMoney::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($indicatorMoney) {
+        DB::transaction(function () use ($chunkSize, $request, $close, $now) {
+            IndicatorMoney::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($indicatorMoney) use ($close, $now) {
                 $save = [];
-                $now = date('Y-m-d H:m:s');
                 foreach ($indicatorMoney as $money) {
                     $save[] = [
                         'validity_id' => $money->validity_id,
+                        'follow_close_id' => $close->id,
                         'estate_id' => $money->estate_id,
                         'siif' => $money->siif,
                         'project_id' => $money->project_id,

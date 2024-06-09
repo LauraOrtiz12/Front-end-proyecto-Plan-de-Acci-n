@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('indicator_money_saves', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('follow_close_id')->constrained();
             $table->foreignId('validity_id')->constrained();
             $table->foreignId('estate_id')->constrained();
             $table->string('siif', 10);
