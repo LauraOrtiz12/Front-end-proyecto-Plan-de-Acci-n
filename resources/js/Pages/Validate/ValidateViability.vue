@@ -15,9 +15,9 @@ const props = defineProps({
     viability: Object,
     estates: Object,
     estatesControl: Object
-    });
+});
 
-const pageTitle ="Validar Vigencia";
+const pageTitle = "Validar Vigencia";
 const validity = ref('');
 const estateIndicators = ref([]);
 const estateIndicatorsAdviser = ref([]);
@@ -43,32 +43,49 @@ const depEditing = [
     6060,
     7070,
     8080,
-]
-const editingGoal = ref(depEditing.includes(props.estates.id))
+];
+const editingGoal = ref(depEditing.includes(props.estates.id));
+if(editingGoal.value){
+    const defaultColDef = ref({
+        field: 'execution_goals',
+        editable: true,
+    });
+}
 
-const columnsTable = [
+
+const columnsTable = ref([
     {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
     {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
     {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true},
+    {field: 'get_indicator.objective_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true},
     {
-        field: 'get_indicator.name_indicator_strategy',
+        field: 'get_indicator.indicator_strategy',
         headerName: 'Indicador Estrategico',
         filter: true,
         floatingFilter: true
     },
     {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
-    {field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true, editable: editingGoal.value, cellStyle: {color: 'black', 'background-color': '#5D86B4'}},
+    {
+        field: 'execution_goals',
+        headerName: 'Ejecución Meta',
+        filter: true,
+        floatingFilter: true,
+        //editable: editingGoal.value,
+        cellStyle: params => {
+            if (editingGoal.value === true)
+                return {color: 'black', 'background-color': '#5D86B4'}
+            return null
+        }
+    },
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
             return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
         }
     },
-    {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
-];
+]);
 
 const columnsTableAssocMoney = [
-    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true},
     {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
     {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
     {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
@@ -77,7 +94,6 @@ const columnsTableAssocMoney = [
     {field: 'payments', headerName: 'Pagos', filter: true, floatingFilter: true},
     {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
     {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
-    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
 ];
 const loadViabilityControl = () => {
     axios.get('estateIndicatorsAdviser', {params: {validity: validity.value}})
@@ -87,9 +103,23 @@ const loadViabilityControl = () => {
         .then((response) => estateIndicators.value = response.data);
 
     axios.get('getFollowUp', {params: {validity: validity.value}})
-        .then((response) => followUp.value = response.data);
+        .then((response) => {
+            followUp.value = response.data;
+            for(let fp in followUp.value)
+                if(followUp.value[fp].cicle != 1 ){
+                    defaultColDef.value ={
+                        field: 'execution_goals',
+                        editable: false,
+                    }
+                }
+        });
 
-    axios.get('/getIndicatorsMoney', {params: {validity: validity.value, estate_id: props.estates.id }}).then(response => {
+    axios.get('/getIndicatorsMoney', {
+        params: {
+            validity: validity.value,
+            estate_id: props.estates.id
+        }
+    }).then(response => {
         selectIndicatorMoney.value = response.data;
     });
 }
@@ -137,7 +167,7 @@ const editingGoalExec = (e) => {
 <template>
     <AppLayout :title="pageTitle">
         <template #header>
-            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia - {{estates.id}}</h1>
+            <h1 class="font-semibold text-xl text-secondary-default my-auto">Validar Vigencia - {{ estates.id }}</h1>
         </template>
         <div class="flex flex-col gap-4">
             <div class="flex items-center gap-4">
@@ -200,10 +230,13 @@ const editingGoalExec = (e) => {
                             <div class="bg-gray-100 rounded-md px-5 py-4 grid md:grid-cols-3 gap-3 overflow-hidden">
                                 <dt class="text-sm font-medium text-gray-800"></dt>
                                 <dd class="mt-1 text-sm text-gray-500 sm:col-span-2">
-                                    <button @click="openJustifyOne(fup)" v-if="fup.cicle == 1"
+                                    <button @click="openJustifyOne(fup)" v-if="fup.cicle == 1 && fup.status == 'Activo'"
                                             class="hover:bg-primary-default hover:text-white text-primary-default border border-primary-default font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline block">
                                         Justificar x Dependencia ({{ fup.month }})
                                     </button>
+                                    <span v-if="fup.status != 'Activo'" class="bg-red-100 text-red-700 px-4 py-2 rounded">
+                                      Seguimento Cerrado
+                                    </span>
                                 </dd>
                             </div>
                         </div>
@@ -213,10 +246,13 @@ const editingGoalExec = (e) => {
             <div v-else class="text-center bg-white mt-1">
                 <span>No Tiene Asociado una dependencia</span>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-                <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+            <div class="mt-3 rounded-md shadow overflow-x-auto"
+                 v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                <div class="mt-3 rounded-md shadow overflow-x-auto"
+                     v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
                     <div :class="['w-full py-4 my-4']" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3" class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
+                        <div v-if="fupTwo.cicle == 2 || fupTwo.cicle == 3"
+                             class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
                             <div class="md:col-span-3 mb-2">
                                 <span class="font-bold text-lg">Justificaciones En Proceso</span>
                             </div>
@@ -257,6 +293,7 @@ const editingGoalExec = (e) => {
                             :enterNavigatesVertically="true"
                             :enterNavigatesVerticallyAfterEdit="true"
                             :readOnlyEdit="true"
+                            :defaultColDef="defaultColDef"
                             @grid-ready="onGridReady"
                         >
                         </ag-grid-vue>
@@ -274,9 +311,6 @@ const editingGoalExec = (e) => {
                         </div>
                     </template>
                 </Tab>
-
-
-
 
 
             </div>

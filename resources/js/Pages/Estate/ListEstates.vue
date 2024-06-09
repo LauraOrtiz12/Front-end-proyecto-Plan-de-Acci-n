@@ -10,12 +10,15 @@ import {useForm} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
 import Modal from "@/Components/Modal.vue";
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
+import Load from "@/Components/Load.vue";
 
+import Dropdown from 'primevue/dropdown';
+import 'primevue/resources/themes/aura-light-green/theme.css'
 
 const pageTitle = "Listar Dependencias";
-
 const autoSizeStrategy = ref(null);
 const fileImport = ref();
+const sendFile = ref(false);
 const props = defineProps({
     estates: Object,
     users: Object,
@@ -96,11 +99,13 @@ if (props.edit > 0) {
     });
 }
 const importFile = () => {
+    sendFile.value = true;
     const formData = new FormData();
     formData.append('file', fileImport.value);
     axios.post('importExcelIndicatorGen', formData).then((response) => {
 
         uploadStatus.value = !uploadStatus.value;
+        sendFile.value = false;
         if (response.status === 200) {
             Swal.fire({
                 icon: "error",
@@ -163,21 +168,20 @@ const importFile = () => {
                         </div>
                         <div class="flex flex-col md:col-span-3">
                             <label for="responsible_id" class="text-sm font-semibold mb-1">ID del Responsable</label>
-                            <select name="" id="" v-model="form.responsible_id">
-                                <option value="">Seleccionar</option>
-                                <option :value="user.id" :key="user.id" v-for="user in $page.props.users">
-                                    {{ user.name + ' / ' + user.email }}
-                                </option>
-                            </select>
+                            <Dropdown v-model="form.responsible_id" :options="users" optionValue="id" filter optionLabel="name" placeholder="Seleccionar Usuario" class="w-full md:w-14rem bg-white">
+                                <template #option="slotProps">
+                                    {{ slotProps.option.name + ' / ' + slotProps.option.email }}
+                                </template>
+                            </Dropdown>
                         </div>
                         <div class="flex flex-col md:col-span-2">
                             <label for="adviser_id" class="text-sm font-semibold mb-1">ID del Asesor</label>
-                            <select name="" id="" v-model="form.adviser_id">
-                                <option value="">Seleccionar</option>
-                                <option :value="user.id" :key="user.id" v-for="user in $page.props.users">
-                                    {{ user.name + ' / ' + user.email }}
-                                </option>
-                            </select>
+                            <Dropdown v-model="form.adviser_id" :options="users" optionValue="id" filter optionLabel="name" placeholder="Seleccionar Usuario" class="w-full md:w-14rem bg-white">
+                                <template #option="slotProps">
+                                    {{ slotProps.option.name + ' / ' + slotProps.option.email }}
+                                </template>
+                            </Dropdown>
+
                         </div>
                         <button type="button" @click="save"
                                 class="col-span-full bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
@@ -210,10 +214,11 @@ const importFile = () => {
                            accept="">
                 </div>
                 <div class="modal-footer flex justify-end mb-6">
-                    <button @click="importFile"
+                    <button @click="importFile" v-if="!sendFile"
                             class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar Archivo
                     </button>
+                    <Load v-else></Load>
                 </div>
                 <div class="modal-actions flex justify-between items-center">
                     <a href="/format/Assoc_Indicator_Generico.xlsx"

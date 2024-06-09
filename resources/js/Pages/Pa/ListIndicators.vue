@@ -15,21 +15,20 @@ const props = defineProps({
 });
 
 const columnsTable = [
-    { field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true },
+    { field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 120 },
     { field: 'name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true },
-    { field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
+    { field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 150 },
     { field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true },
     { field: 'objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true },
     { field: 'name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true },
     { field: 'indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true },
     { field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
-    { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
 ];
 
 const columnsTableMoney = [
-    { field: 'siif', headerName: 'SIIF', filter: true, floatingFilter: true },
+    { field: 'siif', headerName: 'SIIF', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 50 },
     { field: 'project_id', headerName: 'Código Proyecto', filter: true, floatingFilter: true },
-    { field: 'project', headerName: 'Proyecto', filter: true, floatingFilter: true },
+    { field: 'project', headerName: 'Proyecto', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 900 },
 ];
 </script>
 <template>

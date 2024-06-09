@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IndicatorMoney extends Model
+class IndicatorMoneySave extends Model
 {
+    protected  $guarded = [];
     use HasFactory;
-    protected $guarded = [];
 
     protected $casts = [
         'id' => 'string'

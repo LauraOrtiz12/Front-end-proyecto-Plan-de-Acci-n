@@ -75,5 +75,18 @@ class UserController extends Controller
         ]);
     }
 
+    public function editStatus(Request $request){
+        $request->validate([
+            'id' => ['required', 'integer'],
+            'status' => ['required', 'string'],
+        ]);
+        $update = User::where('id', $request->id)->update([
+            'status' => $request->status
+        ]);
+        if($update)
+            return response()->json(['status' => true], 201);
+        return response()->json(['status' => false], 200);
+    }
+
 
 }

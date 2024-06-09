@@ -174,9 +174,15 @@ const rollBackSave = (item) => {
                         <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.observation_control }}
                         </td>
                         <td class="py-3 px-6 text-left">
-                            <button @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                No Validar
-                            </button>
+                            <div class="grid grid-cols-1">
+                                <button v-if="item.status == 'Activo'" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                    No Validar
+                                </button>
+                                <span v-if="item.status != 'Activo'" class="bg-red-100 text-red-700 px-4 py-2 rounded">
+                                      Seguimento Cerrado
+                                </span>
+                            </div>
+
                         </td>
                         <!--<td class="py-3 px-6 text-left" v-if="item.assesor == null">
                                 <div class="grid grid-cols-1 gap-3">

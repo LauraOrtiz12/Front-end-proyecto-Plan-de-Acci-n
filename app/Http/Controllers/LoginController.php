@@ -21,7 +21,7 @@ class LoginController extends Controller
             $credentials = $request->only('email', 'password');
         }else{
             $credentials = [
-                'email' => User::whereCode($request->email)->first()->email,
+                'email' => User::whereCode($request->email)->first()->email ?? 'local',
                 'password' => $request->password,
             ];
         }
@@ -29,6 +29,8 @@ class LoginController extends Controller
 
 
         if (Auth::attempt($credentials)) {
+            if(Auth::user()->status != 'Activo')
+                return redirect()->intended('/');
             $request->session()->regenerate();
 
             // Cargar la relación personalizada

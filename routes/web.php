@@ -37,6 +37,7 @@ Route::middleware([
         Route::get('listUsers', 'show')->name('listUsers');
         Route::post('editUser', 'edit')->name('editUser');
         Route::post('newUser', 'store')->name('newUser');
+        Route::post('updateStatus', 'editStatus')->name('updateStatus');
     });
 
     Route::controller(ValidityController::class)->group(function () {
@@ -78,6 +79,7 @@ Route::middleware([
         Route::get('gestionAdvisorOffices', 'index')->name('gestionAdvisorOffices');
         Route::post('advisorOffices', 'store')->name('advisorOffices');
         Route::post('updateAdvisorOfficesAssesor', 'updateAdvisorOfficesAssesor')->name('updateAdvisorOfficesAssesor');
+        Route::delete('deleteAdvisorOffices', 'deleteAdvisorOffices')->name('deleteAdvisorOffices');
     });
 
     Route::controller(\App\Http\Controllers\FollowUpController::class)->group(function (){
@@ -88,6 +90,7 @@ Route::middleware([
         Route::post('createFollowUp', 'createFollowUp')->name('createFollowUp');
         Route::get('showCreateFollowUp', 'showCreateFollowUp')->name('showCreateFollowUp');
         Route::get('consultFollowUp', 'consultFollowUp')->name('consultFollowUp');
+        Route::post('closeFollowUp', 'closeFollowUp')->name('closeFollowUp');
     });
 
     Route::controller(\App\Http\Controllers\ExportController::class)->group(function (){

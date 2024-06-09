@@ -52,4 +52,12 @@ class AdvisorOfficesController extends Controller
             ];
         return AdvisorOffices::insert($data);
     }
+
+    public function deleteAdvisorOffices(Request $request){
+        $request->validate([
+            'id' => 'required',
+        ]);
+        AdvisorOffices::whereId($request->id)->delete();
+        return response(['success' => true], 200);
+    }
 }

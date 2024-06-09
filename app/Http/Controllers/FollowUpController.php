@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Estate;
+use App\Models\EstateIndicator;
+use App\Models\EstateIndicatorSave;
 use App\Models\FollowUp;
+use App\Models\IndicatorMoney;
+use App\Models\IndicatorMoneySave;
 use App\Models\Validity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +21,7 @@ class FollowUpController extends Controller
     protected $month = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
+
     public function show(Request $request)
     {
         return FollowUp::where('validity_id', $request->validity)
@@ -37,13 +42,12 @@ class FollowUpController extends Controller
         $insert = FollowUp::where('id', $request->id)->update([
             "justify_estate_indicator" => $request->justify_estate_indicator,
             "justify_estate_money" => $request->justify_estate_money,
-            "cicle" => $request->cicle
+            "cicle" => $request->cicle,
+            "responsible_id" => Auth::user()->id
         ]);
-        if($insert)
-                return response()->json(['success' => true, 'id' => $request->id], 201);
+        if ($insert)
+            return response()->json(['success' => true, 'id' => $request->id], 201);
         return response()->json(['success' => false], 200);
-        //return Inertia::share(['success' => 'El formulario se ha enviado correctamente.\n Codigo: ', 'id' => $request->id]);
-        return ["dataInsert" => $insert];
     }
 
     public function storeUpdate(Request $request)
@@ -54,7 +58,8 @@ class FollowUpController extends Controller
         ]);
         $insert = FollowUp::where('id', $request->id)->update([
             'observation_control' => $request->observation_control,
-            'cicle' => 3
+            'cicle' => 3,
+            'advisor_id' => Auth::user()->id
         ]);
         return Inertia::share('success', 'Se ha actualizado correctamente.\n Codigo: ' . $request->id);
 
@@ -71,7 +76,6 @@ class FollowUpController extends Controller
         ]);
         return Inertia::share('success', 'Se ha actualizado correctamente.\n Codigo: ' . $request->id);
     }
-
 
 
     public function showCreateFollowUp(Request $request)
@@ -91,27 +95,28 @@ class FollowUpController extends Controller
 
         $sql = "
     WITH months AS (
-        SELECT DISTINCT month
-        FROM follow_ups
-        WHERE validity_id = :validity_id AND justify_status = 'Activo'
-    )
-    SELECT m.month, c.cycle, COALESCE(f.count, 0) as count
-    FROM
-    (
-        SELECT 1 as cycle UNION ALL
-        SELECT 2 UNION ALL
-        SELECT 3
-    ) as c
-    CROSS JOIN
-    months m
-    LEFT JOIN
-    (
-        SELECT COUNT(*) as count, month, cicle as cycle
-        FROM follow_ups
-        WHERE validity_id = :validity_id AND justify_status = 'Activo'
-        GROUP BY month, cicle
-    ) as f
-    ON m.month = f.month AND c.cycle = f.cycle
+    SELECT DISTINCT month
+    FROM follow_ups
+    WHERE validity_id = :validity_id
+)
+SELECT m.month, c.cycle, COALESCE(f.count, 0) as count, f.status
+FROM
+(
+    SELECT 1 as cycle UNION ALL
+    SELECT 2 UNION ALL
+    SELECT 3
+) as c
+CROSS JOIN
+months m
+LEFT JOIN
+(
+    SELECT COUNT(*) as count, month, cicle as cycle, status
+    FROM follow_ups
+    WHERE validity_id = :validity_id
+    GROUP BY month, cicle, status
+) as f
+ON m.month = f.month AND c.cycle = f.cycle
+
 ";
 
         $data = DB::select($sql, ['validity_id' => $validity_id]);
@@ -123,6 +128,7 @@ class FollowUpController extends Controller
                 'cicle' => $row->cycle,
                 'count' => $row->count,
                 'month' => $row->month,
+                'status' => $row->status
             ];
 
             unset($this->month[array_search($row->month, $this->month)]);
@@ -160,5 +166,60 @@ class FollowUpController extends Controller
         if ($follow)
             return response()->json(["success" => 'Se ha registrado correctamente.'], 201);
         return response()->json(["error" => 'No se ha registrado correctamente.'], 200);
+    }
+
+    public function closeFollowUp(Request $request){
+        $request->validate([
+            'validity_id' =>'required',
+            'month' => 'required'
+        ]);
+        $chunkSize = 1000;
+        DB::transaction(function () use ($chunkSize, $request) {
+            EstateIndicator::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($estateInd) {
+                $save = [];
+                $now = date('Y-m-d H:m:s');
+                foreach ($estateInd as $estate) {
+                    $save[] = [
+                        'validity_id' => $estate->validity_id,
+                        'estate_id' => $estate->estate_id,
+                        'indicator_id' => $estate->indicator_id,
+                        'month' => $estate->month,
+                        'goal' => $estate->goal,
+                        'execution_goals' => $estate->execution_goals,
+                        'cicly_indicator' => $estate->cicly_indicator,
+                        'status' => $estate->status,
+                        'created_at' => $now,
+                        'updated_at' => $now
+                    ];
+                }
+                EstateIndicatorSave::insert($save);
+            });
+        });
+
+        DB::transaction(function () use ($chunkSize, $request) {
+            IndicatorMoney::where('validity_id', $request->validity_id)->chunk($chunkSize, function ($indicatorMoney) {
+                $save = [];
+                $now = date('Y-m-d H:m:s');
+                foreach ($indicatorMoney as $money) {
+                    $save[] = [
+                        'validity_id' => $money->validity_id,
+                        'estate_id' => $money->estate_id,
+                        'siif' => $money->siif,
+                        'project_id' => $money->project_id,
+                        'open_money' => $money->open_money,
+                        'commitment' => $money->commitment,
+                        'payments' => $money->payments,
+                        'commitment_percentage' => $money->commitment_percentage,
+                        'payment_execution' => $money->payment_execution,
+                        'created_at' => $now,
+                        'updated_at' => $now
+                    ];
+                }
+                IndicatorMoneySave::insert($save);
+            });
+        });
+        FollowUp::where('validity_id', $request->validity_id)->where('month', $request->month)->update(['status' => 'Inactivo']);
+        return response()->json(['success' => true], 201);
+
     }
 }

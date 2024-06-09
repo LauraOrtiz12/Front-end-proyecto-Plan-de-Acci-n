@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('responsible_id')->references('id')->on('users')->onDelete('RESTRICT');
             $table->bigInteger('advisor_id')->default(0);
             $table->string('month', 30);
+            $table->enum('status', ['Activo', 'Inactivo'])->default('Activo')->comment("Activo, Inactivo");
             $table->timestamps();
         });
     }
