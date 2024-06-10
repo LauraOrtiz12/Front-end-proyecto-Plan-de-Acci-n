@@ -96,11 +96,13 @@ Route::middleware([
     Route::controller(\App\Http\Controllers\ExportController::class)->group(function (){
         Route::get('export/prepare', 'getExport')->name('exportPrepare');
         Route::get('exportDownload', 'download')->name('exportDownload');
+        Route::get('exportDownloadFollowClose', 'downloadFollowClose')->name('exportDownloadFollowClose');
     });
 
     Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->group(function (){
         Route::post('importExcelIndicator', 'index')->name('importExcelIndicator');
         Route::post('importExcelIndicatorGen', 'indexGen')->name('importExcelIndicatorGen');
+        Route::post('importExcelIndicatorMoney', 'indexMoney')->name('importExcelIndicatorMoney');
     });
 
 });

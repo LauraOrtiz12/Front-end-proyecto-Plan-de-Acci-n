@@ -1,20 +1,15 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import {ref} from 'vue';
-import {red} from "vuetify/util/colors";
 import Swal from "sweetalert2";
-
 const pageTitle = "Generar Seguimiento";
-
 const validity = ref(null);
 const data = ref(null);
 const selectMonth = ref('');
 const activeFollow = ref(false);
-
 const props = defineProps({
     validity: Object
 });
-
 const consult = () => {
     axios.get('consultFollowUp', {
         params: {
@@ -24,7 +19,6 @@ const consult = () => {
         data.value = response.data;
     })
 }
-
 const saveFollow = () => {
 
     axios.post('createFollowUp', {validity_id: validity.value, month: selectMonth.value})
@@ -45,7 +39,6 @@ const saveFollow = () => {
             }
         });
 }
-
 const downloadRoute = () => {
     //exportDownload validity.value
     const url = `/exportDownload?validity=${validity.value}`;
@@ -58,7 +51,6 @@ const downloadRoute = () => {
     }
 
 }
-
 //closeFollowUp
 const closeFollowUp = (closeFollowUp) => {
     Swal.fire({
@@ -98,6 +90,18 @@ const closeFollowUp = (closeFollowUp) => {
             });
         }
     })
+}
+
+const downloadFollowClose = (month) => {
+    //exportDownload validity.value
+    const url = `/exportDownloadFollowClose?validity=${validity.value}&month=${month}`;
+    try {
+        // Abre una nueva ventana o pestaña
+        window.open(url, '_blank');
+    } catch (error) {
+        this.error = error.response ? error.response.data : error.message;
+        console.error('Error fetching data:', error);
+    }
 
 }
 </script>
@@ -124,7 +128,7 @@ const closeFollowUp = (closeFollowUp) => {
             </div>
         </div>
         <div v-if="data != null">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg my-3">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg my-3" v-if="data.followUpClose == 0">
                 <div class="grid grid-cols-1 md:grid-cols-4 justify-center items-center">
                     <div class="p-4">
                         <label for="">Mes a Activar Seguimiento
@@ -152,26 +156,19 @@ const closeFollowUp = (closeFollowUp) => {
                         <span>Activa el seguimiento para la vigencia seleccionada y para el mes seleccionado</span>
                     </div>
                 </div>
-
             </div>
-            <div v-if="Object.keys(data.follow).length > 0"
-                 class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
-                <button @click="downloadRoute"
-                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                    <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
-                </button>
-                <span class="px-5">Descargar seguimiento de la vigencia</span>
-            </div>
-
             <div v-for="(month, info) in data.follow" :key="info"
                  class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
                 <div class="border-b pb-4 mb-4">
                     <h2 class="text-lg font-semibold">Mes: {{ info }}
                     </h2>
-                    <div v-if="month[0].status == 'Activo'" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <div v-if="month[0].status == 'Activo'"
+                         class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                         role="alert">
                         <span class="block sm:inline">Estado: Activo</span>
                     </div>
-                    <div v-else class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <div v-else class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                         role="alert">
                         <span class="block sm:inline">Estado: Cerrado</span>
                     </div>
                 </div>
@@ -194,7 +191,7 @@ const closeFollowUp = (closeFollowUp) => {
                         <span class="font-medium">Faltantes:</span>
                         <span class="text-gray-700">{{ parseInt(month[0].count) }}</span>
                     </div>
-                    <div class="flex justify-between items-center py-2">
+                    <div class="flex justify-between items-center py-2" v-if="month[0].status == 'Activo'">
                         <button @click="closeFollowUp(month)" id="closeButton"
                                 class="flex items-center bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -205,11 +202,33 @@ const closeFollowUp = (closeFollowUp) => {
                             Cerrar Seguimiento
                         </button>
                     </div>
+                    <div class="flex justify-between items-center py-2" v-if="month[0].status == 'Activo'">
+                        <div v-if="Object.keys(data.follow).length > 0"
+                             class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
+                            <button @click="downloadRoute"
+                                    class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
+                            </button>
+                            <span class="px-5">Descargar seguimiento de la vigencia</span>
+                        </div>
+                    </div>
+                    <div v-else class="grid grid-cols-1 md:grid-cols-3">
+                        <button @click="downloadFollowClose(month[0].month)"
+                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
+                        </button>
+                        <button @click="downloadRoute"
+                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores y Seguimiento
+                        </button>
+                        <button @click="downloadRoute"
+                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento Incompleto
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </AppLayout>
 </template>
 <style scoped>

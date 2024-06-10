@@ -135,7 +135,7 @@ ON m.month = f.month AND c.cycle = f.cycle
             unset($this->month[array_search($row->month, $this->month)]);
 
         }
-        return response()->json(['follow' => $output, 'months' => $this->month]);
+        return response()->json(['follow' => $output, 'months' => $this->month, 'followUpClose' => FollowClose::where('validity_id', $validity_id)->where('status', 'Activo')->get()->count()]);
     }
 
     public function createFollowUp(Request $request)
@@ -146,13 +146,18 @@ ON m.month = f.month AND c.cycle = f.cycle
         ]);
 
         $estate = Estate::all();
-
+        $followClose = FollowClose::create([
+            'user_id' => Auth::user()->id,
+            'validity_id' => $request->validity_id,
+            'month' => $request->month
+        ]);
         $data = [];
         $now = now();
         foreach ($estate as $e) {
             $data[] = [
                 'validity_id' => $request->validity_id,
                 'estate_id' => $e->id,
+                'follow_close_id' => $followClose->id,
                 'cicle' => 1,
                 'month' => $request->month,
                 "justify_estate_indicator" => '-',
@@ -164,6 +169,7 @@ ON m.month = f.month AND c.cycle = f.cycle
         }
 
         $follow = FollowUp::insert($data);
+
         if ($follow)
             return response()->json(["success" => 'Se ha registrado correctamente.'], 201);
         return response()->json(["error" => 'No se ha registrado correctamente.'], 200);
@@ -175,11 +181,8 @@ ON m.month = f.month AND c.cycle = f.cycle
             'month' => 'required'
         ]);
         $now = date('Y-m-d H:m:s');
-        $close = new FollowClose();
-        $close->user_id = Auth::user()->id;
-        $close->validity_id = $request->validity_id;
-        $close->created_at = $now;
-        $close->updated_at = $now;
+        $close = FollowClose::where('validity_id', $request->validity_id)->where('status', 'Activo')->first();
+        $close->status = 'Inactivo';
         $close->save();
 
         $chunkSize = 1000;

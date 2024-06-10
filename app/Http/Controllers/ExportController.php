@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FollowCloseExport;
 use App\Models\Estate;
 use App\Models\FollowUp;
 use App\Models\User;
@@ -86,5 +87,10 @@ class ExportController extends Controller
     public function download(Request $request)
     {
         return Excel::download(new EstateIndicatorJustifyExport($request->validity), 'Seguimiento_Vigencia_.xlsx');
+    }
+
+    public function downloadFollowClose(Request $request)
+    {
+        return Excel::download(new FollowCloseExport($request->validity, $request->month), 'Seguimiento_Vigencia_.xlsx');
     }
 }

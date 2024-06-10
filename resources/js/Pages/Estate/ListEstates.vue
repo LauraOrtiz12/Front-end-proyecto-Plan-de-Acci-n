@@ -19,6 +19,7 @@ const pageTitle = "Listar Dependencias";
 const autoSizeStrategy = ref(null);
 const fileImport = ref();
 const sendFile = ref(false);
+const addOrNew = ref(true);
 const props = defineProps({
     estates: Object,
     users: Object,
@@ -57,6 +58,7 @@ const form = useForm({
     adviser_id: null,
 });
 const uploadStatus = ref(false);
+const uploadStatusMoney = ref(false);
 const selectorValidity = ref(0);
 const loadFile = (event) => {
     fileImport.value = event.target.files[0];
@@ -102,9 +104,36 @@ const importFile = () => {
     sendFile.value = true;
     const formData = new FormData();
     formData.append('file', fileImport.value);
+    formData.append('addornew', addOrNew.value);
     axios.post('importExcelIndicatorGen', formData).then((response) => {
 
         uploadStatus.value = !uploadStatus.value;
+        sendFile.value = false;
+        if (response.status === 200) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error al Cargar el Archivo",
+            });
+        }
+        if (response.status === 201) {
+            Swal.fire({
+                icon: "success",
+                title: "Excelente",
+                text: "Archivo Cargado",
+            });
+        }
+    })
+}
+
+const importFileMoney = () => {
+    sendFile.value = true;
+    const formData = new FormData();
+    formData.append('file', fileImport.value);
+    formData.append('addornew', addOrNew.value);
+    axios.post('importExcelIndicatorMoney', formData).then((response) => {
+
+        uploadStatusMoney.value = !uploadStatusMoney.value;
         sendFile.value = false;
         if (response.status === 200) {
             Swal.fire({
@@ -139,8 +168,17 @@ const importFile = () => {
                 </button>
 
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
-                    @click="uploadStatus = !uploadStatus">Cargar Indicadores Masivo
+                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    @click="uploadStatus = !uploadStatus">
+                    <i class="fas fa-file-excel mr-2"></i>
+                    Cargar Indicadores de Gestión a Dependencia
+                </button>
+
+                <button
+                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    @click="uploadStatusMoney = !uploadStatusMoney">
+                    <i class="fas fa-file-excel mr-2"></i>
+                    Cargar Indicadores de Presupuesto a Dependencia
                 </button>
 
             </div>
@@ -203,10 +241,9 @@ const importFile = () => {
             </div>
         </div>
         <Modal :show="uploadStatus" maxWidth="w-full" :closeable="true">
-
             <div class="modal-container max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
                 <div class="modal-header mb-6">
-                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores a Dependencia</h1>
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores de Gestión a Dependencia</h1>
                 </div>
                 <div class="modal-body mb-6">
                     <input type="file" @change="loadFile"
@@ -220,12 +257,57 @@ const importFile = () => {
                     </button>
                     <Load v-else></Load>
                 </div>
+                <div>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox custom-checkbox h-6 w-6 text-blue-500 rounded-md border-gray-300 focus:ring-blue-500" v-model="addOrNew">
+                        <span class="ml-2 custom-label text-gray-700" v-if="addOrNew">Adicionar Nuevos</span>
+                        <span class="ml-2 custom-label text-gray-700" v-else>Inactivar y Nuevos Registros</span>
+                    </label>
+                </div>
                 <div class="modal-actions flex justify-between items-center">
                     <a href="/format/Assoc_Indicator_Generico.xlsx"
                        class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
                         Descargar Plantilla XLSX
                     </a>
                     <button @click="uploadStatus = !uploadStatus"
+                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
+        </Modal>
+
+        <Modal :show="uploadStatusMoney" maxWidth="w-full" :closeable="true">
+            <div class="modal-container max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="modal-header mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga Masiva de Indicadores de Presupuesto a Dependencia</h1>
+                </div>
+                <div class="modal-body mb-6">
+                    <input type="file" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
+                           accept="">
+                </div>
+                <div class="modal-footer flex justify-end mb-6">
+                    <button @click="importFileMoney" v-if="!sendFile"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        Cargar Archivo
+                    </button>
+                    <Load v-else></Load>
+                </div>
+                <div>
+                    <label class="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="form-checkbox custom-checkbox h-6 w-6 text-blue-500 rounded-md border-gray-300 focus:ring-blue-500" v-model="addOrNew">
+                        <span class="ml-2 custom-label text-gray-700" v-if="addOrNew">Adicionar Nuevos</span>
+                        <span class="ml-2 custom-label text-gray-700" v-else>Inactivar y Nuevos Registros</span>
+                    </label>
+                </div>
+                <div class="modal-actions flex justify-between items-center">
+                    <a href="/format/Indicator_Money_General.xlsx"
+                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        Descargar Plantilla XLSX
+                    </a>
+                    <button @click="uploadStatusMoney = !uploadStatusMoney"
                             class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
                         Cerrar
                     </button>

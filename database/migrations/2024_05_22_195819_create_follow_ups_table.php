@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('validity_id')->constrained();
             $table->foreignId('estate_id')->constrained();
+            $table->foreignId('follow_close_id')->constrained();
             $table->integer('cicle')->default(1)->comment("1 Responsabe, 2 Seguimiento, 3 Seguimiento II");
             $table->enum('justify_status', ['Activo', 'Borrador', 'Enviado'])->default('Activo')->comment("Activo, Borrador, Enviado");
             $table->text('justify_estate_indicator')->nullable();
