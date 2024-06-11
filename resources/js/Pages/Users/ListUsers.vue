@@ -222,7 +222,7 @@ const importFile = () => {
                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
                            accept="">
                 </div>
-                <div class="modal-footer flex justify-end mb-6" v-if="load">
+                <div class="modal-footer flex justify-end mb-6" v-if="!load">
                     <button v-if="fileImport" @click="importFile"
                             class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar
