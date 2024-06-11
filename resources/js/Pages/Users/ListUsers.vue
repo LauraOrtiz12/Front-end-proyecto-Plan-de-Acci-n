@@ -95,6 +95,7 @@ const importFile = () => {
     formData.append('file', fileImport.value);
     axios.post('importExcelUsers', formData).then((response) => {
         openModalImport.value = !openModalImport.value;
+        window.location.reload();
         load.value = false;
         if (response.status == 200) {
             Swal.fire({

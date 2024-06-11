@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import {ref} from 'vue';
+import {ref, onBeforeMount} from 'vue';
 import {router} from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import JusitfyEstateValidity from "@/Pages/Validate/JusitfyEstateValidity.vue";
@@ -29,6 +29,7 @@ const selectFollow = ref({});
 const gridApi = ref();
 const gridApiMoney = ref();
 const selectIndicatorMoney = ref();
+const columnTypes = ref(null);
 const depEditing = [
     1010,
     1011,
@@ -45,13 +46,27 @@ const depEditing = [
     8080,
 ];
 const editingGoal = ref(depEditing.includes(props.estates.id));
-if(editingGoal.value){
+const editFull = ref(false);
+/*if(editingGoal.value){
     const defaultColDef = ref({
         field: 'execution_goals',
         editable: true,
     });
-}
+}*/
 
+onBeforeMount(() => {
+    columnTypes.value = {
+        editableColumn: {
+            editable: (params) => {
+                return editFull.value
+            },
+        },
+    };
+});
+
+window.isCellEditable = function isCellEditable(params) {
+    return params.data.year === editableYear;
+};
 
 const columnsTable = ref([
     {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
@@ -69,8 +84,8 @@ const columnsTable = ref([
         field: 'execution_goals',
         headerName: 'Ejecución Meta',
         filter: true,
+        type: "editableColumn",
         floatingFilter: true,
-        //editable: editingGoal.value,
         cellStyle: params => {
             if (editingGoal.value === true)
                 return {color: 'black', 'background-color': '#5D86B4'}
@@ -105,13 +120,19 @@ const loadViabilityControl = () => {
     axios.get('getFollowUp', {params: {validity: validity.value}})
         .then((response) => {
             followUp.value = response.data;
-            for(let fp in followUp.value)
-                if(followUp.value[fp].cicle != 1 ){
-                    defaultColDef.value ={
-                        field: 'execution_goals',
-                        editable: false,
+            for(let fp in followUp.value){
+                if(followUp.value[fp].cicle === 1 && followUp.value[fp].status === 'Activo' ){
+                    console.log('antes');
+                    if(editingGoal.value === true){
+                        console.log('final');
+                        editFull.value= true;
                     }
+                }else{
+                    editFull.value= false;
                 }
+            }
+
+
         });
 
     axios.get('/getIndicatorsMoney', {
@@ -283,6 +304,7 @@ const editingGoalExec = (e) => {
                                 <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
                             </button>
                         </div>
+
                         <ag-grid-vue
                             :rowData="estateIndicators"
                             :columnDefs="columnsTable"
@@ -293,7 +315,7 @@ const editingGoalExec = (e) => {
                             :enterNavigatesVertically="true"
                             :enterNavigatesVerticallyAfterEdit="true"
                             :readOnlyEdit="true"
-                            :defaultColDef="defaultColDef"
+                            :columnTypes="columnTypes"
                             @grid-ready="onGridReady"
                         >
                         </ag-grid-vue>
