@@ -34,6 +34,7 @@ class FollowCloseExport implements FromView
             ->flatMap(function($item) use ($validity, $estates) {
                 return $item->getEstateIndicator->map(function($indicator) use ($item, $validity, $estates) {
                     return [
+                        'cod_reg' => $indicator->cod_reg,
                         'cod_dep' => $indicator->estate_id,
                         'Dependence' => $estates[$indicator->estate_id]->dependence ?? null,
                         'validity' => $validity[$indicator->validity_id]->validity ?? null,

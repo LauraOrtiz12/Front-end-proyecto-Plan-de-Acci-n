@@ -58,21 +58,30 @@
     <table>
         <thead>
         <tr>
+            <th>Código Regional</th>
+            <th>Dependencia Control / Regional</th>
             <th>Código Dependencia</th>
             <th>Dependencia</th>
-            <th>Validez</th>
+            <th>Vigencia</th>
             <th>Código Indicador</th>
             <th>Nombre Indicador</th>
-            <th>Perspectiva</th>
-            <th>Nombre Perspectiva</th>
-            <th>Objetivo Estrategia</th>
-            <th>Nombre Estrategia</th>
-            <th>Mes</th>
             <th>Meta</th>
-            <th>Ejecución Metas</th>
+            <th>Mes</th>
+            <th>Ejecución</th>
+            <th>Porcentaje de Ejecución</th>
             <th>Justificación Estado Indicador</th>
             <th>Justificación Estado Presupuesto</th>
             <th>Observación Control</th>
+            <th>Nombre Perspectiva</th>
+            <th>Objetivo Estrategico</th>
+            <th>Iniciativa Estratégica</th>
+            <th>Fecha Inicial</th>
+            <th>Fecha Final</th>
+            <th>Recurso Físico</th>
+            <th>Recurso Técnico</th>
+            <th>Recurso Humano</th>
+            <th>Responsable de Indicador</th>
+            <th>Cargo Responsable Indicador</th>
             <th>Asesor</th>
         </tr>
         </thead>

@@ -231,7 +231,7 @@ const importFile = () => {
                 </div>
                 <Load v-else></Load>
                 <div class="modal-actions flex justify-between items-center">
-                    <a href="/format/Assoc_Indicator.xlsx"
+                    <a href="/format/ImportUsuarios.xlsx"
                        class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
                         Descargar Plantilla XLSX
                     </a>
@@ -241,7 +241,6 @@ const importFile = () => {
                         3,Asesor,Asesor de planeacion
                         4,Director(a),Director(a) regional
                         5,Subdirector(a),Subdirector(a) de centro
-
                     </div>
                     <button @click="openModalImport = !openModalImport"
                             class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
