@@ -7,6 +7,7 @@ import EditUser from "@/Pages/Auth/EditUser.vue";
 import {router} from '@inertiajs/vue3'
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 import Swal from "sweetalert2";
+import Load from "@/Components/Load.vue";
 
 
 defineProps({
@@ -20,7 +21,9 @@ const newUserModal = ref(false);
 const editUserModal = ref(false);
 const assocAdviser = ref(false);
 const userSelect = ref(null);
-
+const openModalImport = ref(false);
+const fileImport = ref(null);
+const load = ref(false);
 const close = () => {
     newUserModal.value = false;
     router.reload({only: ['users']})
@@ -81,6 +84,36 @@ const removeAdviser = (id) => {
         }
     });
 }
+
+const loadFile = (event) => {
+    fileImport.value = event.target.files[0];
+}
+
+const importFile = () => {
+    load.value = true;
+    const formData = new FormData();
+    formData.append('file', fileImport.value);
+    axios.post('importExcelUsers', formData).then((response) => {
+        openModalImport.value = !openModalImport.value;
+        load.value = false;
+        if (response.status == 200) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Error al Cargar el Archivo",
+            });
+        }
+        if (response.status == 201) {
+            Swal.fire({
+                icon: "success",
+                title: "Excelente",
+                text: "Archivo Cargado",
+            });
+        }
+    })
+
+}
+
 </script>
 <template>
     <AppLayout :title="pageTitle">
@@ -94,6 +127,12 @@ const removeAdviser = (id) => {
                     class="transition-all w-fit ml-auto text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
                 <i class="fa-solid fa-user-plus mr-1"></i>
                 Nuevo Usuario
+            </button>
+
+            <button @click="openModalImport = !openModalImport"
+                    class="transition-all w-fit ml-auto text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+                <i class="fa-solid fa-user-plus mr-1"></i>
+                Importar Usuarios
             </button>
             <div class="overflow-auto rounded-md shadow-md w-full">
                 <table class="w-full min-w-[1248px]">
@@ -170,6 +209,46 @@ const removeAdviser = (id) => {
 
         <Modal :show="assocAdviser" :closeable="true" @close="assocAdviser = !assocAdviser">
             <ListEstatesAssoc :user="userSelect" :estates="estates" @close="closeAssoc"></ListEstatesAssoc>
+        </Modal>
+
+
+        <Modal :show="openModalImport" class="py-8" :closeable="true">
+            <div class="modal-container max-w-md mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+                <div class="modal-header mb-6">
+                    <h1 class="text-2xl font-semibold text-gray-800">Carga de Usuarios</h1>
+                </div>
+                <div class="modal-body mb-6">
+                    <input type="file" @change="loadFile"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
+                           accept="">
+                </div>
+                <div class="modal-footer flex justify-end mb-6" v-if="load">
+                    <button v-if="fileImport" @click="importFile"
+                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        Cargar
+                    </button>
+                </div>
+                <Load v-else></Load>
+                <div class="modal-actions flex justify-between items-center">
+                    <a href="/format/Assoc_Indicator.xlsx"
+                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        Descargar Plantilla XLSX
+                    </a>
+                    <div class="w-100">
+                        1,admin,Administrador
+                        2,Direccion,Director(a) del área de planeación
+                        3,Asesor,Asesor de planeacion
+                        4,Director(a),Director(a) regional
+                        5,Subdirector(a),Subdirector(a) de centro
+
+                    </div>
+                    <button @click="openModalImport = !openModalImport"
+                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
         </Modal>
     </AppLayout>
 </template>

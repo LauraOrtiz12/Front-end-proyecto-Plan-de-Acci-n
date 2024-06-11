@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Imports\EstateIndicatorImportGeneric;
 use App\Imports\EstateIndicatorMoneyImport;
+use App\Imports\UsersImport;
 use App\Models\EstateIndicator;
+use App\Models\Role;
 use App\Models\Validity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -55,6 +57,21 @@ class ImportExcelcontroller extends Controller
         //if($state == 'false')
            // EstateIndicator::query()->update(['status' => 'Inactivo']);
         $status = Excel::import(new EstateIndicatorMoneyImport($validityId), $fileFullPath);
+        if($status){
+            return response()->json(['success'=>'File imported successfully.'], 201);
+        }
+        return response()->json(['error'=>'File not imported.'], 200);
+    }
+
+    public function importUsers(Request $request){
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls',
+        ]);
+        $fileName = time().'_usuario_'.$request->file->getClientOriginalName();
+        $filePath = $request->file('file')->storeAs('uploads', $fileName, 'public');
+        $fileFullPath = Storage::disk('public')->path($filePath);
+
+        $status = Excel::import(new UsersImport, $fileFullPath);
         if($status){
             return response()->json(['success'=>'File imported successfully.'], 201);
         }

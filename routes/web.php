@@ -103,6 +103,7 @@ Route::middleware([
         Route::post('importExcelIndicator', 'index')->name('importExcelIndicator');
         Route::post('importExcelIndicatorGen', 'indexGen')->name('importExcelIndicatorGen');
         Route::post('importExcelIndicatorMoney', 'indexMoney')->name('importExcelIndicatorMoney');
+        Route::post('importExcelUsers', 'importUsers')->name('importExcelUsers');
     });
 
 });
