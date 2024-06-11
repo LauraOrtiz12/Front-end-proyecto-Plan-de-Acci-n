@@ -238,7 +238,7 @@ const rollBackSave = (item) => {
                         <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}</td>
                         <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}
                         </td>
-                        <td class="py-3 px-6 text-left" v-if="item.cicle == 2">
+                        <td class="py-3 px-6  text-left" v-if="item.cicle == 2">
                             <div class="grid grid-cols-1 gap-3" v-if="item.status == 'Activo'">
                                     <textarea :name="`updateJustify` + item.id" :id="`updateJustify` + item.id"
                                               cols="30"
