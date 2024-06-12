@@ -185,8 +185,8 @@ const importFileMoney = () => {
 
             </div>
             <div v-if="viewForm">
-                <div class="w-100 bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold mb-4">Crear Elemento</h2>
+                <div class="w-100 bg-white p-6 rounded-lg shadow-md text-secondary-default">
+                    <h2 class="text-2xl font-semibold mb-4 ">Crear Elemento</h2>
                     <form id="myForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-2">
                         <div class="flex flex-col">
                             <label for="cod_reg" class="text-sm font-semibold mb-1">Cód.Regional</label>
@@ -224,7 +224,7 @@ const importFileMoney = () => {
 
                         </div>
                         <button type="button" @click="save"
-                                class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default col-span-full">
+                                class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default col-span-full">
                             Crear / Actualizar
                         </button>
                     </form>
