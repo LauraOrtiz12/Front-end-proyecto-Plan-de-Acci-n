@@ -161,21 +161,23 @@ const importFileMoney = () => {
             </h2>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end gap-3">
+            <div class="flex justify-end gap-3 flex-col md:flex-row">
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
-                    @click="viewForm = !viewForm">Nueva Dependencia
+                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
+                    @click="viewForm = !viewForm">
+                    <i class="fa-solid fa-plus"></i>
+                    Nueva Dependencia
                 </button>
 
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
                     @click="uploadStatus = !uploadStatus">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Gestión a Dependencia
                 </button>
 
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
                     @click="uploadStatusMoney = !uploadStatusMoney">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Presupuesto a Dependencia
@@ -222,20 +224,18 @@ const importFileMoney = () => {
 
                         </div>
                         <button type="button" @click="save"
-                                class="col-span-full bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
+                                class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default col-span-full">
                             Crear / Actualizar
                         </button>
                     </form>
                 </div>
             </div>
-            <div class="card h-screen">
+            <div class="w-100 bg-white p-6 rounded-lg shadow-md">
                 <ag-grid-vue
-                    :rowData="$page.props.estates"
-                    :columnDefs="columnsTable"
-                    :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz"
-                    :defaultColDef="defaultColDef"
-                    style="height: 85vh;"
+                    :rowData="estates"
+                    :column-defs="columnDefs"
+                    class="ag-theme-quartz h-screen"
+                    :default-col-def="defaultColDef"
                 >
                 </ag-grid-vue>
             </div>
