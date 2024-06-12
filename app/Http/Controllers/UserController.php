@@ -9,15 +9,23 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 
 
 class UserController extends Controller
 {
 
     public function show(Request $request){
-        $role = Role::all();
-        $users = User::where('id', '>',  1)->with(['getAdviserOffice.getEstate', 'getRole'])->get();
-        $estates = Estate::with(['getAdviser', 'getResponsible'])->get();
+        $role = Role::getAllRole();
+        $users = Cache::rememberForever('users_with_relations', function () {
+            return User::where('id', '>', 1)
+                ->with(['getAdviserOffice.getEstate', 'getRole'])
+                ->get();
+        });
+        $estates = Cache::rememberForever('estates_with_relations', function () {
+            return Estate::with(['getAdviser', 'getResponsible'])->get();
+        });
         $props = ['role' => $role, 'users' => $users, 'estates' => $estates];
         return Inertia::render('Users/ListUsers', $props);
     }
@@ -38,7 +46,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role_id' => $request->role_id,
         ]);
-
+        Cache::forget('users_with_relations');
         return Inertia::render('Users/Create', [
             'successMessage' => 'El usuario se ha creado correctamente.'
         ]);
@@ -69,7 +77,7 @@ class UserController extends Controller
                 'role_id' => $request->role_id
             ]);
 
-
+        Cache::forget('users_with_relations');
         return Inertia::render('Users/Create', [
             'successMessage' => 'El usuario se ha actualizado correctamente.'
         ]);
@@ -83,6 +91,7 @@ class UserController extends Controller
         $update = User::where('id', $request->id)->update([
             'status' => $request->status
         ]);
+        Cache::forget('users_with_relations');
         if($update)
             return response()->json(['status' => true], 201);
         return response()->json(['status' => false], 200);
