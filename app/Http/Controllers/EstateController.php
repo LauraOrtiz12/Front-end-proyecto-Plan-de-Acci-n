@@ -7,12 +7,16 @@ use App\Models\User;
 use App\Models\Validity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Cache;
+
 
 class EstateController extends Controller
 {
     public function index(Request $request)
     {
-        $estates = Estate::with(['getAdviser', 'getResponsible'])->get();
+        $estates = Cache::rememberForever('estates_with_relations', function () {
+            return Estate::with(['getAdviser', 'getResponsible'])->get();
+        });
         return Inertia::render('Estate/ListEstates', ['estates' => $estates, 'users' => User::all(), 'edit' => $request->edit ?? 0, 'validity' => Validity::all()]);
     }
 
@@ -36,6 +40,7 @@ class EstateController extends Controller
 
         if($id == 0){
            Estate::insert($data);
+           Cache::forget('estates_with_relations');
         }else{
             Estate::where('id', $request->id)->update($data);
         }

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Estate extends Model
 {
     use HasFactory;
-
     protected $guarded= [];
 
     public function getResponsible(){
