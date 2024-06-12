@@ -22,7 +22,6 @@ class FollowUpController extends Controller
     protected $month = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
-
     public function show(Request $request)
     {
         return FollowUp::where('validity_id', $request->validity)

@@ -97,8 +97,10 @@ Route::middleware([
         Route::get('export/prepare', 'getExport')->name('exportPrepare');
         Route::get('exportDownload', 'download')->name('exportDownload');
         Route::get('exportDownloadFollowClose', 'downloadFollowClose')->name('exportDownloadFollowClose');
+        Route::get('export/followup/dep', 'downloadFollowDep')->name('export/followup/dep');
 
-        Route::get('exportExcel', 'viewData')->name('exportExcel');
+        Route::get('exportExcel', 'viewData')->name('exportExcel');//para Visualizar lo que se descarga
+        Route::get('export/followup/depv', 'viewDownloadFollowDep')->name('export/followup/depv');
     });
 
     Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->group(function (){
