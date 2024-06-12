@@ -180,7 +180,7 @@ const rollBackSave = (item) => {
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
                 <button @click="loadViabilityControl"
-                        class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
+                        class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105"
                         v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                     Validar
                 </button>

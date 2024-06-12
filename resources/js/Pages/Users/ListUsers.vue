@@ -1,10 +1,10 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Modal from "@/Components/Modal.vue";
-import {ref} from "vue";
+import { ref } from "vue";
 import Register from "@/Pages/Auth/Register.vue";
 import EditUser from "@/Pages/Auth/EditUser.vue";
-import {router} from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 import Swal from "sweetalert2";
 import Load from "@/Components/Load.vue";
@@ -26,13 +26,13 @@ const fileImport = ref(null);
 const load = ref(false);
 const close = () => {
     newUserModal.value = false;
-    router.reload({only: ['users']})
+    router.reload({ only: ['users'] })
 
 }
 
 const closeEdit = () => {
     editUserModal.value = false;
-    router.reload({only: ['users']})
+    router.reload({ only: ['users'] })
 
 }
 const openAssocAdviser = (user) => {
@@ -124,78 +124,79 @@ const importFile = () => {
         </template>
 
         <div class="flex flex-col gap-4">
-            <button @click="newUserModal = !newUserModal"
-                    class="transition-all w-fit ml-auto text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
-                <i class="fa-solid fa-user-plus mr-1"></i>
-                Nuevo Usuario
-            </button>
-
-            <button @click="openModalImport = !openModalImport"
-                    class="transition-all w-fit ml-auto text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
-                <i class="fa-solid fa-user-plus mr-1"></i>
-                Importar Usuarios
-            </button>
+            <div class="flex gap-4 items-center justify-end">
+                <button @click="newUserModal = !newUserModal"
+                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105">
+                    <i class="fa-solid fa-user-plus mr-1"></i>
+                    Nuevo Usuario
+                </button>
+                <button @click="openModalImport = !openModalImport"
+                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105">
+                    <i class="fa-solid fa-user-plus mr-1"></i>
+                    Importar Usuarios
+                </button>
+            </div>
             <div class="overflow-auto rounded-md shadow-md w-full">
                 <table class="w-full min-w-[1248px]">
                     <thead class="bg-secondary-default text-white">
-                    <tr>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user"></i> Nombre</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-envelope"></i> Usuario o
-                            Correo
-                        </th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-bars-progress"></i>
-                            Responsabilidad
-                        </th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user-tag"></i> Rol</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
-                    </tr>
+                        <tr>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user"></i> Nombre</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-envelope"></i> Usuario o
+                                Correo
+                            </th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-bars-progress"></i>
+                                Responsabilidad
+                            </th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user-tag"></i> Rol</th>
+                            <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
+                        </tr>
                     </thead>
                     <tbody class="divide-y-4 divide-white">
-                    <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
-                        <td class="bg-gray-200 px-4 py-3">{{ user.code }}</td>
-                        <td class="bg-gray-100 px-4 py-3">{{ user.name }}</td>
-                        <td class="bg-gray-200 px-4 py-3">{{ user.email }}</td>
-                        <td class="bg-gray-100 px-4 py-3">
-                            <div>
-                                <span v-for="adviserUser in user.get_adviser_office"
-                                      :key="adviserUser.get_estate.cod_dep"
-                                      class="relative inline-block p-2 m-2 border rounded">
-                                  {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
-                                  <button @click="removeAdviser(adviserUser)"
-                                          class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                                    &times;
-                                  </button>
-                                </span>
-                            </div>
-                        </td>
-                        <td class="bg-gray-200 px-4 py-3">{{ user.get_role.rol }} ({{ user.get_role.id }})</td>
-                        <td class="flex flex-col px-4 py-3 text-sm font-medium gap-2">
+                        <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
+                            <td class="bg-gray-200 px-4 py-3">{{ user.code }}</td>
+                            <td class="bg-gray-100 px-4 py-3">{{ user.name }}</td>
+                            <td class="bg-gray-200 px-4 py-3">{{ user.email }}</td>
+                            <td class="bg-gray-100 px-4 py-3">
+                                <div>
+                                    <span v-for="adviserUser in user.get_adviser_office"
+                                        :key="adviserUser.get_estate.cod_dep"
+                                        class="relative inline-block p-2 m-2 border rounded">
+                                        {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+                                        <button @click="removeAdviser(adviserUser)"
+                                            class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
+                                            &times;
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="bg-gray-200 px-4 py-3">{{ user.get_role.rol }} ({{ user.get_role.id }})</td>
+                            <td class="flex flex-col px-4 py-3 text-sm font-medium gap-2">
 
-                            <button
-                                class="transition-all text-primary-default border border-primary-default rounded-lg px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
-                                @click="openEditUser(user)">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                Editar
-                            </button>
-                            <button v-if="user.role_id == 3"
+                                <button
+                                    class="transition-all text-primary-default border border-primary-default rounded-lg px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
+                                    @click="openEditUser(user)">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    Editar
+                                </button>
+                                <button v-if="user.role_id == 3"
                                     class="transition-all text-secondary-default border border-secondary-default rounded-lg px-2 py-1 hover:text-white hover:bg-secondary-default hover:scale-105 overflow-hidden"
                                     @click="openAssocAdviser(user)">
-                                <i class="fa-solid fa-plus"></i>
-                                Agregar Responsabilidad
-                            </button>
-                            <button v-if="user.status == 'Activo'" @click="changeStatus(user.id, 'Inactivo')"
+                                    <i class="fa-solid fa-plus"></i>
+                                    Agregar Responsabilidad
+                                </button>
+                                <button v-if="user.status == 'Activo'" @click="changeStatus(user.id, 'Inactivo')"
                                     class="transition-all text-red-500 border border-red-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
-                                <i class="fa-solid fa-trash"></i>
-                                Inactivar
-                            </button>
-                            <button v-else @click="changeStatus(user.id, 'Activo')"
+                                    <i class="fa-solid fa-trash"></i>
+                                    Inactivar
+                                </button>
+                                <button v-else @click="changeStatus(user.id, 'Activo')"
                                     class="transition-all text-green-500 border border-green-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
-                                <i class="fa-solid fa-user"></i>
-                                Activar
-                            </button>
-                        </td>
-                    </tr>
+                                    <i class="fa-solid fa-user"></i>
+                                    Activar
+                                </button>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -220,19 +221,19 @@ const importFile = () => {
                 </div>
                 <div class="modal-body mb-6">
                     <input type="file" @change="loadFile"
-                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
-                           accept="">
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
+                        accept="">
                 </div>
                 <div class="modal-footer flex justify-end mb-6" v-if="!load">
                     <button v-if="fileImport" @click="importFile"
-                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar
                     </button>
                 </div>
                 <Load v-else></Load>
                 <div class="modal-actions flex justify-between items-center">
                     <a href="/format/ImportUsuarios.xlsx"
-                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
                         Descargar Plantilla XLSX
                     </a>
                     <div class="w-100">
@@ -243,7 +244,7 @@ const importFile = () => {
                         5,Subdirector(a),Subdirector(a) de centro
                     </div>
                     <button @click="openModalImport = !openModalImport"
-                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
                         Cerrar
                     </button>
                 </div>

@@ -112,8 +112,8 @@ const downloadFollowClose = (month) => {
         </template>
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="flex flex-col gap-4">
-                <div class="flex items-center py-2">
-                    <span class="flex items-center mr-2 px-3 py-1 rounded-lg text-secondary-default"><i
+                <div class="flex items-center py-2 gap-4">
+                    <span class="flex items-center px-3 py-1 rounded-lg text-secondary-default"><i
                         class="fa-solid fa-calendar-days mr-1"></i> Vigencia</span>
                     <select
                         class="block w-40 py-1 px-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
@@ -121,7 +121,7 @@ const downloadFollowClose = (month) => {
                         <option :value="via.id" v-for="via in props.validity" :key="via.id">{{ via.validity }}</option>
                     </select>
                     <button @click="consult"
-                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105">
                         Validar
                     </button>
                 </div>

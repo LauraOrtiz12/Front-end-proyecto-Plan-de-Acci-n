@@ -3,8 +3,8 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
-import {ref} from 'vue';
-import {AgGridVue} from "ag-grid-vue3";
+import { ref } from 'vue';
+import { AgGridVue } from "ag-grid-vue3";
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import Tab from "@/Components/Tab.vue";
@@ -14,6 +14,7 @@ const props = defineProps({
     estate: Object
 });
 
+const pageTitle = "Indicadores Asignados o por Asignar";
 const selectorIndicator = ref([]);
 const gridApi = ref();
 const validity = ref(0);
@@ -31,27 +32,27 @@ const onGridReady = (params) => {
 };
 
 const columnsTable = [
-    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
-    {field: '.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
-    {field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
-    {field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true},
-    {field: 'objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true},
-    {field: 'name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true},
-    {field: 'indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true},
-    {field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
-    {field: 'status', headerName: 'Estado', filter: true, floatingFilter: true},
+    { field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true },
+    { field: '.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true },
+    { field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
+    { field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true },
+    { field: 'objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true },
+    { field: 'name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true },
+    { field: 'indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true },
+    { field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
+    { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
 ];
 const columnsTableAssoc = [
-    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
-    {field: 'get_indicator.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true},
-    {field: 'get_indicator.perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true},
-    {field: 'get_indicator.objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true},
-    {field: 'get_indicator.indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true},
-    {field: 'get_indicator.name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true},
-    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
-    {field: 'execution_goals', headerName: 'Ejecución de Meta', filter: true, floatingFilter: true},
+    { field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true },
+    { field: 'get_indicator.name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true },
+    { field: 'get_indicator.perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true },
+    { field: 'get_indicator.objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true },
+    { field: 'get_indicator.indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true },
+    { field: 'get_indicator.name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
+    { field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true },
+    { field: 'execution_goals', headerName: 'Ejecución de Meta', filter: true, floatingFilter: true },
     {
         field: 'compliance',
         headerName: '% Cumplimiento',
@@ -64,20 +65,20 @@ const columnsTableAssoc = [
             return compliance.toFixed(2) + '%';
         }
     },
-    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
+    { field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true },
 ];
 
 const columnsTableAssocMoney = [
-    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true},
-    {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
-    {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
-    {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
-    {field: 'open_money', headerName: 'Apertura', filter: true, floatingFilter: true},
-    {field: 'commitment', headerName: 'Apertura', filter: true, floatingFilter: true},
-    {field: 'payments', headerName: 'Pagos', filter: true, floatingFilter: true},
-    {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
-    {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
-    {field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true},
+    { field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true, checkboxSelection: true },
+    { field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true },
+    { field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true },
+    { field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true },
+    { field: 'open_money', headerName: 'Apertura', filter: true, floatingFilter: true },
+    { field: 'commitment', headerName: 'Apertura', filter: true, floatingFilter: true },
+    { field: 'payments', headerName: 'Pagos', filter: true, floatingFilter: true },
+    { field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true },
+    { field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true },
+    { field: 'created_at', headerName: 'Fecha', filter: true, floatingFilter: true },
 ];
 
 const onSelectionChanged = (data) => {
@@ -94,7 +95,7 @@ const getIndicators = () => {
     axios.get('/getIndicators').then(response => {
         const allIndicator = response.data;
 
-        axios.get('/estateIndicatorsAdmin', {params: {validity: validity.value, estate_id: props.estate.cod_dep}})
+        axios.get('/estateIndicatorsAdmin', { params: { validity: validity.value, estate_id: props.estate.cod_dep } })
             .then((response) => {
                 const select = [];
                 for (let assigngIndicator in response.data) {
@@ -112,7 +113,7 @@ const getIndicators = () => {
             });
     });
 
-    axios.get('/getIndicatorsMoney', {params: {validity: validity.value, estate_id: props.estate.cod_dep}}).then(response => {
+    axios.get('/getIndicatorsMoney', { params: { validity: validity.value, estate_id: props.estate.cod_dep } }).then(response => {
         selectIndicatorMoney.value = response.data;
     });
 }
@@ -153,75 +154,64 @@ const importFile = () => {
 </script>
 
 <template>
-    <AppLayout>
+    <AppLayout :title="pageTitle">
         <template #header>
-            Indicadores Asignados o por Asignar
+            <h2 class="font-semibold text-xl text-secondary-default my-auto">{{ pageTitle }}</h2>
         </template>
-        <div class="container mx-auto py-10 sm:px-6 lg:px-8">
-            <div class="info-box mx-3 bg-white rounded-xl shadow-md overflow-hidden">
-                <div class="p-3">
-                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                        ID: {{ $page.props.estate.id }}
-                    </div>
-                    <p class="mt-2 text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
-                    <p class="mt-2 text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
-                    <p class="mt-2 text-gray-500">Dependencia Control: {{ $page.props.estate.dependence_control }}</p>
-                    <p class="mt-2 text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
+        <div class="flex flex-col gap-4">
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <div class="flex flex-col">
+                    <p class="text-lg font-semibold">ID: {{ $page.props.estate.id }}</p>
+                    <p class="text-sm text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
+                    <p class="text-sm text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
+                    <p class="text-sm text-gray-500">Dependencia Control: {{ $page.props.estate.dependence_control }}
+                    </p>
+                    <p class="text-sm text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
                 </div>
             </div>
 
-            <div class="form-section grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-                <select v-model="validity" class="w-full p-2 border border-gray-300 rounded">
-                    <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
-                </select>
-                <button @click="getIndicators" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Validar
-                </button>
+            <div class="form-section flex flex-col gap-4 mt-6">
+                <div class="flex items-center gap-4">
+                    <select v-model="validity" class="w-full p-2 border border-gray-300 rounded-md">
+                        <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
+                    </select>
+                    <button @click="getIndicators"
+                        class="transition-all px-6 py-2 text-secondary-default bg-gray-200 rounded-md hover:bg-primary-default hover:text-white hover:scale-105">
+                        Validar
+                    </button>
+                </div>
             </div>
 
-            <div class="result-section bg-white overflow-hidden shadow-xl sm:rounded-lg mt-6" v-if="estateValidator">
+            <div class="bg-white shadow-md rounded-lg flex flex-col gap-4 pb-4" v-if="estateValidator">
                 <button @click="openModalImport = !openModalImport"
-                        class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4">
+                    class="transition-all w-full px-6 py-2 text-secondary-default bg-gray-200 rounded-t-md hover:bg-primary-default hover:text-white hover:scale-105">
                     Importar Excel
                 </button>
-
-                <div class="py-6 px-2 section-title">Asignados</div>
-                <Tab>
-                    <template #t1>
-                        <div class="ag-grid-section px-2 mb-6">
-                            <ag-grid-vue
-                                :rowData="selectIndicatorTableTwo"
-                                :columnDefs="columnsTableAssoc"
-                                class="ag-theme-quartz h-64"
-                                rowSelection="multiple"
-                                @selection-changed="onSelectionChanged"
-                                @grid-ready="onGridReady">
-                            </ag-grid-vue>
-                        </div>
-                    </template>
-                    <template #t2>
-                        <div class="ag-grid-section px-2 mb-6">
-                            <ag-grid-vue
-                                :rowData="selectIndicatorMoney"
-                                :columnDefs="columnsTableAssocMoney"
-                                class="ag-theme-quartz h-64"
-                                rowSelection="multiple"
-                                @selection-changed="onSelectionChanged"
-                                @grid-ready="onGridReady">
-                            </ag-grid-vue>
-                        </div>
-                    </template>
-                </Tab>
-
-                <div class="py-6 px-2 section-title">Por Asignar</div>
-                <div class="ag-grid-section px-2">
-                    <ag-grid-vue
-                        :rowData="indicators"
-                        :columnDefs="columnsTable"
-                        class="ag-theme-quartz h-screen"
-                        rowSelection="multiple"
-                        @selection-changed="onSelectionChanged"
-                        @grid-ready="onGridReady">
+                <h1 class="text-lg font-semibold px-4">Asignados</h1>
+                <div class="px-4">
+                    <Tab>
+                        <template #t1>
+                            <div class="ag-grid-section px-2 mb-6">
+                                <ag-grid-vue :rowData="selectIndicatorTableTwo" :columnDefs="columnsTableAssoc"
+                                    class="ag-theme-quartz h-64" rowSelection="multiple"
+                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                                </ag-grid-vue>
+                            </div>
+                        </template>
+                        <template #t2>
+                            <div class="ag-grid-section px-2 mb-6">
+                                <ag-grid-vue :rowData="selectIndicatorMoney" :columnDefs="columnsTableAssocMoney"
+                                    class="ag-theme-quartz h-64" rowSelection="multiple"
+                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                                </ag-grid-vue>
+                            </div>
+                        </template>
+                    </Tab>
+                </div>
+                <h1 class="text-lg font-semibold px-4">Por Asignar</h1>
+                <div class="ag-grid-section px-4">
+                    <ag-grid-vue :rowData="indicators" :columnDefs="columnsTable" class="ag-theme-quartz h-screen"
+                        rowSelection="multiple" @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
                     </ag-grid-vue>
                 </div>
             </div>
@@ -234,22 +224,22 @@ const importFile = () => {
                 </div>
                 <div class="modal-body mb-6">
                     <input type="file" @change="loadFile"
-                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
-                           accept="">
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors duration-300"
+                        accept="">
                 </div>
                 <div class="modal-footer flex justify-end mb-6">
                     <button v-if="fileImport" @click="importFile"
-                            class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 transition-colors duration-300">
                         Cargar
                     </button>
                 </div>
                 <div class="modal-actions flex justify-between items-center">
                     <a href="/format/Assoc_Indicator.xlsx"
-                       class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
+                        class="text-blue-600 hover:underline hover:text-blue-800 transition-colors duration-300">
                         Descargar Plantilla XLSX
                     </a>
                     <button @click="openModalImport = !openModalImport"
-                            class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
+                        class="text-red-600 hover:underline hover:text-red-800 transition-colors duration-300">
                         Cerrar
                     </button>
                 </div>
@@ -258,13 +248,4 @@ const importFile = () => {
         </Modal>
     </AppLayout>
 </template>
-<style>
-.section-title {
-    font-size: 1.5rem; /* Tamaño de fuente */
-    font-weight: bold; /* Peso de la fuente */
-    color: #333; /* Color del texto */
-    margin-bottom: 1rem; /* Margen inferior */
-    border-bottom: 2px solid #e5e7eb; /* Línea inferior */
-    padding-bottom: 0.5rem; /* Padding inferior */
-}
-</style>
+

@@ -161,21 +161,23 @@ const importFileMoney = () => {
             </h2>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="flex justify-end gap-3">
+            <div class="flex justify-end gap-3 flex-col md:flex-row">
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150"
-                    @click="viewForm = !viewForm">Nueva Dependencia
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105"
+                    @click="viewForm = !viewForm">
+                    <i class="fa-solid fa-plus"></i>
+                    Nueva Dependencia
                 </button>
 
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
                     @click="uploadStatus = !uploadStatus">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Gestión a Dependencia
                 </button>
 
                 <button
-                    class="bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150 flex items-center"
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
                     @click="uploadStatusMoney = !uploadStatusMoney">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Presupuesto a Dependencia
@@ -183,8 +185,8 @@ const importFileMoney = () => {
 
             </div>
             <div v-if="viewForm">
-                <div class="w-100 bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold mb-4">Crear Elemento</h2>
+                <div class="w-100 bg-white p-6 rounded-lg shadow-md text-secondary-default">
+                    <h2 class="text-2xl font-semibold mb-4 ">Crear Elemento</h2>
                     <form id="myForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-2">
                         <div class="flex flex-col">
                             <label for="cod_reg" class="text-sm font-semibold mb-1">Cód.Regional</label>
@@ -222,20 +224,18 @@ const importFileMoney = () => {
 
                         </div>
                         <button type="button" @click="save"
-                                class="col-span-full bg-primary-default hover:bg-secondary-default text-white font-bold py-2 px-4 rounded transition ease-in-out duration-150">
+                                class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default col-span-full">
                             Crear / Actualizar
                         </button>
                     </form>
                 </div>
             </div>
-            <div class="card h-screen">
+            <div class="p-4 bg-white rounded-md shadow-md">
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz"
-                    :defaultColDef="defaultColDef"
-                    style="height: 85vh;"
+                    class="ag-theme-quartz h-screen"
                 >
                 </ag-grid-vue>
             </div>
