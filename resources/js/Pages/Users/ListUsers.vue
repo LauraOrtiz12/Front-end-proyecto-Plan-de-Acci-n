@@ -126,12 +126,12 @@ const importFile = () => {
         <div class="flex flex-col gap-4">
             <div class="flex gap-4 items-center justify-end">
                 <button @click="newUserModal = !newUserModal"
-                    class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Nuevo Usuario
                 </button>
                 <button @click="openModalImport = !openModalImport"
-                    class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Importar Usuarios
                 </button>
