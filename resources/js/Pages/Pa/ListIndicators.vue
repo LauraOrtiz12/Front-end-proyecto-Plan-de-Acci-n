@@ -17,12 +17,10 @@ const props = defineProps({
 const columnsTable = [
     { field: 'indicator', headerName: 'Indicador', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 120 },
     { field: 'name_indicator', headerName: 'Nombre Indicador', filter: true, floatingFilter: true },
-    { field: 'perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true, suppressSizeToFit: true, width: 150 },
     { field: 'name_perspective', headerName: 'Nombre de Perspectiva', filter: true, floatingFilter: true },
     { field: 'objective_strategy', headerName: 'Objetivo Estrategico', filter: true, floatingFilter: true },
-    { field: 'name_strategy', headerName: 'Nombre Estrategico', filter: true, floatingFilter: true },
     { field: 'indicator_strategy', headerName: 'Indicador Estrategico', filter: true, floatingFilter: true },
-    { field: 'name_indicator_strategy', headerName: 'Nombre Indicador Estrategico', filter: true, floatingFilter: true },
+    { field: 'area', headerName: 'Área Responsable', filter: true, floatingFilter: true },
 ];
 
 const columnsTableMoney = [

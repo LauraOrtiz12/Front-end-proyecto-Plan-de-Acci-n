@@ -19,4 +19,8 @@ class FollowUp extends Model
     public function getEstateIndicator(){
         return $this->hasMany(EstateIndicator::class, 'estate_id', 'estate_id');
     }
+
+    public function getEstateIndicatorClose(){
+        return $this->hasMany(EstateIndicatorSave::class, 'estate_id', 'estate_id');
+    }
 }

@@ -65,12 +65,13 @@
             <th>Vigencia</th>
             <th>Código Indicador</th>
             <th>Nombre Indicador</th>
-            <th>Meta</th>
             <th>Mes</th>
+            <th>Meta</th>
             <th>Ejecución</th>
-            <th>Porcentaje de Ejecución</th>
-            <th>Justificación Estado Indicador</th>
-            <th>Justificación Estado Presupuesto</th>
+            <th>Porcentaje Ejecución</th>
+            <th>Porcentaje Esperado</th>
+            <th>Justificación de Indicadores</th>
+            <th>Justificación de Presupuesto</th>
             <th>Observación Control</th>
             <th>Nombre Perspectiva</th>
             <th>Objetivo Estrategico</th>
@@ -88,21 +89,33 @@
         <tbody>
         @foreach ($followupComplete as $item)
             <tr>
+                <td data-format="0" class="text-right">{{ $item['cod_reg'] }}</td>
+                <td data-format="0" class="text-right">{{ $item['cod_control'] }}</td>
                 <td data-format="0" class="text-right">{{ $item['cod_dep'] }}</td>
                 <td data-format="text" class="text-left">{{ $item['Dependence'] }}</td>
-                <td data-format="text" class="text-center">{{ $item['validity'] }}</td>
+                <td data-format="0" class="text-center">{{ " ".$item['validity'] }}</td>
                 <td data-format="0" class="text-right">{{ $item['cod_indicator'] }}</td>
                 <td data-format="text" class="text-left">{{ $item['name_indicator'] }}</td>
-                <td data-format="text" class="text-center">{{ $item['perspective'] }}</td>
-                <td data-format="text" class="text-center">{{ $item['name_perspective'] }}</td>
-                <td data-format="text" class="text-left">{{ $item['objective_strategy'] }}</td>
-                <td data-format="text" class="text-left">{{ $item['name_strategy'] }}</td>
-                <td data-format="text" class="text-center">{{ $item['month'] }}</td>
+                <td data-format="text" class="text-left">{{ $item['month'] }}</td>
                 <td data-format="0" class="text-right">{{ $item['goal'] }}</td>
-                <td data-format="0" class="text-right">{{ $item['execution_goals'] }}</td>
+                <td data-format="0.00" class="text-right">{{ $item['execution_goals'] }}</td>
+                <td data-format="0.00" class="text-right">{{ $item['per'] }}</td>
+                <td data-format="0.00" class="text-center">{{ $item['expected_goal'] }}</td>
                 <td data-format="text" class="text-left">{{ $item['justify_estate_indicator'] }}</td>
                 <td data-format="text" class="text-left">{{ $item['justify_estate_money'] }}</td>
                 <td data-format="text" class="text-left">{{ $item['observation_control'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['name_perspective'] }}</td>
+                <td data-format="text" class="text-left">{{ $item['objective_strategy'] }}</td>
+                <td data-format="text" class="text-left">{{ $item['name_strategy'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['start_date'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['end_date'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['physical_recursion'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['technical_recursion'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['human_resource'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['responsible_indicator'] }}</td>
+                <td data-format="text" class="text-center">{{ $item['post_responsible_indicator'] }}</td>
+
+
                 <td data-format="text" class="text-left">{{ $item['assesor'] }}</td>
             </tr>
         @endforeach

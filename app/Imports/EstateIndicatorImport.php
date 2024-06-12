@@ -28,9 +28,19 @@ class EstateIndicatorImport implements  ToModel, WithHeadingRow
             'estate_id' => $this->estateIndicator,
             'indicator_id' => $row['codigo_de_indicador'],
             'month' => $row['mes'],
+            'start_date' => $row['fecha_inicial'],
+            'end_date' => $row['fecha_final'],
             'goal' => $row['meta'],
-            'execution_goals' => $row['ejecucion_de_meta'],
-            'cicly_indicator' => 1
+            'execution_goals' => $row['ejecucion'],
+            'expected_goal' => $row['esperado'],
+            'cicly_indicator' => 1,
+            'physical_recursion' => $row['recurso_fisico'],
+            'technical_recursion' => $row['recurso_tecnico'],
+            'human_resource' => $row['recurso_humano'],
+            'responsible_indicator' => $row['responsable_indicador'],
+            'post_responsible_indicator' => $row['cargo_responsable'],
+
+
         ]);
     }
 }

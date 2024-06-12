@@ -147,6 +147,11 @@ const columnsTable = ref([
             return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
         },
     },
+    { field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true },
+    { field: 'technical_recursion', headerName: 'Recurso Técnico', filter: true, floatingFilter: true },
+    { field: 'human_resource', headerName: 'Recurso Humano', filter: true, floatingFilter: true },
+    { field: 'responsible_indicator', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true },
+    { field: 'post_responsible_indicator', headerName: 'Cargo del Responsable', filter: true, floatingFilter: true },
 ]);
 
 const columnsTableAssocMoney = [

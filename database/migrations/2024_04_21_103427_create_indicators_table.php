@@ -22,11 +22,7 @@ return new class extends Migration
             $table->string('name_strategy')->nullable();
             $table->string('indicator_strategy')->nullable();
             $table->string('name_indicator_strategy')->nullable();
-            $table->text('physical_recursion')->nullable();
-            $table->text('technical_recursion')->nullable();
-            $table->text('human_resource')->nullable();
-            $table->string('responsible_indicator', 200)->nullable();
-            $table->string('post_responsible_indicator', 200)->nullable();
+            $table->string('area', 500)->nullable();
             $table->enum('status', ['Activo', 'Inactivo'])->default('Activo');
             $table->timestamps();
         });

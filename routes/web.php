@@ -97,6 +97,8 @@ Route::middleware([
         Route::get('export/prepare', 'getExport')->name('exportPrepare');
         Route::get('exportDownload', 'download')->name('exportDownload');
         Route::get('exportDownloadFollowClose', 'downloadFollowClose')->name('exportDownloadFollowClose');
+
+        Route::get('exportExcel', 'viewData')->name('exportExcel');
     });
 
     Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->group(function (){
