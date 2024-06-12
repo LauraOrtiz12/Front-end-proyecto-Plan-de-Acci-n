@@ -163,21 +163,21 @@ const importFileMoney = () => {
         <div class="flex flex-col gap-4">
             <div class="flex justify-end gap-3 flex-col md:flex-row">
                 <button
-                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105"
                     @click="viewForm = !viewForm">
                     <i class="fa-solid fa-plus"></i>
                     Nueva Dependencia
                 </button>
 
                 <button
-                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
                     @click="uploadStatus = !uploadStatus">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Gestión a Dependencia
                 </button>
 
                 <button
-                    class="transition-all py-2 px-4 bg-secondary-default text-white rounded-md hover:bg-primary-default hover:scale-105"
+                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
                     @click="uploadStatusMoney = !uploadStatusMoney">
                     <i class="fas fa-file-excel mr-2"></i>
                     Cargar Indicadores de Presupuesto a Dependencia
