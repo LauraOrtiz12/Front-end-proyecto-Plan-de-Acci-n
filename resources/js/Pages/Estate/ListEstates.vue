@@ -230,12 +230,12 @@ const importFileMoney = () => {
                     </form>
                 </div>
             </div>
-            <div class="w-100 bg-white p-6 rounded-lg shadow-md">
+            <div class="p-4 bg-white rounded-md shadow-md">
                 <ag-grid-vue
-                    :rowData="estates"
-                    :column-defs="columnDefs"
+                    :rowData="$page.props.estates"
+                    :columnDefs="columnsTable"
+                    :autoSizeStrategy="autoSizeStrategy"
                     class="ag-theme-quartz h-screen"
-                    :default-col-def="defaultColDef"
                 >
                 </ag-grid-vue>
             </div>
