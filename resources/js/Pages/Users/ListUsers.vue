@@ -124,15 +124,16 @@ const importFile = () => {
         </template>
 
         <div class="flex flex-col gap-4">
-            <div class="flex items-center gap-4 justify-end">
-                <button @click="newUserModal = !newUserModal"
-                        class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+            <div class="flex items-center justify-end gap-4">
+                <button
+                    class="transition-all text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
+                    @click="showNewUserModal">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Nuevo Usuario
                 </button>
-    
-                <button @click="openModalImport = !openModalImport"
-                        class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+                <button
+                    class="transition-all text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
+                    @click="showImportUsersModal">
                     <i class="fa-solid fa-user-plus mr-1"></i>
                     Importar Usuarios
                 </button>
