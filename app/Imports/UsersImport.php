@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,6 +18,7 @@ class UsersImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         //codigo	nombre	correo	telefono	clave
+        Cache::forget('users_with_relations');
         return new User([
             'role_id' => $row['rol'],
             'code' => $row['codigo'],

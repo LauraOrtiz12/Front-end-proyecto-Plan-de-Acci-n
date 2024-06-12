@@ -50,13 +50,13 @@ const formatMoney = (val) => {
 };
 
 const loadViabilityControl = () => {
-    axios.get('estateIndicatorsAdviser', { params: { validity: validity.value } })
+    axios.get('estateIndicatorsAdviser', {params: {validity: validity.value}})
         .then((response) => estateIndicatorsAdviser.value = response.data);
 
-    axios.get('estateIndicators', { params: { validity: validity.value } })
+    axios.get('estateIndicators', {params: {validity: validity.value}})
         .then((response) => estateIndicators.value = response.data);
 
-    axios.get('getFollowUp', { params: { validity: validity.value } })
+    axios.get('getFollowUp', {params: {validity: validity.value}})
         .then((response) => {
             followUp.value = response.data;
             for (let fp in followUp.value) {
@@ -103,7 +103,7 @@ const onGridReadyMoney = (params) => {
 };
 
 const onBtExport = () => {
-    gridApi.value.exportDataAsCsv({ columnSeparator: "&" });
+    gridApi.value.exportDataAsCsv({columnSeparator: "&"});
 };
 
 const editingGoalExec = (e) => {
@@ -123,12 +123,17 @@ const editingGoalExec = (e) => {
 
 // Configuración de columnas
 const columnsTable = ref([
-    { field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true },
-    { field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true },
-    { field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
-    { field: 'get_indicator.objective_strategy', headerName: 'Obj. Estrategico', filter: true, floatingFilter: true },
-    { field: 'get_indicator.indicator_strategy', headerName: 'Iniciativa Estratégica', filter: true, floatingFilter: true },
-    { field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true },
+    {field: 'get_indicator.name_indicator', headerName: 'Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.id', headerName: 'Cod. Indicador', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
+    {field: 'get_indicator.objective_strategy', headerName: 'Obj. Estrategico', filter: true, floatingFilter: true},
+    {
+        field: 'get_indicator.indicator_strategy',
+        headerName: 'Iniciativa Estratégica',
+        filter: true,
+        floatingFilter: true
+    },
+    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
     {
         field: 'execution_goals',
         headerName: 'Ejecución',
@@ -137,7 +142,7 @@ const columnsTable = ref([
         floatingFilter: true,
         cellStyle: params => {
             if (editingGoal.value) {
-                return { color: 'black', 'background-color': '#5D86B4' };
+                return {color: 'black', 'background-color': '#5D86B4'};
             }
             return null;
         },
@@ -147,18 +152,18 @@ const columnsTable = ref([
             return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
         },
     },
-    { field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true },
-    { field: 'technical_recursion', headerName: 'Recurso Técnico', filter: true, floatingFilter: true },
-    { field: 'human_resource', headerName: 'Recurso Humano', filter: true, floatingFilter: true },
-    { field: 'responsible_indicator', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true },
-    { field: 'post_responsible_indicator', headerName: 'Cargo del Responsable', filter: true, floatingFilter: true },
+    {field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true},
+    {field: 'technical_recursion', headerName: 'Recurso Técnico', filter: true, floatingFilter: true},
+    {field: 'human_resource', headerName: 'Recurso Humano', filter: true, floatingFilter: true},
+    {field: 'responsible_indicator', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true},
+    {field: 'post_responsible_indicator', headerName: 'Cargo del Responsable', filter: true, floatingFilter: true},
 ]);
 
 const columnsTableAssocMoney = [
-    { field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true },
-    { field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true },
-    { field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true },
-    { field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true },
+    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true},
+    {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
+    {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
+    {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
     {
         field: 'open_money',
         headerName: 'Apertura',
@@ -180,8 +185,8 @@ const columnsTableAssocMoney = [
         floatingFilter: true,
         valueFormatter: p => '$' + formatMoney(p.value),
     },
-    { field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true },
-    { field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true },
+    {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
+    {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
 ];
 
 // Configuración antes de montar el componente
@@ -193,6 +198,11 @@ onBeforeMount(() => {
     };
     loadViabilityControl();
 });
+
+
+const downloadFollow = (id, relation) => {
+    window.open(`export/followup/dep?id=${id}&relation=${relation}`);
+}
 </script>
 <template>
     <AppLayout :title="pageTitle">
@@ -267,6 +277,20 @@ onBeforeMount(() => {
                                           class="bg-red-100 text-red-700 px-4 py-2 rounded">
                                       Seguimento Cerrado
                                     </span>
+                                    <div class="mt-5" v-if="fup.cicle == 1 && fup.status == 'Activo'">
+                                        <button @click="downloadFollow(fup.id, 0)"
+                                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                            <i class="fas fa-file-excel mr-2"></i>
+                                            Descargar Seguimiento
+                                        </button>
+                                    </div>
+                                    <div class="mt-5" v-else>
+                                        <button @click="downloadFollow(fup.id, 1)"
+                                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                            <i class="fas fa-file-excel mr-2"></i>
+                                            Descargar Seguimiento
+                                        </button>
+                                    </div>
                                 </dd>
                             </div>
                         </div>
@@ -276,10 +300,12 @@ onBeforeMount(() => {
             <div v-else class="text-center bg-white mt-1">
                 <span>No Tiene Asociado una dependencia</span>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+            <div class="mt-3 rounded-md shadow overflow-x-auto"
+                 v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
                 <div class="mt-3 rounded-md shadow overflow-x-auto">
                     <div :class="['w-full py-4 my-4']" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle > 1" class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
+                        <div v-if="fupTwo.cicle > 1"
+                             class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
                             <div class="md:col-span-3 mb-2">
                                 <span class="font-bold text-lg">Justificaciones En Proceso</span>
                             </div>

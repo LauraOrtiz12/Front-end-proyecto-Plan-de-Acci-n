@@ -37,10 +37,10 @@ class EstateController extends Controller
             'responsible_id' => $request->responsible_id,
             'adviser_id' => $request->adviser_id,
         ];
-
+        Cache::forget('estates_with_relations');
         if($id == 0){
            Estate::insert($data);
-           Cache::forget('estates_with_relations');
+
         }else{
             Estate::where('id', $request->id)->update($data);
         }
