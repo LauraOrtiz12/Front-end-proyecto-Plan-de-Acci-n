@@ -15,6 +15,7 @@ import Load from "@/Components/Load.vue";
 import Dropdown from 'primevue/dropdown';
 import 'primevue/resources/themes/aura-light-green/theme.css'
 import Card from "@/Components/card.vue";
+import Buttons from "@/Components/buttons.vue";
 
 const pageTitle = "Listar Dependencias";
 const autoSizeStrategy = ref(null);
@@ -163,26 +164,17 @@ const importFileMoney = () => {
         </template>
         <div class="flex flex-col gap-4">
             <div class="flex justify-end gap-3 flex-col md:flex-row">
-                <button
-                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105"
-                    @click="viewForm = !viewForm">
-                    <i class="fa-solid fa-plus"></i>
+                <Buttons icon="fa-solid fa-plus" @click="viewForm = !viewForm">
                     Nueva Dependencia
-                </button>
+                </Buttons>
 
-                <button
-                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
-                    @click="uploadStatus = !uploadStatus">
-                    <i class="fas fa-file-excel mr-2"></i>
+                <Buttons icon="fa-solid fa-file-import" @click="uploadStatus = !uploadStatus" variant="secondary">
                     Cargar Indicadores de Gestión a Dependencia
-                </button>
+                </Buttons>
 
-                <button
-                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105"
-                    @click="uploadStatusMoney = !uploadStatusMoney">
-                    <i class="fas fa-file-excel mr-2"></i>
+                <Buttons icon="fa-solid fa-file-import" @click="uploadStatusMoney = !uploadStatusMoney" variant="secondary">
                     Cargar Indicadores de Presupuesto a Dependencia
-                </button>
+                </Buttons>
 
             </div>
             <Card v-if="viewForm" class="w-full">
@@ -226,10 +218,9 @@ const importFileMoney = () => {
                             </Dropdown>
 
                         </div>
-                        <button type="button" @click="save"
-                            class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default col-span-full">
+                        <Buttons type="button" @click="save" class="col-span-full w-full">
                             Crear / Actualizar
-                        </button>
+                        </Buttons>
                     </form>
                 </div>
             </Card>

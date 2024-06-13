@@ -8,6 +8,7 @@ import { router } from '@inertiajs/vue3'
 import ListEstatesAssoc from "@/Pages/Estate/ListEstatesAssoc.vue";
 import Swal from "sweetalert2";
 import Load from "@/Components/Load.vue";
+import Buttons from "@/Components/buttons.vue";
 
 
 defineProps({
@@ -124,16 +125,12 @@ const importFile = () => {
 
         <div class="flex flex-col gap-4">
             <div class="flex gap-4 items-center justify-end">
-                <button @click="newUserModal = !newUserModal"
-                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105">
-                    <i class="fa-solid fa-user-plus mr-1"></i>
+                <Buttons @click="newUserModal = !newUserModal" icon="fa-solid fa-user-plus">
                     Nuevo Usuario
-                </button>
-                <button @click="openModalImport = !openModalImport"
-                    class="transition-all px-4 py-2 bg-gray-200 rounded-md hover:text-white hover:bg-secondary-default hover:scale-105">
-                    <i class="fa-solid fa-user-plus mr-1"></i>
+                </Buttons>
+                <Buttons @click="openModalImport = !openModalImport" icon="fa-solid fa-file-import" variant="secondary">
                     Importar Usuarios
-                </button>
+                </Buttons>
             </div>
             <div class="overflow-auto rounded-md shadow-md w-full">
                 <table class="w-full min-w-[1248px]">

@@ -5,7 +5,7 @@ import AuthenticationCardLogo from "@/Components/AuthenticationCardLogo.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Buttons from "@/Components/buttons.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { ref } from "vue";
 
@@ -58,14 +58,16 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 
             <form @submit.prevent="submit" class="flex flex-col gap-2 w-full max-w-md">
                 <div>
-                    <i class="fa-solid fa-user absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
+                    <i
+                        class="fa-solid fa-user absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
                     <InputLabel for="email" value="Usuario" class="text-white" />
-                    <TextInput id="email" v-model="form.email" type="text" required
-                        class="mt-1 block w-full pl-8 pr-10" autofocus autocomplete="username" />
+                    <TextInput id="email" v-model="form.email" type="text" required class="mt-1 block w-full pl-8 pr-10"
+                        autofocus autocomplete="username" />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
                 <div class="flex flex-col">
-                    <i class="fa-solid fa-key absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
+                    <i
+                        class="fa-solid fa-key absolute translate-x-[62.5%] translate-y-[260%] text-secondary-default"></i>
                     <InputLabel for="password" value="Contraseña" class="text-white" />
                     <TextInput id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'"
                         class="mt-1 block w-full pl-8 pr-10" required autocomplete="current-password" />
@@ -85,10 +87,9 @@ const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
                 Perdí mi contraseña?
                 </Link>
 
-                <PrimaryButton class="w-full justify-center" :class="{ '': form.processing }"
-                    :disabled="form.processing">
+                <Buttons :class="[{ '': form.processing }, 'w-full']" :disabled="form.processing" variant="login">
                     Iniciar Sesión
-                </PrimaryButton>
+                </Buttons>
             </form>
 
             <img src="assets/images/logosena.webp" alt="" />

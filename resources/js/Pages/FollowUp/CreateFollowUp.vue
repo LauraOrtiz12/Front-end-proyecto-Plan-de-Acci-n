@@ -2,6 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import { ref } from 'vue';
 import Swal from "sweetalert2";
+import Buttons from "@/Components/buttons.vue";
 const pageTitle = "Generar Seguimiento";
 const validity = ref(null);
 const data = ref(null);
@@ -133,10 +134,9 @@ const downloadFollowCloseMoney = (month) => {
                     name="viability" id="viability" v-model="validity">
                     <option :value="via.id" v-for="via in props.validity" :key="via.id">{{ via.validity }}</option>
                 </select>
-                <button @click="consult"
-                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105">
+                <Buttons @click="consult">
                     Validar
-                </button>
+                </Buttons>
             </div>
         </div>
 
@@ -190,7 +190,7 @@ const downloadFollowCloseMoney = (month) => {
                         <span class="font-medium">Generadas:</span>
                         <span class="text-gray-700">{{
                             parseInt(month[0].count) + parseInt(month[1].count) + parseInt(month[2].count)
-                        }}</span>
+                            }}</span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b">
                         <span class="font-medium">Respuesta x Dependencia:</span>

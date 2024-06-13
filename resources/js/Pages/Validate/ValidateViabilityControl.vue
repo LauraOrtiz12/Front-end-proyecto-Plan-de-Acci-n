@@ -9,6 +9,7 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 import { AgGridVue } from "ag-grid-vue3";
 import Card from "@/Components/card.vue";
+import Buttons from "@/Components/buttons.vue";
 
 
 const pageTitle = "Vigencia (Seguimiento)";
@@ -179,11 +180,10 @@ const rollBackSave = (item) => {
                     <option value="" disabled selected>Seleccione el año</option>
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
-                <button @click="loadViabilityControl"
-                    class="transition-all py-2 px-4 text-secondary-default bg-gray-200 rounded-md hover:text-white hover:bg-primary-default hover:scale-105"
+                <Buttons @click="loadViabilityControl"
                     v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                     Validar
-                </button>
+                </Buttons>
             </div>
             <div class="flex flex-wrap lg:flex-nowrap gap-3 shadow p-3 rounded-md bg-white"
                 v-if="$page.props.auth.user.role_id == 3 || $page.props.auth.user.role_id == 4">
@@ -235,7 +235,8 @@ const rollBackSave = (item) => {
                         </tr>
                     </thead>
                     <tbody class="divide-y-4 divide-white">
-                        <tr v-for="item in followUps" :key="item.id" :class="[{'bg-gray-100': item.status === 'Activo'}, 'divide-x-4 divide-white']">
+                        <tr v-for="item in followUps" :key="item.id"
+                            :class="[{ 'bg-gray-100': item.status === 'Activo' }, 'divide-x-4 divide-white']">
                             <td class="bg-gray-200 px-4 py-3">{{ item.estate_id }}</td>
                             <td class="bg-gray-100 px-4 py-3">{{ item.justify_estate_indicator
                                 }}
@@ -247,7 +248,8 @@ const rollBackSave = (item) => {
                             <td class="bg-gray-200 px-4 py-3" v-if="item.cicle == 2">
                                 <div class="grid grid-cols-1 gap-3" v-if="item.status == 'Activo'">
                                     <textarea :name="`updateJustify` + item.id" :id="`updateJustify` + item.id"
-                                        cols="30" rows="5" class="w-full px-3 py-2 border rounded-md">{{ item.observation_control == null ?
+                                        cols="30" rows="5" class="w-full px-3 py-2 border rounded-md">{{ item.observation_control == null
+                                            ?
                                 '' : item.observation_control}}</textarea>
                                     <button @click="update(item)"
                                         class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
@@ -289,8 +291,8 @@ const rollBackSave = (item) => {
                     </div>
                     <div class="grid grid-cols-1 gap-2">
                         <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                            class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
-                            @grid-ready="onGridReady">
+                            class="ag-theme-quartz h-screen" rowSelection="multiple"
+                            @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
                         </ag-grid-vue>
                     </div>
                 </div>

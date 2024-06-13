@@ -9,6 +9,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied
 import {AgGridVue} from "ag-grid-vue3";
 import Tab from "@/Components/Tab.vue";
 import Swal from "sweetalert2";
+import PrimaryButton from "@/Components/buttons.vue";
 
 // Props
 const props = defineProps({
@@ -218,11 +219,10 @@ const downloadFollow = (id, relation) => {
                     <option value="" disabled selected>Seleccione el año</option>
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
-                <button @click="loadViabilityControl"
-                        class="mtransition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105"
+                <PrimaryButton @click="loadViabilityControl"
                         v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
                     Validar
-                </button>
+                </PrimaryButton>
             </div>
             <div class="flex flex-wrap lg:flex-nowrap gap-3 shadow p-3 rounded-md bg-white"
                  v-if="$page.props.auth.user.role_id != 1 && Object.keys($page.props.estates).length > 0">
