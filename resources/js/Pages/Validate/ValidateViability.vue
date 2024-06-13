@@ -300,43 +300,37 @@ const downloadFollow = (id, relation) => {
             <div v-else class="text-center bg-white mt-1">
                 <span>No Tiene Asociado una dependencia</span>
             </div>
-            <div class="mt-3 rounded-md shadow overflow-x-auto"
-                 v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
-                <div class="mt-3 rounded-md shadow overflow-x-auto">
-                    <div :class="['w-full py-4 my-4']" v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
-                        <div v-if="fupTwo.cicle > 1"
-                             class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
-                            <div class="md:col-span-3 mb-2">
-                                <span class="font-bold text-lg">Justificaciones En Proceso</span>
-                            </div>
-                            <div class="md:col-span-3 mb-2">
-                                <span class="font-semibold">Mes de Seguimiento: </span>{{ fupTwo.month }}
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Indicadores:</span>
-                                <span>{{ fupTwo.justify_estate_indicator }}</span>
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Presupuesto:</span>
-                                <span>{{ fupTwo.justify_estate_money }}</span>
-                            </div>
-                            <div class="p-2 border border-gray-300 rounded-md bg-white">
-                                <span class="font-semibold block">Observación:</span>
-                                <span>{{ fupTwo.observation_control }}</span>
+            <div class="mt-2 rounded-md shadow overflow-x-auto" v-if="$page.props.auth.user.role_id != 1 && Object.keys(estateIndicators).length > 0">
+                <div class="rounded-md shadow overflow-x-auto">
+                    <div v-for="(fupTwo, indexTwo) in followUp" :key="indexTwo">
+                        <div :class="['w-full py-1']" >
+                            <div v-if="fupTwo.cicle > 1"
+                                 class="grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-200 p-4 bg-white rounded-md">
+                                <div class="md:col-span-3 mb-2">
+                                    <span class="font-bold text-lg">Justificaciones En Proceso</span>
+                                </div>
+                                <div class="md:col-span-3 mb-2">
+                                    <span class="font-semibold">Mes de Seguimiento: </span>{{ fupTwo.month }}
+                                </div>
+                                <div class="p-2 border border-gray-300 rounded-md bg-white">
+                                    <span class="font-semibold block">Indicadores:</span>
+                                    <span>{{ fupTwo.justify_estate_indicator }}</span>
+                                </div>
+                                <div class="p-2 border border-gray-300 rounded-md bg-white">
+                                    <span class="font-semibold block">Presupuesto:</span>
+                                    <span>{{ fupTwo.justify_estate_money }}</span>
+                                </div>
+                                <div class="p-2 border border-gray-300 rounded-md bg-white">
+                                    <span class="font-semibold block">Observación:</span>
+                                    <span>{{ fupTwo.observation_control }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <Tab>
                     <template #t1>
-                        <div>
-                            <button @click="onBtExport"
-                                    class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                            >
-                                <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores
-                            </button>
-                        </div>
-
                         <ag-grid-vue
                             :rowData="estateIndicators"
                             :columnDefs="columnsTable"
@@ -365,8 +359,6 @@ const downloadFollow = (id, relation) => {
                         </div>
                     </template>
                 </Tab>
-
-
             </div>
             <div class="w-full mt-4"
                  v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
@@ -384,18 +376,15 @@ const downloadFollow = (id, relation) => {
                                         <th class="py-3 px-6 text-left">Cod Dependencia</th>
                                         <th class="py-3 px-6 text-left">Dependencia</th>
                                         <th class="py-3 px-6 text-left">Nombre de Indicador</th>
-
                                         <th class="py-3 px-6 text-left">Nombre de Perspectiva</th>
-
                                         <th class="py-3 px-6 text-left">Nombre de Objetivo Estrategico</th>
-
                                         <th class="py-3 px-6 text-left">Nombre de Indicador Estrategico</th>
                                         <th class="py-3 px-6 text-left">Mes</th>
                                         <th class="py-3 px-6 text-left">Meta</th>
                                         <th class="py-3 px-6 text-left">Objetivos de ejecución</th>
                                         <th class="py-3 px-6 text-left">Porcentaje ejecución</th>
                                         <th class="py-3 px-6 text-left">Estado</th>
-                                        <!--<th class="py-3 px-6 text-left">Acción</th>-->
+
                                     </tr>
                                     </thead>
                                     <tbody class="text-gray-600 text-sm font-light">
@@ -440,18 +429,7 @@ const downloadFollow = (id, relation) => {
                                             }}%
                                         </td>
                                         <td class="py-3 px-6 text-left">{{ item.status }}</td>
-                                        <!--<td class="py-3 px-1 center">
-                                            <div class="grid grid-cols-1 gap-1">
-                                                <div class="col-auto">
-                                                    <button
-                                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                                        v-if="item.cicly_indicator == 2 && $page.props.auth.user.role_id != 5"
-                                                        @click="goJustify(item)">
-                                                        Justifcación de Control
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>-->
+
                                     </tr>
                                     </tbody>
                                 </table>

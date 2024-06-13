@@ -235,7 +235,8 @@ const importFileMoney = () => {
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz h-screen"
+                    class="ag-theme-quartz"
+                    style="height: 80vh;"
                 >
                 </ag-grid-vue>
             </div>
