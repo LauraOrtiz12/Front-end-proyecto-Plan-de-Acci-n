@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ValidityController;
 use App\Http\Controllers\EstateIndicatorController;
+use App\Http\Middleware\AdminUserRoute;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -34,10 +35,10 @@ Route::middleware([
     })->name('dashboard');
 
     Route::controller(UserController::class)->group(function () {
-        Route::get('listUsers', 'show')->name('listUsers');
+        Route::get('listUsers', 'show')->name('listUsers')->middleware(AdminUserRoute::class);
         Route::post('editUser', 'edit')->name('editUser');
         Route::post('newUser', 'store')->name('newUser');
-        Route::post('updateStatus', 'editStatus')->name('updateStatus');
+        Route::post('updateStatus', 'editStatus')->name('updateStatus')->middleware(AdminUserRoute::class);
     });
 
     Route::controller(ValidityController::class)->group(function () {
@@ -61,12 +62,12 @@ Route::middleware([
     });
 
     Route::controller(\App\Http\Controllers\EstateController::class)->group(function () {
-        Route::get('listEstates/{edit?}', 'index')->name('listEstates');
+        Route::get('listEstates/{edit?}', 'index')->name('listEstates')->middleware(AdminUserRoute::class);
         Route::post('newEstates', 'create')->name('newEstates');
     });
 
     Route::controller(\App\Http\Controllers\IndicatorController::class)->group(function(){
-        Route::get('listIndicators', 'index')->name('listIndicators');
+        Route::get('listIndicators', 'index')->name('listIndicators')->middleware(AdminUserRoute::class);
         Route::get('listIndicatorsAssoc/{id?}', 'viewAll')->name('listIndicatorsAssoc');
         Route::get('getIndicators', 'getAll')->name('getIndicators');
     });
@@ -87,10 +88,10 @@ Route::middleware([
         Route::post('setFollowUp', 'store')->name('setFollowUp');
         Route::post('updateFollowUp', 'storeUpdate')->name('updateFollowUp');
         Route::post('updateFollowUpState', 'storeUpdateState')->name('updateFollowUpState');
-        Route::post('createFollowUp', 'createFollowUp')->name('createFollowUp');
-        Route::get('showCreateFollowUp', 'showCreateFollowUp')->name('showCreateFollowUp');
+        Route::post('createFollowUp', 'createFollowUp')->name('createFollowUp')->middleware(AdminUserRoute::class);
+        Route::get('showCreateFollowUp', 'showCreateFollowUp')->name('showCreateFollowUp')->middleware(AdminUserRoute::class);
         Route::get('consultFollowUp', 'consultFollowUp')->name('consultFollowUp');
-        Route::post('closeFollowUp', 'closeFollowUp')->name('closeFollowUp');
+        Route::post('closeFollowUp', 'closeFollowUp')->name('closeFollowUp')->middleware(AdminUserRoute::class);
     });
 
     Route::controller(\App\Http\Controllers\ExportController::class)->group(function (){
@@ -104,7 +105,7 @@ Route::middleware([
         Route::get('export/followup/depv', 'viewDownloadFollowDep')->name('export/followup/depv');
     });
 
-    Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->group(function (){
+    Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->middleware(AdminUserRoute::class)->group(function (){
         Route::post('importExcelIndicator', 'index')->name('importExcelIndicator');
         Route::post('importExcelIndicatorGen', 'indexGen')->name('importExcelIndicatorGen');
         Route::post('importExcelIndicatorMoney', 'indexMoney')->name('importExcelIndicatorMoney');

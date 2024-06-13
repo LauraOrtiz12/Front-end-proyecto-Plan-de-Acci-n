@@ -15,7 +15,6 @@ defineProps({
     estates: Object
 });
 
-
 const pageTitle = "Lista de Usuarios";
 const newUserModal = ref(false);
 const editUserModal = ref(false);
