@@ -4,7 +4,6 @@ import Welcome from '@/Components/Welcome.vue';
 
 const pageTitle = "Dashboard";
 </script>
-
 <template>
     <AppLayout :title="pageTitle">
         <template #header>
