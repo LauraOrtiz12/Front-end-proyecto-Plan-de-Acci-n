@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\FollowCloseExport;
+use App\Exports\FollowIndicatorCloseMoney;
 use App\Exports\FollowIndicatorsDep;
 use App\Models\Estate;
 use App\Models\FollowClose;
@@ -96,7 +97,12 @@ class ExportController extends Controller
 
     public function downloadFollowClose(Request $request)
     {
-        return Excel::download(new FollowCloseExport($request->validity, $request->month), 'Seguimiento_Vigencia_.xlsx');
+        return Excel::download(new FollowCloseExport($request->validity, $request->month), time() . '_Seguimiento_Vigencia_Gestion.xlsx');
+    }
+
+    public function downloadFollowCloseMoney(Request $request)
+    {
+        return Excel::download(new FollowIndicatorCloseMoney($request->validity, $request->month), time() . '_Seguimiento_Vigencia_presupuesto.xlsx');
     }
 
     public function viewData(Request $request){

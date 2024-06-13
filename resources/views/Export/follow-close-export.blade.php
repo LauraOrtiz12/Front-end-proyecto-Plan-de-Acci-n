@@ -84,6 +84,7 @@
             <th>Responsable de Indicador</th>
             <th>Cargo Responsable Indicador</th>
             <th>Asesor</th>
+            <th>Responsable de Indicador</th>
         </tr>
         </thead>
         <tbody>
@@ -114,9 +115,8 @@
                 <td data-format="text" class="text-center">{{ $item['human_resource'] }}</td>
                 <td data-format="text" class="text-center">{{ $item['responsible_indicator'] }}</td>
                 <td data-format="text" class="text-center">{{ $item['post_responsible_indicator'] }}</td>
-
-
                 <td data-format="text" class="text-left">{{ $item['assesor'] }}</td>
+                <td data-format="text" class="text-left">{{ $item['area'] }}</td>
             </tr>
         @endforeach
         </tbody>

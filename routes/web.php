@@ -97,6 +97,7 @@ Route::middleware([
         Route::get('export/prepare', 'getExport')->name('exportPrepare');
         Route::get('exportDownload', 'download')->name('exportDownload');
         Route::get('exportDownloadFollowClose', 'downloadFollowClose')->name('exportDownloadFollowClose');
+        Route::get('exportDownloadFollowCloseMoney', 'downloadFollowCloseMoney')->name('exportDownloadFollowCloseMoney');
         Route::get('export/followup/dep', 'downloadFollowDep')->name('export/followup/dep');
 
         Route::get('exportExcel', 'viewData')->name('exportExcel');//para Visualizar lo que se descarga

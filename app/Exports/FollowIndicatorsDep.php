@@ -37,7 +37,6 @@ class FollowIndicatorsDep implements FromView
                     '0' => $item->getEstateIndicator,
                     '1' => $item->getEstateIndicatorClose,
                 };
-
                 $out[0] = $relationModel->map(function($indicator) use ($item, $validity, $estates) {
                     return [
                         'cod_reg' => $estates[$indicator->estate_id]->cod_reg ?? null,
@@ -70,6 +69,7 @@ class FollowIndicatorsDep implements FromView
                         'justify_estate_money' => $item->justify_estate_money,
                         'observation_control' => $item->observation_control,
                         'assesor' => $item->assesor,
+                        'area' => $indicator->getIndicator->area
                     ];
                 });
                 $relationModelMoney = match ($r){

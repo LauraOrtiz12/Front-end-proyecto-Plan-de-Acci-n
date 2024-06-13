@@ -104,6 +104,19 @@ const downloadFollowClose = (month) => {
     }
 
 }
+
+const downloadFollowCloseMoney = (month) => {
+    //exportDownload validity.value
+    const url = `/exportDownloadFollowCloseMoney?validity=${validity.value}&month=${month}`;
+    try {
+        // Abre una nueva ventana o pestaña
+        window.open(url, '_blank');
+    } catch (error) {
+        this.error = error.response ? error.response.data : error.message;
+        console.error('Error fetching data:', error);
+    }
+
+}
 </script>
 <template>
     <AppLayout :title="pageTitle">
@@ -215,16 +228,13 @@ const downloadFollowClose = (month) => {
                     <div v-else class="grid grid-cols-1 md:grid-cols-3">
                         <button @click="downloadFollowClose(month[0].month)"
                                 class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
+                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento - Gestión
                         </button>
-                        <button @click="downloadRoute"
+                        <button @click="downloadFollowCloseMoney(month[0].month)"
                                 class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            <i class="fas fa-file-excel mr-2"></i> Descargar Indicadores y Seguimiento
+                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento - Presupuesto
                         </button>
-                        <button @click="downloadRoute"
-                                class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento Incompleto
-                        </button>
+
                     </div>
                 </div>
             </div>

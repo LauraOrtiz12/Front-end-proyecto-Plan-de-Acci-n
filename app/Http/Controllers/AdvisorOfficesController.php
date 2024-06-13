@@ -7,6 +7,7 @@ use App\Models\FollowUp;
 use App\Models\Validity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class AdvisorOfficesController extends Controller
@@ -31,6 +32,7 @@ class AdvisorOfficesController extends Controller
             'observation_control' => 'required',
             'id' => 'required',
         ]);
+        Cache::forget('users_with_relations');
         FollowUp::where('id', $request->id)->update([
             'assesor' => $request->observation_control
         ]);
@@ -50,6 +52,7 @@ class AdvisorOfficesController extends Controller
                 'advisor_id' => $request->advisor_id,
                 'estate_id' => $value
             ];
+        Cache::forget('users_with_relations');
         return AdvisorOffices::insert($data);
     }
 
@@ -57,6 +60,7 @@ class AdvisorOfficesController extends Controller
         $request->validate([
             'id' => 'required',
         ]);
+        Cache::forget('users_with_relations');
         AdvisorOffices::whereId($request->id)->delete();
         return response(['success' => true], 200);
     }
