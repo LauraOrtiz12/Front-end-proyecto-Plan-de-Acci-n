@@ -1,4 +1,4 @@
-+<!-- 
+<!-- 
 +Este componente representa una tarjeta con esquinas redondeadas, sombra y fondo blanco.
 +Tiene un slot para el contenido.
 +-->
