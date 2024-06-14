@@ -133,69 +133,72 @@ const importFile = () => {
                     Importar Usuarios
                 </Buttons>
             </div>
-
-            <table class="w-full shadow-md rounded-md in-w-[1231px] overflow-y-auto flex-1">
-                <thead class="bg-secondary-default text-white sticky top-0">
-                    <tr>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user"></i> Nombre</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-envelope"></i> Usuario o
-                            Correo
-                        </th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-bars-progress"></i>
-                            Responsabilidad
-                        </th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user-tag"></i> Rol</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y-4 divide-white">
-                    <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
-                        <td class="bg-gray-200 px-4 py-3">{{ user.code }}</td>
-                        <td class="bg-gray-100 px-4 py-3">{{ user.name }}</td>
-                        <td class="bg-gray-200 px-4 py-3">{{ user.email }}</td>
-                        <td class="bg-gray-100 px-4 py-3">
-                            <div>
-                                <span v-for="adviserUser in user.get_adviser_office"
-                                    :key="adviserUser.get_estate.cod_dep"
-                                    class="relative inline-block p-2 m-2 border rounded">
-                                    {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
-                                    <button @click="removeAdviser(adviserUser)"
-                                        class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                                        &times;
-                                    </button>
-                                </span>
-                            </div>
-                        </td>
-                        <td class="bg-gray-200 px-4 py-3">{{ user.get_role.rol }} ({{ user.get_role.id }})</td>
-                        <td class="flex flex-col px-4 py-3 text-sm font-medium gap-2">
-
-                            <button
-                                class="transition-all text-primary-default border border-primary-default rounded-lg px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
-                                @click="openEditUser(user)">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                Editar
-                            </button>
-                            <button v-if="user.role_id == 3"
-                                class="transition-all text-secondary-default border border-secondary-default rounded-lg px-2 py-1 hover:text-white hover:bg-secondary-default hover:scale-105 overflow-hidden"
-                                @click="openAssocAdviser(user)">
-                                <i class="fa-solid fa-plus"></i>
-                                Agregar Responsabilidad
-                            </button>
-                            <button v-if="user.status == 'Activo'" @click="changeStatus(user.id, 'Inactivo')"
-                                class="transition-all text-red-500 border border-red-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
-                                <i class="fa-solid fa-trash"></i>
-                                Inactivar
-                            </button>
-                            <button v-else @click="changeStatus(user.id, 'Activo')"
-                                class="transition-all text-green-500 border border-green-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
-                                <i class="fa-solid fa-user"></i>
-                                Activar
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <Card class="w-full flex-1 overflow-x-auto overflow-y-auto">
+                <div class="h-0">
+                    <table class="w-full min-w-[1231px]">
+                            <thead class="bg-secondary-default text-white sticky top-0">
+                                <tr>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user"></i> Nombre</th>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-envelope"></i> Usuario o
+                                        Correo
+                                    </th>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-bars-progress"></i>
+                                        Responsabilidad
+                                    </th>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-user-tag"></i> Rol</th>
+                                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y-4 divide-white">
+                                <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
+                                    <td class="bg-gray-200 px-4 py-3">{{ user.code }}</td>
+                                    <td class="bg-gray-100 px-4 py-3">{{ user.name }}</td>
+                                    <td class="bg-gray-200 px-4 py-3">{{ user.email }}</td>
+                                    <td class="bg-gray-100 px-4 py-3">
+                                        <div>
+                                            <span v-for="adviserUser in user.get_adviser_office"
+                                                :key="adviserUser.get_estate.cod_dep"
+                                                class="relative inline-block p-2 m-2 border rounded">
+                                                {{ adviserUser.get_estate.cod_dep }} - {{ adviserUser.get_estate.dependence }}
+                                                <button @click="removeAdviser(adviserUser)"
+                                                    class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full h-5 w-5 flex items-center justify-center">
+                                                    &times;
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="bg-gray-200 px-4 py-3">{{ user.get_role.rol }} ({{ user.get_role.id }})</td>
+                                    <td class="flex flex-col px-4 py-3 text-sm font-medium gap-2">
+        
+                                        <button
+                                            class="transition-all text-primary-default border border-primary-default rounded-lg px-2 py-1 hover:text-white hover:bg-primary-default hover:scale-105"
+                                            @click="openEditUser(user)">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            Editar
+                                        </button>
+                                        <button v-if="user.role_id == 3"
+                                            class="transition-all text-secondary-default border border-secondary-default rounded-lg px-2 py-1 hover:text-white hover:bg-secondary-default hover:scale-105 overflow-hidden"
+                                            @click="openAssocAdviser(user)">
+                                            <i class="fa-solid fa-plus"></i>
+                                            Agregar Responsabilidad
+                                        </button>
+                                        <button v-if="user.status == 'Activo'" @click="changeStatus(user.id, 'Inactivo')"
+                                            class="transition-all text-red-500 border border-red-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
+                                            <i class="fa-solid fa-trash"></i>
+                                            Inactivar
+                                        </button>
+                                        <button v-else @click="changeStatus(user.id, 'Activo')"
+                                            class="transition-all text-green-500 border border-green-500 rounded-lg px-2 py-1 hover:text-white hover:bg-red-500 hover:scale-105">
+                                            <i class="fa-solid fa-user"></i>
+                                            Activar
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+            </Card>
         </div>
         <Modal :show="newUserModal" :closeable="true" @close="newUserModal = !newUserModal">
             <Register :role="$page.props.role" @close="close"></Register>
