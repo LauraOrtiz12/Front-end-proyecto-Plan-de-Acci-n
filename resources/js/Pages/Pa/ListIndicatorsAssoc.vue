@@ -184,27 +184,24 @@ const importFile = () => {
 
             <Card class="w-full" v-if="estateValidator">
                 <div class="flex flex-col gap-4 h-screen">
-                    <Buttons @click="openModalImport = !openModalImport" class="w-full rounded-b-none"
-                        >
+                    <Buttons @click="openModalImport = !openModalImport" class="w-full rounded-b-none">
                         Importar Excel
                     </Buttons>
                     <h1 class="text-lg font-semibold px-4">Asignados</h1>
-                    <Tab class="shadow-none mx-3 flex-1">
+                    <Tab class="shadow-none flex-1">
                         <template #t1>
-                            <div class="ag-grid-section px-2 mb-6">
-                                <ag-grid-vue :rowData="selectIndicatorTableTwo" :columnDefs="columnsTableAssoc"
-                                    class="ag-theme-quartz h-72" rowSelection="multiple"
-                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
-                                </ag-grid-vue>
-                            </div>
+                            <ag-grid-vue :rowData="selectIndicatorTableTwo" :columnDefs="columnsTableAssoc"
+                                class="ag-theme-quartz h-full" rowSelection="multiple"
+                                @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                            </ag-grid-vue>
                         </template>
                         <template #t2>
-                            <div class="ag-grid-section px-2 mb-6">
-                                <ag-grid-vue :rowData="selectIndicatorMoney" :columnDefs="columnsTableAssocMoney"
-                                    class="ag-theme-quartz h-72" rowSelection="multiple"
-                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
-                                </ag-grid-vue>
-                            </div>
+
+                            <ag-grid-vue :rowData="selectIndicatorMoney" :columnDefs="columnsTableAssocMoney"
+                                class="ag-theme-quartz h-full" rowSelection="multiple"
+                                @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                            </ag-grid-vue>
+
                         </template>
                     </Tab>
                     <h1 class="text-lg font-semibold px-4">Por Asignar</h1>

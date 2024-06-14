@@ -34,17 +34,19 @@ const columnsTableMoney = [
         <template #header>
             <h1 class="font-semibold text-xl text-secondary-default my-auto">{{pageTitle}}</h1>
         </template>
-        <Tab class="w-100">
-            <template #t1>
-                <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable" style="height: 90vh;"
-                             class="ag-theme-quartz" >
-                </ag-grid-vue>
-            </template>
-            <template #t2>
-                <ag-grid-vue :rowData="$page.props.indicatorMoney" :columnDefs="columnsTableMoney" style="height: 90vh;"
-                             class="ag-theme-quartz" >
-                </ag-grid-vue>
-            </template>
-        </Tab>
+        <div class="flex w-full flex-1">
+            <Tab class="flex-1">
+                <template #t1>
+                    <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable" 
+                                 class="ag-theme-quartz h-full" >
+                    </ag-grid-vue>
+                </template>
+                <template #t2>
+                    <ag-grid-vue :rowData="$page.props.indicatorMoney" :columnDefs="columnsTableMoney"
+                                 class="ag-theme-quartz h-full" >
+                    </ag-grid-vue>
+                </template>
+            </Tab>
+        </div>
     </AppLayout>
 </template>
