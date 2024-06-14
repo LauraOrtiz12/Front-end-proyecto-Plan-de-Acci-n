@@ -162,7 +162,7 @@ const importFileMoney = () => {
                 {{ pageTitle }}
             </h2>
         </template>
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4 flex-1">
             <div class="flex justify-end gap-3 flex-col md:flex-row">
                 <Buttons icon="fa-solid fa-plus" @click="viewForm = !viewForm">
                     Nueva Dependencia
@@ -224,12 +224,12 @@ const importFileMoney = () => {
                     </form>
                 </div>
             </Card>
-            <Card class="w-full p-3">
+            <Card class="w-full p-3 flex-1">   
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
                     :autoSizeStrategy="autoSizeStrategy"
-                    class="ag-theme-quartz h-[80vh]"
+                    class="ag-theme-quartz h-full"
                 >
                 </ag-grid-vue>
             </Card>
