@@ -134,7 +134,7 @@ const importFile = () => {
                 </Buttons>
             </div>
 
-            <table class="w-full shadow-md rounded-md in-w-[1231px] overflow-y-auto flex flex-col flex-1">
+            <table class="w-full shadow-md rounded-md in-w-[1231px] overflow-y-auto flex-1">
                 <thead class="bg-secondary-default text-white sticky top-0">
                     <tr>
                         <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Codigo</th>
@@ -149,7 +149,7 @@ const importFile = () => {
                         <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hand"></i> Acciones</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y-4 divide-white h-0">
+                <tbody class="divide-y-4 divide-white">
                     <tr class="divide-x-4 divide-white" v-for="user in $page.props.users" :key="user.id">
                         <td class="bg-gray-200 px-4 py-3">{{ user.code }}</td>
                         <td class="bg-gray-100 px-4 py-3">{{ user.name }}</td>
