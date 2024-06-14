@@ -279,7 +279,7 @@ const rollBackSave = (item) => {
                     </tbody>
                 </table>
             </div>
-            <Card>
+            <Card class="w-full">
                 <div class="w-ful flex flex-col gap-4 p-3"
                     v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
                     <div class="flex justify-between items-center flex-wrap">

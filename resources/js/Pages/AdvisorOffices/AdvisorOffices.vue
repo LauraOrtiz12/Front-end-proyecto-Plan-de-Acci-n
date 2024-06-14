@@ -6,6 +6,7 @@ import { AgGridVue } from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import Swal from "sweetalert2"; // Optional Theme applied to the grid
+import Card from "@/Components/card.vue";
 
 
 const pageTitle = "Gestión de Asesor";
@@ -203,18 +204,19 @@ const rollBackSave = (item) => {
             </table>
         </div>
 
-
-        <div class="w-full mt-4 bg-white p-3 rounded-lg shadow  "
-            v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
-            <div class="text-xl p-3 font-bold">
-                Indicadores
+        <card class="w-full">
+            <div class="w-full mt-4 bg-white p-3 rounded-lg shadow  "
+                v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+                <div class="text-xl p-3 font-bold">
+                    Indicadores
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
+                        class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                        @grid-ready="onGridReady">
+                    </ag-grid-vue>
+                </div>
             </div>
-            <div class="grid grid-cols-1 gap-2">
-                <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                    class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
-                    @grid-ready="onGridReady">
-                </ag-grid-vue>
-            </div>
-        </div>
+        </card>
     </AppLayout>
 </template>
