@@ -223,10 +223,15 @@ const importFileMoney = () => {
                         </Buttons>
                     </form>
                 </div>
-            </Card>
-            <Card class="w-full p-3">
-                <ag-grid-vue :rowData="$page.props.estates" :columnDefs="columnsTable"
-                    :autoSizeStrategy="autoSizeStrategy" class="ag-theme-quartz h-screen">
+            </div>
+            <div class="p-4 bg-white rounded-md shadow-md">
+                <ag-grid-vue
+                    :rowData="$page.props.estates"
+                    :columnDefs="columnsTable"
+                    :autoSizeStrategy="autoSizeStrategy"
+                    class="ag-theme-quartz"
+                    style="height: 80vh;"
+                >
                 </ag-grid-vue>
             </Card>
         </div>
