@@ -224,7 +224,7 @@ const importFileMoney = () => {
                     </form>
                 </div>
             </Card>
-            <Card class="w-full">
+            <Card class="w-full p-3">
                 <ag-grid-vue
                     :rowData="$page.props.estates"
                     :columnDefs="columnsTable"
