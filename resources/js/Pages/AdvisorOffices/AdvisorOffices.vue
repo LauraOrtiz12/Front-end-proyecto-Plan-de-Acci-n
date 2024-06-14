@@ -205,7 +205,7 @@ const rollBackSave = (item) => {
         </div>
 
         <card class="w-full">
-            <div class="w-full mt-4 bg-white p-3 rounded-lg shadow  "
+            <div class="w-full mt-4 bg-white p-3 rounded-lg "
                 v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
                 <div class="text-xl p-3 font-bold">
                     Indicadores
