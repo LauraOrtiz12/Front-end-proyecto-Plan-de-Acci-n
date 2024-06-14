@@ -9,6 +9,7 @@ import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import Tab from "@/Components/Tab.vue";
 import Card from "@/Components/card.vue";
+import Buttons from "@/Components/buttons.vue";
 
 const props = defineProps({
     indicators: Object,
@@ -175,19 +176,18 @@ const importFile = () => {
                     <select v-model="validity" class="w-full p-2 border border-gray-300 rounded-md">
                         <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
                     </select>
-                    <button @click="getIndicators"
-                        class="transition-all px-6 py-2 text-secondary-default bg-gray-200 rounded-md hover:bg-primary-default hover:text-white hover:scale-105">
+                    <Buttons @click="getIndicators">
                         Validar
-                    </button>
+                    </Buttons>
                 </div>
             </div>
 
             <Card class="w-full" v-if="estateValidator">
                 <div class="flex flex-col gap-4 h-screen">
-                    <button @click="openModalImport = !openModalImport"
-                        class="transition-all w-full px-6 py-2 text-secondary-default bg-gray-200 rounded-t-md hover:bg-primary-default hover:text-white hover:scale-105">
+                    <Buttons @click="openModalImport = !openModalImport" class="w-full rounded-b-none"
+                        >
                         Importar Excel
-                    </button>
+                    </Buttons>
                     <h1 class="text-lg font-semibold px-4">Asignados</h1>
                     <Tab class="shadow-none mx-3 flex-1">
                         <template #t1>
