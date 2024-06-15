@@ -31,4 +31,8 @@ class FollowUp extends Model
     public function getIndicatorMoneyClose(){
         return $this->hasMany(IndicatorMoneySave::class, 'estate_id', 'estate_id');
     }
+
+    public function getFollowClose(){
+        return $this->hasOne(FollowClose::class, 'id','follow_close_id');
+    }
 }

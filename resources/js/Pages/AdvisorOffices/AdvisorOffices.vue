@@ -7,39 +7,100 @@ import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the 
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import Swal from "sweetalert2"; // Optional Theme applied to the grid
 import Card from "@/Components/card.vue";
+import Tab from "@/Components/Tab.vue";
 
 
 const pageTitle = "Gestión de Asesor";
 const validity = ref(null);
 const estateIndicatorsAdviser = ref([]);
+const selectIndicatorMoney  = ref([]);
 const followUps = ref({});
 const columnsTable = [
     { field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true },
     { field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true },
-    { field: 'get_estate.id', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true },
-    { field: 'get_indicator.name_indicator', headerName: 'Dependencia', filter: true, floatingFilter: true },
+    { field: 'get_estate.dependence', headerName: 'Dependencia', filter: true, floatingFilter: true },
     { field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
-    { field: 'get_indicator.name_strategy', headerName: 'Nom. Estrategico', filter: true, floatingFilter: true },
+    { field: 'get_indicator.objective_strategy', headerName: 'Obj. Estrategico', filter: true, floatingFilter: true },
     {
-        field: 'get_indicator.name_indicator_strategy',
-        headerName: 'Indicador Estrategico',
+        field: 'get_indicator.indicator_strategy',
+        headerName: 'Iniciativa Estratégica',
         filter: true,
         floatingFilter: true
     },
     { field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true },
-    { field: 'execution_goals', headerName: 'Ejecución Meta', filter: true, floatingFilter: true },
+    { field: 'execution_goals', headerName: 'Ejecución', filter: true, floatingFilter: true },
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
-            return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
+            return `${(parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2)}%`;
+        },
+    },
+    {field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true},
+    {field: 'technical_recursion', headerName: 'Recurso Técnico', filter: true, floatingFilter: true},
+    {field: 'human_resource', headerName: 'Recurso Humano', filter: true, floatingFilter: true},
+    {field: 'responsible_indicator', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true},
+    {field: 'post_responsible_indicator', headerName: 'Cargo del Responsable', filter: true, floatingFilter: true},
+    {field: 'get_indicator.area', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true},
+];
+
+const columnsTableAssocMoney = [
+    {field: 'get_estate.cod_reg', headerName: 'Regional', filter: true, floatingFilter: true},
+    {field: 'get_estate.id', headerName: 'Cod Dependencia', filter: true, floatingFilter: true},
+    {field: 'get_estate.dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
+    {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
+    {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
+    {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
+    {
+        field: 'open_money',
+        headerName: 'Apertura',
+        filter: true,
+        floatingFilter: true,
+        valueFormatter: p => '$' + formatMoney(p.value),
+    },
+    {
+        field: 'commitment',
+        headerName: 'Compromiso',
+        filter: true,
+        floatingFilter: true,
+        valueFormatter: p => '$' + formatMoney(p.value),
+    },
+    {
+        field: 'payments',
+        headerName: 'Pagos',
+        filter: true,
+        floatingFilter: true,
+        valueFormatter: p => '$' + formatMoney(p.value),
+    },
+    {
+        field: 'commitment_percentage',
+        headerName: 'Porcentaje Comprometido',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+            return `${parseFloat(params.data.commitment_percentage).toFixed(2)}%`;
         }
     },
-    { field: 'status', headerName: 'Estado', filter: true, floatingFilter: true },
+    {
+        field: 'payment_execution',
+        headerName: 'Pago Ejecutado',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+            return `${parseFloat(params.data.payment_execution).toFixed(2)}%`;
+        }
+    },
 ];
 
 const props = defineProps({
     validity: Object
 });
 
+const formatMoney = (val) => {
+    let number = parseFloat(val);
+    if (isNaN(number)) {
+        throw new Error('Invalid number');
+    }
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
 const formatDate = (setDate) => {
     let fechaObjeto = new Date(setDate);
@@ -59,6 +120,7 @@ const consult = () => {
         .then((response) => {
             estateIndicatorsAdviser.value = response.data.indicator;
             followUps.value = response.data.followups;
+            selectIndicatorMoney.value = response.data.indicatorMoney;
         });
 }
 
@@ -165,7 +227,18 @@ const rollBackSave = (item) => {
                 </thead>
                 <tbody class="divide-y-4 divide-white text-gray-600 text-sm font-light">
                     <tr class="divide-x-4 divide-white" v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                        <td class="bg-gray-200 px-4 py-3">{{ item.estate_id }}</td>
+                        <td class="bg-gray-200 px-4 py-3">
+                            <div class="grid grid-cols-1">
+                                {{ item.estate_id }}
+                                <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`" class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                                    <i class="fas fa-file-excel"></i>
+                                </a>
+                                <span v-if="item.status != 'Activo'" class="bg-red-100 text-red-700 px-4 py-2 rounded font-thin text-xs">
+                                      Seguimento Cerrado
+                                </span>
+                            </div>
+
+                        </td>
                         <td class="bg-gray-100 px-4 py-3">{{ item.justify_estate_indicator
                             }}</td>
                         <td class="bg-gray-200 px-4 py-3">{{ item.justify_estate_money }}
@@ -179,9 +252,7 @@ const rollBackSave = (item) => {
                                 <button v-if="item.status == 'Activo'" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     No Validar
                                 </button>
-                                <span v-if="item.status != 'Activo'" class="bg-red-100 text-red-700 px-4 py-2 rounded">
-                                      Seguimento Cerrado
-                                </span>
+
                             </div>
 
                         </td>
@@ -207,14 +278,30 @@ const rollBackSave = (item) => {
         <card class="w-full">
             <div class="w-full mt-4 bg-white p-3 rounded-lg "
                 v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
-                <div class="text-xl p-3 font-bold">
-                    Indicadores
-                </div>
                 <div class="grid grid-cols-1 gap-2">
-                    <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                        class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
-                        @grid-ready="onGridReady">
-                    </ag-grid-vue>
+                    <tab>
+                        <template #t1>
+                            <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
+                                         class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                                         @grid-ready="onGridReady">
+                            </ag-grid-vue>
+                        </template>
+                        <template #t2>
+                            <div class="ag-grid-section px-2 mb-6">
+                                <ag-grid-vue
+                                    :rowData="selectIndicatorMoney"
+                                    :columnDefs="columnsTableAssocMoney"
+                                    class="ag-theme-quartz h-64"
+                                    rowSelection="multiple"
+                                    @selection-changed="onSelectionChanged"
+                                    @grid-ready="onGridReady"
+                                    :columnHoverHighlight="true"
+                                >
+                                </ag-grid-vue>
+                            </div>
+                        </template>
+                    </tab>
+
                 </div>
             </div>
         </card>

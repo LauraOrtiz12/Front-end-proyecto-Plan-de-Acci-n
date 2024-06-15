@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdvisorOffices;
 use App\Models\Estate;
+use App\Models\IndicatorMoney;
 use App\Models\User;
 use App\Models\EstateIndicator;
 use App\Models\FollowUp;
@@ -36,9 +37,10 @@ class ValidityController extends Controller
     }
 
     public function getDataAdviser(Request $request){
-        $followUps = FollowUp::whereIn('cicle', [2,3])->where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->get();
+        $followUps = FollowUp::whereIn('cicle', [2,3])->where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->with(['getFollowClose'])->get();
         $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->with(['getIndicator', 'getEstate'])->get();
-        return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator]);
+        $indicatorMoney = IndicatorMoney::where('validity_id', $request->validity)->whereIn('estate_id', $request->adviser)->with(['getProject', 'getEstate'])->get();
+        return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator, 'indicatorMoney' => $indicatorMoney]);
     }
 
     public function getDataAdviserAssesor(Request $request){
@@ -46,8 +48,9 @@ class ValidityController extends Controller
         $dependences = AdvisorOffices::where('advisor_id', Auth::user()->id)->get()->map(function($advisor){
             return $advisor->estate_id;
         });
-        $followUps = FollowUp::whereIn('cicle', [3])->where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->get();
+        $followUps = FollowUp::whereIn('cicle', [3])->where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getFollowClose'])->get();
         $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getIndicator', 'getEstate'])->get();
-        return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator]);
+        $indicatorMoney = IndicatorMoney::where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getProject', 'getEstate'])->get();
+        return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator, 'indicatorMoney' => $indicatorMoney]);
     }
 }

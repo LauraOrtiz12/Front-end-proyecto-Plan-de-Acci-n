@@ -150,7 +150,7 @@ const columnsTable = ref([
     },
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
-            return (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2);
+            return `${(parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2)}%`;
         },
     },
     {field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true},
@@ -158,10 +158,10 @@ const columnsTable = ref([
     {field: 'human_resource', headerName: 'Recurso Humano', filter: true, floatingFilter: true},
     {field: 'responsible_indicator', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true},
     {field: 'post_responsible_indicator', headerName: 'Cargo del Responsable', filter: true, floatingFilter: true},
+    {field: 'get_indicator.area', headerName: 'Responsable de Indicador', filter: true, floatingFilter: true},
 ]);
 
 const columnsTableAssocMoney = [
-    {field: 'id', headerName: 'ID Indicador', filter: true, floatingFilter: true},
     {field: 'siif', headerName: 'DEP SIIF', filter: true, floatingFilter: true},
     {field: 'project_id', headerName: 'Codigo Proyecto', filter: true, floatingFilter: true},
     {field: 'get_project.project', headerName: 'Proyecto', filter: true, floatingFilter: true},
@@ -186,8 +186,24 @@ const columnsTableAssocMoney = [
         floatingFilter: true,
         valueFormatter: p => '$' + formatMoney(p.value),
     },
-    {field: 'commitment_percentage', headerName: 'Porcentaje Comprometido', filter: true, floatingFilter: true},
-    {field: 'payment_execution', headerName: 'Pago Ejecutado', filter: true, floatingFilter: true},
+    {
+        field: 'commitment_percentage',
+        headerName: 'Porcentaje Comprometido',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+            return `${parseFloat(params.data.commitment_percentage).toFixed(2)}%`;
+        }
+    },
+    {
+        field: 'payment_execution',
+        headerName: 'Pago Ejecutado',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
+            return `${parseFloat(params.data.payment_execution).toFixed(2)}%`;
+        }
+    },
 ];
 
 // Configuración antes de montar el componente
@@ -220,7 +236,7 @@ const downloadFollow = (id, relation) => {
                     <option :value="via.id" v-for="via in viability" :key="via.id">{{ via.validity }}</option>
                 </select>
                 <PrimaryButton @click="loadViabilityControl"
-                        v-if="Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0">
+                        v-if="(Object.keys($page.props.estatesControl).length > 0 || Object.keys($page.props.estates).length > 0) && validity > 0">
                     Validar
                 </PrimaryButton>
             </div>
@@ -277,7 +293,7 @@ const downloadFollow = (id, relation) => {
                                           class="bg-red-100 text-red-700 px-4 py-2 rounded">
                                       Seguimento Cerrado
                                     </span>
-                                    <div class="mt-5" v-if="fup.cicle == 1 && fup.status == 'Activo'">
+                                    <div class="mt-5" v-if="fup.status == 'Activo'">
                                         <button @click="downloadFollow(fup.id, 0)"
                                                 class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                             <i class="fas fa-file-excel mr-2"></i>
@@ -327,7 +343,6 @@ const downloadFollow = (id, relation) => {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <Tab>
                     <template #t1>
@@ -343,6 +358,7 @@ const downloadFollow = (id, relation) => {
                             :readOnlyEdit="true"
                             :columnTypes="columnTypes"
                             @grid-ready="onGridReady"
+                            :columnHoverHighlight="true"
                         >
                         </ag-grid-vue>
                     </template>
@@ -354,7 +370,9 @@ const downloadFollow = (id, relation) => {
                                 class="ag-theme-quartz h-64"
                                 rowSelection="multiple"
                                 @selection-changed="onSelectionChanged"
-                                @grid-ready="onGridReady">
+                                @grid-ready="onGridReady"
+                                :columnHoverHighlight="true"
+                            >
                             </ag-grid-vue>
                         </div>
                     </template>
@@ -443,6 +461,5 @@ const downloadFollow = (id, relation) => {
                                        @close="closeJustifyOne"></JusitfyEstateValidity>
             </Modal>
         </div>
-
     </AppLayout>
 </template>

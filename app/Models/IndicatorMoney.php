@@ -17,4 +17,9 @@ class IndicatorMoney extends Model
     public function getProject(){
         return $this->belongsTo(Project::class, 'project_id', 'code');
     }
+
+    public function getEstate()
+    {
+        return $this->hasOne(Estate::class, 'id','estate_id');
+    }
 }
