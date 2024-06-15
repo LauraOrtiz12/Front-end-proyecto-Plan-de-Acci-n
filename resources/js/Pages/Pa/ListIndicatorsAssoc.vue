@@ -8,6 +8,8 @@ import { AgGridVue } from "ag-grid-vue3";
 import Modal from "@/Components/Modal.vue";
 import Swal from "sweetalert2";
 import Tab from "@/Components/Tab.vue";
+import Card from "@/Components/card.vue";
+import Buttons from "@/Components/buttons.vue";
 
 const props = defineProps({
     indicators: Object,
@@ -159,8 +161,8 @@ const importFile = () => {
             <h2 class="font-semibold text-xl text-secondary-default my-auto">{{ pageTitle }}</h2>
         </template>
         <div class="flex flex-col gap-4">
-            <div class="bg-white shadow-md rounded-lg p-6">
-                <div class="flex flex-col">
+            <Card class="w-full">
+                <div class="flex flex-col gap-2 p-3">
                     <p class="text-lg font-semibold">ID: {{ $page.props.estate.id }}</p>
                     <p class="text-sm text-gray-500">Código Región: {{ $page.props.estate.cod_reg }}</p>
                     <p class="text-sm text-gray-500">Código Dependencia: {{ $page.props.estate.cod_dep }}</p>
@@ -168,53 +170,46 @@ const importFile = () => {
                     </p>
                     <p class="text-sm text-gray-500">Dependencia: {{ $page.props.estate.dependence }}</p>
                 </div>
-            </div>
-
+            </Card>
             <div class="form-section flex flex-col gap-4 mt-6">
                 <div class="flex items-center gap-4">
                     <select v-model="validity" class="w-full p-2 border border-gray-300 rounded-md">
                         <option :value="i.id" v-for="i in $page.props.viability">{{ i.validity }}</option>
                     </select>
-                    <button @click="getIndicators"
-                        class="transition-all px-6 py-2 text-secondary-default bg-gray-200 rounded-md hover:bg-primary-default hover:text-white hover:scale-105">
+                    <Buttons @click="getIndicators">
                         Validar
-                    </button>
+                    </Buttons>
                 </div>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg flex flex-col gap-4 pb-4" v-if="estateValidator">
-                <button @click="openModalImport = !openModalImport"
-                    class="transition-all w-full px-6 py-2 text-secondary-default bg-gray-200 rounded-t-md hover:bg-primary-default hover:text-white hover:scale-105">
-                    Importar Excel
-                </button>
-                <h1 class="text-lg font-semibold px-4">Asignados</h1>
-                <div class="px-4">
-                    <Tab>
+            <Card class="w-full" v-if="estateValidator">
+                <div class="flex flex-col gap-4 h-screen">
+                    <Buttons @click="openModalImport = !openModalImport" class="w-full rounded-b-none">
+                        Importar Excel
+                    </Buttons>
+                    <h1 class="text-lg font-semibold px-4">Asignados</h1>
+                    <Tab class="shadow-none flex-1">
                         <template #t1>
-                            <div class="ag-grid-section px-2 mb-6">
-                                <ag-grid-vue :rowData="selectIndicatorTableTwo" :columnDefs="columnsTableAssoc"
-                                    class="ag-theme-quartz h-64" rowSelection="multiple"
-                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
-                                </ag-grid-vue>
-                            </div>
+                            <ag-grid-vue :rowData="selectIndicatorTableTwo" :columnDefs="columnsTableAssoc"
+                                class="ag-theme-quartz h-full" rowSelection="multiple"
+                                @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                            </ag-grid-vue>
                         </template>
                         <template #t2>
-                            <div class="ag-grid-section px-2 mb-6">
-                                <ag-grid-vue :rowData="selectIndicatorMoney" :columnDefs="columnsTableAssocMoney"
-                                    class="ag-theme-quartz h-64" rowSelection="multiple"
-                                    @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
-                                </ag-grid-vue>
-                            </div>
+
+                            <ag-grid-vue :rowData="selectIndicatorMoney" :columnDefs="columnsTableAssocMoney"
+                                class="ag-theme-quartz h-full" rowSelection="multiple"
+                                @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
+                            </ag-grid-vue>
+
                         </template>
                     </Tab>
-                </div>
-                <h1 class="text-lg font-semibold px-4">Por Asignar</h1>
-                <div class="ag-grid-section px-4">
-                    <ag-grid-vue :rowData="indicators" :columnDefs="columnsTable" class="ag-theme-quartz h-screen"
+                    <h1 class="text-lg font-semibold px-4">Por Asignar</h1>
+                    <ag-grid-vue :rowData="indicators" :columnDefs="columnsTable" class="ag-theme-quartz px-4 flex-1"
                         rowSelection="multiple" @selection-changed="onSelectionChanged" @grid-ready="onGridReady">
                     </ag-grid-vue>
                 </div>
-            </div>
+            </Card>
         </div>
 
         <Modal :show="openModalImport" class="py-8" :closeable="true">
@@ -248,4 +243,3 @@ const importFile = () => {
         </Modal>
     </AppLayout>
 </template>
-

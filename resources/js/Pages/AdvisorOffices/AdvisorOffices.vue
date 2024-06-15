@@ -6,6 +6,7 @@ import { AgGridVue } from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import Swal from "sweetalert2"; // Optional Theme applied to the grid
+import Card from "@/Components/card.vue";
 
 
 const pageTitle = "Gestión de Asesor";
@@ -150,7 +151,7 @@ const rollBackSave = (item) => {
             </div>
         </div>
 
-        <div class="rounded-md overflow-x-auto">
+        <div class="rounded-md shadow overflow-x-auto">
             <table class="table-auto w-full">
                 <thead class="bg-secondary-default text-white">
                     <tr>
@@ -162,18 +163,18 @@ const rollBackSave = (item) => {
                         <th class="py-3 px-6 text-left">Asesor</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-600 text-sm font-light">
-                    <tr v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                        <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.estate_id }}</td>
-                        <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_indicator
+                <tbody class="divide-y-4 divide-white text-gray-600 text-sm font-light">
+                    <tr class="divide-x-4 divide-white" v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
+                        <td class="bg-gray-200 px-4 py-3">{{ item.estate_id }}</td>
+                        <td class="bg-gray-100 px-4 py-3">{{ item.justify_estate_indicator
                             }}</td>
-                        <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.justify_estate_money }}
+                        <td class="bg-gray-200 px-4 py-3">{{ item.justify_estate_money }}
                         </td>
-                        <td class="p-2 border border-gray-300 rounded-md bg-white">{{ formatDate(item.created_at) }}
+                        <td class="bg-gray-100 px-4 py-3">{{ formatDate(item.created_at) }}
                         </td>
-                        <td class="p-2 border border-gray-300 rounded-md bg-white">{{ item.observation_control }}
+                        <td class="bg-gray-200 px-4 py-3">{{ item.observation_control }}
                         </td>
-                        <td class="py-3 px-6 text-left">
+                        <td class="bg-gray-100 px-4 py-3">
                             <div class="grid grid-cols-1">
                                 <button v-if="item.status == 'Activo'" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     No Validar
@@ -203,16 +204,19 @@ const rollBackSave = (item) => {
             </table>
         </div>
 
-
-        <div class="w-full mt-4"
-            v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
-            Indicadores
-            <div class="grid grid-cols-1 gap-2">
-                <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                    class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
-                    @grid-ready="onGridReady">
-                </ag-grid-vue>
+        <card class="w-full">
+            <div class="w-full mt-4 bg-white p-3 rounded-lg "
+                v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+                <div class="text-xl p-3 font-bold">
+                    Indicadores
+                </div>
+                <div class="grid grid-cols-1 gap-2">
+                    <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
+                        class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                        @grid-ready="onGridReady">
+                    </ag-grid-vue>
+                </div>
             </div>
-        </div>
+        </card>
     </AppLayout>
 </template>
