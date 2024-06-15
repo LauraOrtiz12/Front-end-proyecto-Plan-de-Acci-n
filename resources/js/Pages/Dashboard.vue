@@ -117,6 +117,9 @@ const pageTitle = "Dashboard";
             <footer class="bg-gray-100 p-4 mt-6 text-center text-sm text-gray-500">
                 Desarrollado por la Fábrica de Software del Centro de Diseño e Innovación Tecnológica Industrial en
                 Dosquebradas.
+                <span class="text-xs font-italic">
+                    v1.0.0
+                </span>
             </footer>
         </Card>
     </AppLayout>
