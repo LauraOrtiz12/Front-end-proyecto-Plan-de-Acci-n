@@ -151,6 +151,23 @@ const columnsTable = ref([
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
             return `${(parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2)}%`;
+        }, cellStyle: params => {
+            let per = (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100);
+            let expGoal = parseFloat(params.data.expected_goal) * 100;
+            if(expGoal === '0'){
+                return {color: 'black', 'background-color': 'white'};
+            }
+            if(per >= expGoal ){
+                return { background: '#00B050' };
+            }else{
+                return { background: "#FE5935" };
+
+            }
+        }
+    },
+    {
+        field: 'expected_goal', headerName: 'Porcentaje Esperado', filter: true, floatingFilter: true, cellRenderer: (params) => {
+            return `${(parseFloat(params.data.expected_goal) * 100).toFixed(2)}%`;
         },
     },
     {field: 'physical_recursion', headerName: 'Recurso Físico', filter: true, floatingFilter: true},
@@ -192,16 +209,35 @@ const columnsTableAssocMoney = [
         filter: true,
         floatingFilter: true,
         cellRenderer: (params) => {
-            return `${parseFloat(params.data.commitment_percentage).toFixed(2)}%`;
+            return `${(parseFloat(params.data.commitment_percentage)*100).toFixed(2)}%`;
+        }, tooltipValueGetter: (p) => "El porcentaje esperado es de 45.17%", headerTooltip: "io",
+        cellStyle: params => {
+            let exp = 45.17;
+            let val = parseFloat(params.data.commitment_percentage)*100;
+            if(exp < val){
+                return { background: '#00B050' };
+            }else{
+                return { background: "#FE5935" };
+
+            }
         }
     },
     {
         field: 'payment_execution',
-        headerName: 'Pago Ejecutado',
+        headerName: 'Porcentaje Pago',
         filter: true,
         floatingFilter: true,
         cellRenderer: (params) => {
-            return `${parseFloat(params.data.payment_execution).toFixed(2)}%`;
+            return `${(parseFloat(params.data.payment_execution)*100).toFixed(2)}%`;
+        },tooltipValueGetter: (p) => "El porcentaje esperado es de 10.84%",
+        cellStyle: params => {
+            let exp = 10.84;
+            let val = parseFloat(params.data.payment_execution)*100;
+            if(exp < val){
+                return { background: '#00B050' };
+            }else{
+                return { background: "#FE5935" };
+            }
         }
     },
 ];
@@ -210,7 +246,7 @@ const columnsTableAssocMoney = [
 onBeforeMount(() => {
     columnTypes.value = {
         editableColumn: {
-            editable: (params) => editFull.value,
+            editable: () => editFull.value,
         },
     };
     loadViabilityControl();
@@ -219,6 +255,24 @@ onBeforeMount(() => {
 
 const downloadFollow = (id, relation) => {
     window.open(`export/followup/dep?id=${id}&relation=${relation}`);
+}
+
+
+const getRowStyle = (params) => {
+    if(params.data.expected_goal === '0'){
+        return { background: 'white' };
+    }else{
+        let expGoal = parseFloat(params.data.expected_goal) * 100;
+        let execGoal = (parseFloat(params.data.execution_goals)/parseFloat(params.data.goal)) * 100;
+        if(execGoal >=expGoal){
+            return { background: '#00B050' };
+        }else{
+            return { background: "#FE5935" };
+        }
+    }
+    /*if (params.node.rowIndex % 2 === 0) {
+        return { background: 'red' };
+    }*/
 }
 </script>
 <template>
@@ -359,6 +413,7 @@ const downloadFollow = (id, relation) => {
                             :columnTypes="columnTypes"
                             @grid-ready="onGridReady"
                             :columnHoverHighlight="true"
+
                         >
                         </ag-grid-vue>
                     </template>
