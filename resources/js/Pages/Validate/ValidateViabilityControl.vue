@@ -57,19 +57,15 @@ const columnsTable = [
         }, cellStyle: params => {
             let per = (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100);
             let expGoal = parseFloat(params.data.expected_goal) * 100;
-            if(expGoal === '0'){
-                return {color: 'black', 'background-color': 'white'};
-            }
-            if(per >= expGoal ){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-
-            }
+            return styleCellColor(per, expGoal);
         }
     },
     {
-        field: 'expected_goal', headerName: 'Porcentaje Esperado', filter: true, floatingFilter: true, cellRenderer: (params) => {
+        field: 'expected_goal',
+        headerName: 'Porcentaje Esperado',
+        filter: true,
+        floatingFilter: true,
+        cellRenderer: (params) => {
             return `${(parseFloat(params.data.expected_goal) * 100).toFixed(2)}%`;
         },
     },
@@ -110,17 +106,12 @@ const columnsTableAssocMoney = [
         filter: true,
         floatingFilter: true,
         cellRenderer: (params) => {
-            return `${(parseFloat(params.data.commitment_percentage)*100).toFixed(2)}%`;
+            return `${(parseFloat(params.data.commitment_percentage) * 100).toFixed(2)}%`;
         }, tooltipValueGetter: (p) => "El porcentaje esperado es de 45.17%", headerTooltip: "io",
         cellStyle: params => {
             let exp = 45.17;
-            let val = parseFloat(params.data.commitment_percentage)*100;
-            if(exp < val){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-
-            }
+            let val = parseFloat(params.data.commitment_percentage) * 100;
+            return styleCellColor(val, exp);
         }
     },
     {
@@ -129,16 +120,12 @@ const columnsTableAssocMoney = [
         filter: true,
         floatingFilter: true,
         cellRenderer: (params) => {
-            return `${parseFloat(params.data.payment_execution*100).toFixed(2)}%`;
+            return `${parseFloat(params.data.payment_execution * 100).toFixed(2)}%`;
         }, tooltipValueGetter: (p) => "El porcentaje esperado es de 10.84%",
         cellStyle: params => {
             let exp = 10.84;
-            let val = parseFloat(params.data.payment_execution)*100;
-            if(exp < val){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-            }
+            let val = parseFloat(params.data.payment_execution) * 100;
+            return styleCellColor(val, exp);
         }
     },
 ];
@@ -266,6 +253,22 @@ const rollBackSave = (item) => {
         }
     });
 }
+
+const styleCellColor = (per, exp) => {
+    if (exp > 0) {
+        if (per > exp) {
+            return {background: 'orange'};
+        } else {
+            if (per === exp) {
+                return {background: 'green'};
+            } else if (per >= (exp / 2)) {
+                return {background: 'yellow'};
+            } else if (per < (exp / 2)) {
+                return {background: 'red'};
+            }
+        }
+    }
+}
 </script>
 <template>
     <AppLayout :title="pageTitle">
@@ -339,7 +342,8 @@ const rollBackSave = (item) => {
                         <td class="bg-gray-200 px-4 py-3">
                             <div class="grid grid-cols-1">
                                 {{ item.estate_id }}
-                                <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`" class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                                <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`"
+                                   class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
                                     <i class="fas fa-file-excel"></i>
                                 </a>
                                 <span v-if="item.get_follow_close.status != 'Activo'"

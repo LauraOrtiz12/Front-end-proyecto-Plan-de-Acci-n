@@ -154,15 +154,7 @@ const columnsTable = ref([
         }, cellStyle: params => {
             let per = (parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100);
             let expGoal = parseFloat(params.data.expected_goal) * 100;
-            if(expGoal === '0'){
-                return {color: 'black', 'background-color': 'white'};
-            }
-            if(per >= expGoal ){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-
-            }
+            return styleCellColor(per, expGoal);
         }
     },
     {
@@ -214,12 +206,7 @@ const columnsTableAssocMoney = [
         cellStyle: params => {
             let exp = 45.17;
             let val = parseFloat(params.data.commitment_percentage)*100;
-            if(exp < val){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-
-            }
+            return styleCellColor(val, exp);
         }
     },
     {
@@ -233,11 +220,7 @@ const columnsTableAssocMoney = [
         cellStyle: params => {
             let exp = 10.84;
             let val = parseFloat(params.data.payment_execution)*100;
-            if(exp < val){
-                return { background: '#00B050' };
-            }else{
-                return { background: "#FE5935" };
-            }
+            return styleCellColor(val, exp);
         }
     },
 ];
@@ -273,6 +256,22 @@ const getRowStyle = (params) => {
     /*if (params.node.rowIndex % 2 === 0) {
         return { background: 'red' };
     }*/
+}
+
+const styleCellColor = (per, exp) => {
+   if(exp > 0){
+       if(per > exp){
+           return { background: 'orange' };
+       }else{
+            if(per === exp){
+                return { background: 'green' };
+            }else if(per >= (exp/2)){
+                return { background: 'yellow' };
+            }else if(per < (exp/2)){
+                return { background: 'red' };
+            }
+       }
+   }
 }
 </script>
 <template>
@@ -404,7 +403,7 @@ const getRowStyle = (params) => {
                             :rowData="estateIndicators"
                             :columnDefs="columnsTable"
                             style=""
-                            class="ag-theme-quartz h-screen"
+                            class="ag-theme-quartz h-80"
                             rowSelection="multiple"
                             @cell-edit-request="editingGoalExec"
                             :enterNavigatesVertically="true"
@@ -422,7 +421,7 @@ const getRowStyle = (params) => {
                             <ag-grid-vue
                                 :rowData="selectIndicatorMoney"
                                 :columnDefs="columnsTableAssocMoney"
-                                class="ag-theme-quartz h-64"
+                                class="ag-theme-quartz h-80"
                                 rowSelection="multiple"
                                 @selection-changed="onSelectionChanged"
                                 @grid-ready="onGridReady"

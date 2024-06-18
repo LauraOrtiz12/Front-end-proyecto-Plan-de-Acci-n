@@ -36,7 +36,6 @@ let showPassword = ref(false);
 function toggleShowPassword() {
     showPassword.value = !showPassword.value;
 }
-
 const selectedImage = IMAGES[Math.floor(Math.random() * IMAGES.length)];
 </script>
 
