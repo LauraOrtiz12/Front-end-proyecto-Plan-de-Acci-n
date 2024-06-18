@@ -27,7 +27,7 @@ const pageTitle = "Dashboard";
                     institucionales definidos en el Decreto 612 de 2018, y los documentos CONPES en los que
                     tiene compromisos la entidad. Dando cuenta de las principales orientaciones para lograr la
                     articulación entre la estrategia y operación del SENA como Entidad líder de formación para el
-                    trabajo. Especialmente en la vigencia 2024 se enfocan las acciones y lineamientos para
+                    trabajo. Especialmente en la vigencia 2023 se enfocan las acciones y lineamientos para
                     cumplir las iniciativas del gobierno nacional.
                 </p>
                 <div class="mt-6 text-center">
