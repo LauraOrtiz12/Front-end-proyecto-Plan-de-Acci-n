@@ -286,7 +286,7 @@ const rollBackSave = (item) => {
                     <tab>
                         <template #t1>
                             <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                                         class="ag-theme-quartz h-screen" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                                         class="ag-theme-quartz h-96" rowSelection="multiple" @selection-changed="onSelectionChanged"
                                          @grid-ready="onGridReady">
                             </ag-grid-vue>
                         </template>
@@ -295,7 +295,7 @@ const rollBackSave = (item) => {
                                 <ag-grid-vue
                                     :rowData="selectIndicatorMoney"
                                     :columnDefs="columnsTableAssocMoney"
-                                    class="ag-theme-quartz h-64"
+                                    class="ag-theme-quartz h-96"
                                     rowSelection="multiple"
                                     @selection-changed="onSelectionChanged"
                                     @grid-ready="onGridReady"
