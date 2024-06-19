@@ -48,7 +48,7 @@ class ValidityController extends Controller
         $dependences = AdvisorOffices::where('advisor_id', Auth::user()->id)->get()->map(function($advisor){
             return $advisor->estate_id;
         });
-        $followUps = FollowUp::whereIn('cicle', [3])->where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getFollowClose'])->get();
+        $followUps = FollowUp::whereIn('cicle', [1,2,3])->where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getFollowClose', 'getEstateOnly'])->get();
         $estateIndicator = EstateIndicator::where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getIndicator', 'getEstate'])->get();
         $indicatorMoney = IndicatorMoney::where('validity_id', $request->validity)->whereIn('estate_id', $dependences)->with(['getProject', 'getEstate'])->get();
         return response()->json(['followups' => $followUps, 'indicator' => $estateIndicator, 'indicatorMoney' => $indicatorMoney]);

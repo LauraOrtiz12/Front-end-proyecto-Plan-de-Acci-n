@@ -11,6 +11,9 @@ class FollowUp extends Model
 
     protected $guarded = [];
 
+    public function getEstateOnly(){
+        return $this->hasOne(Estate::class, 'id', 'estate_id');
+    }
     public function getEstate(){
         return $this->estate_id;
         return EstateIndicator::where('estate_id', $this->estate_id )->get();

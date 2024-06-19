@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\FollowCloseExport;
 use App\Exports\FollowIndicatorCloseMoney;
 use App\Exports\FollowIndicatorsDep;
+use App\Exports\FollowOpen;
 use App\Models\Estate;
 use App\Models\FollowClose;
 use App\Models\FollowUp;
@@ -242,5 +243,15 @@ class ExportController extends Controller
 
     public function downloadFollowDep(Request $request){
         return Excel::download(new FollowIndicatorsDep($request), 'Seguimiento_Vigencia_dependencia.xlsx');
+    }
+
+    public function viewReportOpen(Request $request){
+        $close = FollowClose::where('validity_id', $request->validity)->where('month', $request->month)->first();
+        $props = [ 'follow' => FollowUp::where('follow_close_id', $close->id)->with(['getEstateOnly.getResponsible', 'getEstateOnly.getAdviser'])->get()];
+        return view('Export.follow-open', compact('props'));
+    }
+
+    public function downloadReportOpen(Request $request){
+        return Excel::download(new FollowOpen($request->validity, $request->month), time() .'Seguimiento_Vigencia_dependencia_proceso.xlsx');
     }
 }

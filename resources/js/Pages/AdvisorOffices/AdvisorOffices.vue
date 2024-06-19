@@ -229,7 +229,10 @@ const rollBackSave = (item) => {
                     <tr class="divide-x-4 divide-white" v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
                         <td class="bg-gray-200 px-4 py-3">
                             <div class="grid grid-cols-1">
-                                {{ item.estate_id }}
+                                <div>
+                                    {{ item.estate_id }} / {{item.get_estate_only.dependence}}
+                                </div>
+
                                 <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`" class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
                                     <i class="fas fa-file-excel"></i>
                                 </a>
@@ -239,8 +242,9 @@ const rollBackSave = (item) => {
                             </div>
 
                         </td>
-                        <td class="bg-gray-100 px-4 py-3">{{ item.justify_estate_indicator
-                            }}</td>
+                        <td class="bg-gray-100 px-4 py-3">
+                            {{ item.justify_estate_indicator }}
+                        </td>
                         <td class="bg-gray-200 px-4 py-3">{{ item.justify_estate_money }}
                         </td>
                         <td class="bg-gray-100 px-4 py-3">{{ formatDate(item.created_at) }}
@@ -248,8 +252,8 @@ const rollBackSave = (item) => {
                         <td class="bg-gray-200 px-4 py-3">{{ item.observation_control }}
                         </td>
                         <td class="bg-gray-100 px-4 py-3">
-                            <div class="grid grid-cols-1">
-                                <button v-if="item.status == 'Activo'" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            <div class="flex">
+                                <button v-if="item.status == 'Activo' && item.cicle == 3" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                     No Validar
                                 </button>
 

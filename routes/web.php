@@ -103,6 +103,11 @@ Route::middleware([
 
         Route::get('exportExcel', 'viewData')->name('exportExcel');//para Visualizar lo que se descarga
         Route::get('export/followup/depv', 'viewDownloadFollowDep')->name('export/followup/depv');
+
+
+
+        Route::get('viewReportOpen', 'viewReportOpen')->name('viewReportOpen');//para Visualizar lo que se descarga
+        Route::get('downloadReportOpen', 'downloadReportOpen')->name('downloadReportOpen');//para Visualizar lo que se descarga
     });
 
     Route::controller( \App\Http\Controllers\ImportExcelcontroller::class)->middleware(AdminUserRoute::class)->group(function (){

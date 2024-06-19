@@ -219,11 +219,18 @@ const downloadFollowCloseMoney = (month) => {
                     <div class="flex justify-between items-center py-2" v-if="month[0].status == 'Activo'">
                         <div v-if="Object.keys(data.follow).length > 0"
                             class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
-                            <button @click="downloadRoute"
+                            <a :href="`viewReportOpen?month=${month[0].month}&validity=${validity}`" target="_blank"
                                 class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento
-                            </button>
-                            <span class="px-5">Descargar seguimiento de la vigencia</span>
+                                <i class="fas fa-file-excel mr-2"></i> Visualizar Seguimiento en Progreso
+                            </a>
+                        </div>
+                        <div v-if="Object.keys(data.follow).length > 0"
+                             class="bg-white overflow-hidden shadow-xl sm:rounded-lg mb-4 p-6">
+                            <a :href="`downloadReportOpen?month=${month[0].month}&validity=${validity}`" target="_blank"
+                               class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                <i class="fas fa-file-excel mr-2"></i> Descargar Seguimiento en Progreso
+                            </a>
+
                         </div>
                     </div>
                     <div v-else class="grid grid-cols-1 md:grid-cols-3">
