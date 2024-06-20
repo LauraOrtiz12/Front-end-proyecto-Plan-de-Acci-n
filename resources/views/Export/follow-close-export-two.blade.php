@@ -157,8 +157,8 @@
                 <td>{{ '$ ' .number_format($m['open_money'])}}</td>
                 <td>{{'$ ' . number_format($m['commitment'])}}</td>
                 <td>{{ '$ ' . number_format($m['payments'])}}</td>
-                <td>{{ number_format($m['commitment_percentage'])}}</td>
-                <td>{{number_format($m['payment_execution'], 2)}}</td>
+                <td>{{ number_format(($m['commitment_percentage'])*100, 2)}}%</td>
+                <td>{{number_format(($m['payment_execution'])*100, 2)}}%</td>
             </tr>
         @endforeach
         </tbody>

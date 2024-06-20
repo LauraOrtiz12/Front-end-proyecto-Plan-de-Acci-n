@@ -412,7 +412,6 @@ const styleCellColor = (per, exp) => {
                             :columnTypes="columnTypes"
                             @grid-ready="onGridReady"
                             :columnHoverHighlight="true"
-
                         >
                         </ag-grid-vue>
                     </template>

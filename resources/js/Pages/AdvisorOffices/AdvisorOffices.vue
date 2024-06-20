@@ -1,8 +1,8 @@
 <script setup>
 
 import AppLayout from "@/Layouts/AppLayout.vue";
-import { ref } from "vue";
-import { AgGridVue } from "ag-grid-vue3";
+import {ref} from "vue";
+import {AgGridVue} from "ag-grid-vue3";
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import Swal from "sweetalert2"; // Optional Theme applied to the grid
@@ -13,22 +13,22 @@ import Tab from "@/Components/Tab.vue";
 const pageTitle = "Gestión de Asesor";
 const validity = ref(null);
 const estateIndicatorsAdviser = ref([]);
-const selectIndicatorMoney  = ref([]);
+const selectIndicatorMoney = ref([]);
 const followUps = ref({});
 const columnsTable = [
-    { field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true },
-    { field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true },
-    { field: 'get_estate.dependence', headerName: 'Dependencia', filter: true, floatingFilter: true },
-    { field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true },
-    { field: 'get_indicator.objective_strategy', headerName: 'Obj. Estrategico', filter: true, floatingFilter: true },
+    {field: 'get_estate.cod_reg', headerName: 'Cod. Regional', filter: true, floatingFilter: true},
+    {field: 'get_estate.cod_dep', headerName: 'Cod. Dependencia', filter: true, floatingFilter: true},
+    {field: 'get_estate.dependence', headerName: 'Dependencia', filter: true, floatingFilter: true},
+    {field: 'get_indicator.name_perspective', headerName: 'Perspectiva', filter: true, floatingFilter: true},
+    {field: 'get_indicator.objective_strategy', headerName: 'Obj. Estrategico', filter: true, floatingFilter: true},
     {
         field: 'get_indicator.indicator_strategy',
         headerName: 'Iniciativa Estratégica',
         filter: true,
         floatingFilter: true
     },
-    { field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true },
-    { field: 'execution_goals', headerName: 'Ejecución', filter: true, floatingFilter: true },
+    {field: 'goal', headerName: 'Meta', filter: true, floatingFilter: true},
+    {field: 'execution_goals', headerName: 'Ejecución', filter: true, floatingFilter: true},
     {
         field: 'percentaje', headerName: 'Porcentaje', filter: true, floatingFilter: true, cellRenderer: (params) => {
             return `${(parseFloat(params.data.execution_goals) / parseFloat(params.data.goal) * 100).toFixed(2)}%`;
@@ -116,7 +116,7 @@ const formatDate = (setDate) => {
     return formato;
 }
 const consult = () => {
-    axios.get('getDataAdviserAssesor', { params: { validity: validity.value } })
+    axios.get('getDataAdviserAssesor', {params: {validity: validity.value}})
         .then((response) => {
             estateIndicatorsAdviser.value = response.data.indicator;
             followUps.value = response.data.followups;
@@ -149,7 +149,7 @@ const update = (item) => {
         target: "#justifyForModal"
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('updateAdvisorOfficesAssesor', { id: item.id, observation_control: text })
+            axios.post('updateAdvisorOfficesAssesor', {id: item.id, observation_control: text})
                 .then((response) => {
                     consult();
                     Swal.fire({
@@ -178,7 +178,7 @@ const rollBackSave = (item) => {
         target: "#justifyForModal"
     }).then((result) => {
         if (result.isConfirmed) {
-            axios.post('updateFollowUpState', { id: item.id, cicle: 2 })
+            axios.post('updateFollowUpState', {id: item.id, cicle: 2})
                 .then((response) => {
                     consult();
                     Swal.fire({
@@ -207,7 +207,7 @@ const rollBackSave = (item) => {
                     <option :value="via.id" v-for="via in props.validity" :key="via.id">{{ via.validity }}</option>
                 </select>
                 <button @click="consult"
-                    class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
+                        class="transition-all w-fit text-white px-4 py-2 bg-secondary-default rounded-md hover:bg-primary-default hover:scale-105">
                     Validar
                 </button>
             </div>
@@ -216,77 +216,85 @@ const rollBackSave = (item) => {
         <div class="rounded-md shadow overflow-x-auto">
             <table class="table-auto w-full">
                 <thead class="bg-secondary-default text-white">
-                    <tr>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Cod Dependencia</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-lines"></i> Justificación de Indicadores</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-invoice-dollar"></i> Justificación Presupuestal</th>
-                        <th class="text-left px-4 py-3 text-nowrap"><i class="fa-regular fa-calendar-days"></i> Fecha</th>
-                        <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
-                        <th class="py-3 px-6 text-left">Asesor</th>
-                    </tr>
+                <tr>
+                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-hashtag"></i> Cod Dependencia</th>
+                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-lines"></i> Justificación de
+                        Indicadores
+                    </th>
+                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-solid fa-file-invoice-dollar"></i>
+                        Justificación Presupuestal
+                    </th>
+                    <th class="text-left px-4 py-3 text-nowrap"><i class="fa-regular fa-calendar-days"></i> Fecha</th>
+                    <th class="py-3 px-6 text-left">Justificación de Seguimiento</th>
+                    <th class="py-3 px-6 text-left">Asesor</th>
+                </tr>
                 </thead>
                 <tbody class="divide-y-4 divide-white text-gray-600 text-sm font-light">
-                    <tr class="divide-x-4 divide-white" v-for="item in followUps" :key="item.id" :class="{ 'bg-gray-100': item.status === 'Activo' }">
-                        <td class="bg-gray-200 px-4 py-3">
-                            <div class="grid grid-cols-1">
-                                <div>
-                                    {{ item.estate_id }} / {{item.get_estate_only.dependence}}
-                                </div>
+                <tr class="divide-x-4 divide-white" v-for="item in followUps" :key="item.id"
+                    :class="{ 'bg-gray-100': item.status === 'Activo' }">
+                    <td class="bg-gray-200 px-4 py-3">
+                        <div class="grid grid-cols-1">
+                            <div>
+                                {{ item.estate_id }} / {{ item.get_estate_only.dependence }}
+                            </div>
 
-                                <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`" class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
-                                    <i class="fas fa-file-excel"></i>
-                                </a>
-                                <span v-if="item.status != 'Activo'" class="bg-red-100 text-red-700 px-4 py-2 rounded font-thin text-xs">
+                            <a :href="`export/followup/dep?id=${item.id}&relation=${item.status === 'Activo' ? 0 : 1 }`"
+                               class="bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                                <i class="fas fa-file-excel"></i>
+                            </a>
+                            <span v-if="item.status != 'Activo'"
+                                  class="bg-red-100 text-red-700 px-4 py-2 rounded font-thin text-xs">
                                       Seguimento Cerrado
                                 </span>
-                            </div>
+                        </div>
 
-                        </td>
-                        <td class="bg-gray-100 px-4 py-3">
-                            {{ item.justify_estate_indicator }}
-                        </td>
-                        <td class="bg-gray-200 px-4 py-3">{{ item.justify_estate_money }}
-                        </td>
-                        <td class="bg-gray-100 px-4 py-3">{{ formatDate(item.created_at) }}
-                        </td>
-                        <td class="bg-gray-200 px-4 py-3">{{ item.observation_control }}
-                        </td>
-                        <td class="bg-gray-100 px-4 py-3">
-                            <div class="flex">
-                                <button v-if="item.status == 'Activo' && item.cicle == 3" @click="rollBackSave(item)" class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                    No Validar
+                    </td>
+                    <td class="bg-gray-100 px-4 py-3">
+                        {{ item.justify_estate_indicator }}
+                    </td>
+                    <td class="bg-gray-200 px-4 py-3">{{ item.justify_estate_money }}
+                    </td>
+                    <td class="bg-gray-100 px-4 py-3">{{ formatDate(item.created_at) }}
+                    </td>
+                    <td class="bg-gray-200 px-4 py-3">{{ item.observation_control }}
+                    </td>
+                    <td class="bg-gray-100 px-4 py-3">
+                        <div class="flex">
+                            <button v-if="item.status == 'Activo' && item.cicle == 3" @click="rollBackSave(item)"
+                                    class="ml-3 inline-flex items-center px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                No Validar
+                            </button>
+
+                        </div>
+
+                    </td>
+                    <!--<td class="py-3 px-6 text-left" v-if="item.assesor == null">
+                            <div class="grid grid-cols-1 gap-3">
+                                <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="60"
+                                          rows="8" class="w-full px-3 py-2 border rounded-md"></textarea>
+                                <button @click="update(item)"
+                                        class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
+                                >
+                                    Guardar
                                 </button>
-
                             </div>
-
                         </td>
-                        <!--<td class="py-3 px-6 text-left" v-if="item.assesor == null">
-                                <div class="grid grid-cols-1 gap-3">
-                                    <textarea :name="`updateJustify`+item.id" :id="`updateJustify`+item.id" cols="60"
-                                              rows="8" class="w-full px-3 py-2 border rounded-md"></textarea>
-                                    <button @click="update(item)"
-                                            class="ml-3 inline-flex items-center px-4 py-2 bg-primary-default border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                                    >
-                                        Guardar
-                                    </button>
-                                </div>
-                            </td>
-                            <td class="py-3 px-6 text-left" v-else>
-                                {{ item.assesor }}
-                            </td>-->
-                    </tr>
+                        <td class="py-3 px-6 text-left" v-else>
+                            {{ item.assesor }}
+                        </td>-->
+                </tr>
                 </tbody>
             </table>
         </div>
-
         <card class="w-full">
             <div class="w-full mt-4 bg-white p-3 rounded-lg "
-                v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
+                 v-if="$page.props.auth.user.role_id != 2 && Object.keys(estateIndicatorsAdviser).length > 0">
                 <div class="grid grid-cols-1 gap-2">
                     <tab>
                         <template #t1>
                             <ag-grid-vue :rowData="estateIndicatorsAdviser" :columnDefs="columnsTable" style=""
-                                         class="ag-theme-quartz h-96" rowSelection="multiple" @selection-changed="onSelectionChanged"
+                                         class="ag-theme-quartz h-96" rowSelection="multiple"
+                                         @selection-changed="onSelectionChanged"
                                          @grid-ready="onGridReady">
                             </ag-grid-vue>
                         </template>
@@ -305,7 +313,6 @@ const rollBackSave = (item) => {
                             </div>
                         </template>
                     </tab>
-
                 </div>
             </div>
         </card>
