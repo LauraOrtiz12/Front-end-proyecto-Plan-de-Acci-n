@@ -187,7 +187,7 @@ class ExportController extends Controller
                         'month' => $indicator->month,
                         'goal' => $indicator->goal,
                         'execution_goals' => $indicator->execution_goals,
-                        'per' => (string)(number_format($indicator->execution_goals/$indicator->goal,2)),
+                        'per' => ($indicator->execution_goals != 0 && $indicator->goal != 0) ? (string)(number_format($indicator->execution_goals/$indicator->goal,2)) : "0",
                         'expected_goal' => $indicator->expected_goal,
                         'perspective' => $indicator->getIndicator->perspective,
                         'name_perspective' => $indicator->getIndicator->name_perspective,
