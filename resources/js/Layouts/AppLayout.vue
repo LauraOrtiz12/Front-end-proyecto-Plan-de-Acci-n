@@ -77,6 +77,9 @@ function toggleMenu() {
                     <NavLink :href="route('showCreateFollowUp')" :active="route().current('showCreateFollowUp')"><i
                         class="fa-solid fa-list"></i> Gestión Seguimiento
                     </NavLink>
+                    <NavLink :href="route('showCreatePoll')" :active="route().current('showCreatePoll')"><i
+                        class="fa-solid fa-list"></i> Formularios
+                    </NavLink>
                 </div>
                 <span class="lg:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú
                     para cerrarlo.</span>

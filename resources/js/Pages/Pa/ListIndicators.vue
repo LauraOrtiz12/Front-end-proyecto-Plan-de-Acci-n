@@ -37,7 +37,7 @@ const columnsTableMoney = [
         <div class="flex w-full flex-1">
             <Tab class="flex-1">
                 <template #t1>
-                    <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable" 
+                    <ag-grid-vue :rowData="$page.props.indicators" :columnDefs="columnsTable"
                                  class="ag-theme-quartz h-full" >
                     </ag-grid-vue>
                 </template>

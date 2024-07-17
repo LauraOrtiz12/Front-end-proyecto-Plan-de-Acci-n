@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+// import '../../../plannerapp/resources/js/Components/Formularios/Formulario.vue';
 
 
 import { createApp, h } from 'vue';

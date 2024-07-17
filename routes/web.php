@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\ValidityController;
 use App\Http\Controllers\EstateIndicatorController;
 use App\Http\Middleware\AdminUserRoute;
+use App\Http\Controllers\PollController;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -115,6 +116,10 @@ Route::middleware([
         Route::post('importExcelIndicatorGen', 'indexGen')->name('importExcelIndicatorGen');
         Route::post('importExcelIndicatorMoney', 'indexMoney')->name('importExcelIndicatorMoney');
         Route::post('importExcelUsers', 'importUsers')->name('importExcelUsers');
+    });
+
+    Route::controller(\App\Http\Controllers\PollController::class)->group(function () {
+        Route::get('showCreatePoll', 'index')->name('showCreatePoll');
     });
 
 });
