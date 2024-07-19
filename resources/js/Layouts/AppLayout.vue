@@ -80,6 +80,9 @@ function toggleMenu() {
                     <NavLink :href="route('showCreatePoll')" :active="route().current('showCreatePoll')"><i
                         class="fa-solid fa-list"></i> Formularios
                     </NavLink>
+                    <NavLink :href="route('newForm')" :active="route().current('newForm')">
+                        <i class="fa-solid fa-list"></i> Crear Formularios
+                    </NavLink>
                 </div>
                 <span class="lg:hidden text-balance text-xs text-center text-gray-600 animate-pulse">Toca fuera del menú
                     para cerrarlo.</span>

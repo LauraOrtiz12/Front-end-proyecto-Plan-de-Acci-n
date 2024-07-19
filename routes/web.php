@@ -121,5 +121,15 @@ Route::middleware([
     Route::controller(\App\Http\Controllers\PollController::class)->group(function () {
         Route::get('showCreatePoll', 'index')->name('showCreatePoll');
     });
+    // Mueve la ruta fuera del middleware si no es necesario autenticar para acceder
+    Route::get('/new-form', function () {
+        return Inertia::render('Forms/NewForm'); // Actualiza el path aquí
+    })->name('newForm');
+
+    Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+        Route::get('/new-form', function () {
+            return Inertia::render('Forms/NewForm'); // Actualiza el path aquí también
+        })->name('newForm');
+    });
 
 });
