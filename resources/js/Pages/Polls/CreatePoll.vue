@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 
 const pageTitle = 'Encuestas'
@@ -15,18 +16,22 @@ const form = {
         { tipo: 'fecha', titulo: '', fecha: '' }  // Pregunta de tipo fecha
     ]
 }
+const isOpen = ref(false);
 
-function guardarFormulario() {
-    // Método para guardar el formulario, por ahora solo imprime en la consola
-    console.log('Formulario guardado:', this.form);
+function toggleAccordion() {
+  isOpen.value = !isOpen.value;
 }
+function guardarFormulario() {
+  console.log('Formulario guardado:', form.value);
+}
+
+
 
 </script>
 
 
 <template>
     <AppLayout>
-        <!-- Contenedor principal del formulario -->
         <div class="">
             <div class="flex justify-end gap-4">
                 <svg width="39" height="25" viewBox="0 0 39 25" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -41,16 +46,50 @@ function guardarFormulario() {
                 <!-- Botones para guardar y compartir el formulario -->
                 <div class="flex justify-end gap-4">
                     <button
-                        class="bg-blue-900 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        class="bg-secondary-default hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         @click="guardarFormulario">
                         Guardar formulario
                     </button>
                     <button
-                        class="bg-blue-900 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        class="bg-secondary-default hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Compartir formulario
                     </button>
                 </div>
             </div>
+            <br>
+
+
+
+            <Card class="w-full flex-1 overflow-x-auto overflow-y-auto justify-between">
+                <div class="border border-gray-300">
+                    <table class="w-full min-w[12px]">
+                        <thead class="bg-secondary-default border text-white sticky top-1">
+                            <tr>
+                                <th class="flex items-center  text-left p-2">
+                                    <img src="/assets/images/Group 689.png" class="inline-block" alt="Icono" />
+                                    <h1 class="rm-0">Formulario sin titulo</h1>
+                                    <button @click="toggleAccordion" class="accordion-button  text-white cursor-pointer p-2 w-full text-left rounded transition duration-400"></button>
+                                     <div v-show="isOpen" class="accordion-content">
+                                        <p>Descripcion del Formulario</p>
+                                        </div>
+
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+             </Card>
+
+
+
+
+
+
+
+
+
+
+
             <!-- Sección del encabezado del formulario -->
             <div class="bg-white shadow-md rounded-lg p-6 mb-4">
                 <!-- Encabezado del formulario con título y descripción -->
@@ -133,8 +172,3 @@ function guardarFormulario() {
     </AppLayout>
 </template>
 
-
-
-<style scoped>
-/* Agrega aquí estilos personalizados si es necesario */
-</style>
