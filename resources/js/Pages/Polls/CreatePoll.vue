@@ -1,8 +1,12 @@
 <script setup>
-import { ref } from 'vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
+import AppLayout from "@/Layouts/AppLayout.vue";
+import { ref } from "vue";
+import Modal from "@/Components/Modal.vue";
+import CreateShare from "@/Pages/Share/CreateShare.vue";
+import Card from "@/Components/card.vue";
 
-const pageTitle = 'Encuestas'
+const pageTitle = "Encuestas";
+const showShareModal = ref(false);
 
 const form = {
     descripcionFormulario: '',  // Descripción general del formulario
@@ -16,22 +20,28 @@ const form = {
         { tipo: 'fecha', titulo: '', fecha: '' }  // Pregunta de tipo fecha
     ]
 }
+
 const isOpen = ref(false);
 
 function toggleAccordion() {
   isOpen.value = !isOpen.value;
 }
+
 function guardarFormulario() {
   console.log('Formulario guardado:', form.value);
 }
 
-
+function closeShareModal() {
+    showShareModal.value = false;
+}
 
 </script>
 
-
 <template>
     <AppLayout>
+        <Modal :show="showShareModal" @close="closeShareModal()">
+            <CreateShare />
+        </Modal>
         <div class="">
             <div class="flex justify-end gap-4">
                 <svg width="39" height="25" viewBox="0 0 39 25" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -51,6 +61,7 @@ function guardarFormulario() {
                         Guardar formulario
                     </button>
                     <button
+                        @click="showShareModal = true"
                         class="bg-secondary-default hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Compartir formulario
                     </button>
@@ -60,9 +71,11 @@ function guardarFormulario() {
 
 
 
+
             <Card class="w-full flex-1 overflow-x-auto overflow-y-auto justify-between">
-                <div class="border border-gray-300">
-                    <table class="w-full min-w[12px]">
+                <div class="border-gray-900">
+                    <div class="border-gray-900 rounded-lg">
+                    <table class="w-full min-w-[12px] rounded-lg">
                         <thead class="bg-secondary-default border text-white sticky top-1">
                             <tr>
                                 <th class="flex items-center  text-left p-2">
@@ -72,20 +85,13 @@ function guardarFormulario() {
                                      <div v-show="isOpen" class="accordion-content">
                                         <p>Descripcion del Formulario</p>
                                         </div>
-
-                                </th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+                                     </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
              </Card>
-
-
-
-
-
-
-
 
 
 

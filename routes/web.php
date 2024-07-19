@@ -122,4 +122,8 @@ Route::middleware([
         Route::get('showCreatePoll', 'index')->name('showCreatePoll');
     });
 
+    Route::controller(\App\Http\Controllers\ShareController::class)->group(function () {
+        Route::get('showCreateShare', 'index')->name('showCreateShare');
+    });
+
 });
